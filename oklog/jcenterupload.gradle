@@ -1,0 +1,83 @@
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+version = VERSION_NAME
+group = GROUP_ID
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'aar'
+                groupId GROUP_ID
+                artifactId BINTRAY_NAME
+                name LIBRARY_NAME
+                description LIBRARY_DESCRIPTION
+                url SITE_URL
+                licenses {
+                    license {
+                        name 'The MIT License (MIT)'
+                        url 'http://opensource.org/licenses/MIT'
+                    }
+                }
+                developers {
+                    developer {
+                        id DEVELOPER_ID
+                        name DEVELOPER_NAME
+                        email DEVELOPER_EMAIL
+                    }
+                }
+                scm {
+                    connection GIT_URL
+                    developerConnection GIT_URL
+                    url SITE_URL
+                }
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+// Bintray
+bintray {
+    user = project.hasProperty('bintrayUser') ? bintrayUser : null
+    key = project.hasProperty('bintrayApiKey') ? bintrayApiKey : null
+
+    configurations = ['archives']
+    pkg {
+        repo = 'maven'
+        name = BINTRAY_NAME
+        desc = LIBRARY_DESCRIPTION
+        websiteUrl = SITE_URL
+        vcsUrl = GIT_URL
+        licenses = ["MIT"]
+        publish = true
+        publicDownloadNumbers = true
+        version {
+            desc = LIBRARY_DESCRIPTION
+            gpg {
+                sign = true
+                passphrase = project.hasProperty('bintrayGpgPassword') ? bintrayGpgPassword : null
+            }
+        }
+    }
+}

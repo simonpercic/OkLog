@@ -32,6 +32,8 @@ public final class LogManager {
             return;
         }
 
+        compressed = compressed.replaceAll("\n", "");
+
         Timber.d(String.format("%s - %s%s", Constants.LOG_TAG, Constants.LOG_URL_BASE, compressed));
     }
 }

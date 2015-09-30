@@ -12,12 +12,15 @@ import timber.log.Timber;
 /**
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
-public final class LogManager {
+public class LogManager {
 
-    private LogManager() {
+    private final String logUrlBase;
+
+    public LogManager(String url) {
+        this.logUrlBase = url;
     }
 
-    public static void log(String body) {
+    public void log(String body) {
         String compressed;
 
         try {
@@ -34,6 +37,7 @@ public final class LogManager {
 
         compressed = compressed.replaceAll("\n", "");
 
-        Timber.d(String.format("%s - %s%s", Constants.LOG_TAG, Constants.LOG_URL_BASE, compressed));
+        Timber.d(String.format("%s - %s%s%s",
+                Constants.LOG_TAG, logUrlBase, Constants.LOG_URL_ECHO_RESPONSE_PATH, compressed));
     }
 }

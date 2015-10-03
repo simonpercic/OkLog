@@ -2,6 +2,7 @@ package com.github.simonpercic.oklog.manager;
 
 import android.text.TextUtils;
 
+import com.github.simonpercic.oklog.LogInterceptor;
 import com.github.simonpercic.oklog.utils.Constants;
 import com.github.simonpercic.oklog.utils.StringUtils;
 
@@ -15,9 +16,11 @@ import timber.log.Timber;
 public class LogManager {
 
     private final String logUrlBase;
+    private final LogInterceptor logInterceptor;
 
-    public LogManager(String url) {
+    public LogManager(String url, LogInterceptor logInterceptor) {
         this.logUrlBase = url;
+        this.logInterceptor = logInterceptor;
     }
 
     public void log(String body) {
@@ -37,7 +40,10 @@ public class LogManager {
 
         compressed = compressed.replaceAll("\n", "");
 
-        Timber.d(String.format("%s - %s%s%s",
-                Constants.LOG_TAG, logUrlBase, Constants.LOG_URL_ECHO_RESPONSE_PATH, compressed));
+        String logUrl = String.format("%s%s%s", logUrlBase, Constants.LOG_URL_ECHO_RESPONSE_PATH, compressed);
+
+        if (logInterceptor == null || !logInterceptor.onLog(logUrl)) {
+            Timber.d("%s - %s", Constants.LOG_TAG, logUrl);
+        }
     }
 }

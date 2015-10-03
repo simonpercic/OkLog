@@ -17,9 +17,9 @@ public class OkLogInterceptor implements Interceptor {
 
     private final LogManager logManager;
 
-    private OkLogInterceptor(boolean useLocal) {
+    private OkLogInterceptor(boolean useLocal, LogInterceptor logInterceptor) {
         String logUrlBase = useLocal ? Constants.LOG_URL_BASE_LOCAL : Constants.LOG_URL_BASE_REMOTE;
-        this.logManager = new LogManager(logUrlBase);
+        this.logManager = new LogManager(logUrlBase, logInterceptor);
     }
 
     @Override public Response intercept(Chain chain) throws IOException {
@@ -44,6 +44,7 @@ public class OkLogInterceptor implements Interceptor {
     public static class Builder {
 
         private boolean useLocal;
+        private LogInterceptor logInterceptor;
 
         private Builder() {
             this.useLocal = false;
@@ -54,8 +55,13 @@ public class OkLogInterceptor implements Interceptor {
             return this;
         }
 
+        public Builder setLogInterceptor(LogInterceptor logInterceptor) {
+            this.logInterceptor = logInterceptor;
+            return this;
+        }
+
         public OkLogInterceptor build() {
-            return new OkLogInterceptor(this.useLocal);
+            return new OkLogInterceptor(this.useLocal, this.logInterceptor);
         }
     }
 

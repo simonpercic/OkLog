@@ -1,7 +1,5 @@
 package com.github.simonpercic.oklog.manager;
 
-import android.text.TextUtils;
-
 import com.github.simonpercic.oklog.LogInterceptor;
 import com.github.simonpercic.oklog.utils.Constants;
 import com.github.simonpercic.oklog.utils.StringUtils;
@@ -38,26 +36,34 @@ public class LogManager {
      * @param body response body
      */
     public void log(String body) {
+        String logUrl = getLogUrl(body);
+
+        if (logInterceptor == null || !logInterceptor.onLog(logUrl)) {
+            logDebug(logUrl);
+        }
+    }
+
+    String getLogUrl(String body) {
         String compressed;
 
         try {
             compressed = StringUtils.gzipBase64(body);
         } catch (IOException e) {
             Timber.e(e, "LogManager: %s", e.getMessage());
-            return;
+            return null;
         }
 
-        if (TextUtils.isEmpty(compressed)) {
+        if (compressed == null || compressed.length() == 0) {
             Timber.w("LogManager: compressed string is empty");
-            return;
+            return null;
         }
 
         compressed = compressed.replaceAll("\n", "");
 
-        String logUrl = String.format("%s%s%s", logUrlBase, Constants.LOG_URL_ECHO_RESPONSE_PATH, compressed);
+        return String.format("%s%s%s", logUrlBase, Constants.LOG_URL_ECHO_RESPONSE_PATH, compressed);
+    }
 
-        if (logInterceptor == null || !logInterceptor.onLog(logUrl)) {
-            Timber.d("%s - %s", Constants.LOG_TAG, logUrl);
-        }
+    void logDebug(String logUrl) {
+        Timber.d("%s - %s", Constants.LOG_TAG, logUrl);
     }
 }

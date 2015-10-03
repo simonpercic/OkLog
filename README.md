@@ -23,7 +23,25 @@ compile 'TODO'
 ```
 
 ```java
-TODO
+// create an instance of OkLogInterceptor using a builder()
+OkLogInterceptor okLogInterceptor = OkLogInterceptor.builder().build();
+
+OkHttpClient client = new OkHttpClient();
+List<Interceptor> clientInterceptors = client.interceptors();
+
+// add OkLogInterceptor to OkHttpClient interceptors
+Collections.addAll(clientInterceptors, okLogInterceptor);
+```
+
+```java
+// with Retrofit
+Client okClient = new OkClient(client);
+
+new RestAdapter.Builder()
+    .setClient(okClient)
+    .setEndpoint(endpoint)
+    ...
+    .build();
 ```
 
 ## Known limitations

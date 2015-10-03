@@ -13,7 +13,7 @@ import java.io.IOException;
 /**
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
-public class OkLogInterceptor implements Interceptor {
+public final class OkLogInterceptor implements Interceptor {
 
     private final LogManager logManager;
 
@@ -41,7 +41,7 @@ public class OkLogInterceptor implements Interceptor {
 
     // region Builder
 
-    public static class Builder {
+    public static final class Builder {
 
         private boolean useLocal;
         private LogInterceptor logInterceptor;

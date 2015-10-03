@@ -11,6 +11,9 @@ import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
 
 /**
+ * Interceptor for OkHttp.
+ * Call builder() to create an instance.
+ *
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
 public final class OkLogInterceptor implements Interceptor {
@@ -35,6 +38,11 @@ public final class OkLogInterceptor implements Interceptor {
         return response.newBuilder().body(body).build();
     }
 
+    /**
+     * Get a Builder instance.
+     *
+     * @return a Builder instance
+     */
     public static Builder builder() {
         return new Builder();
     }
@@ -50,16 +58,32 @@ public final class OkLogInterceptor implements Interceptor {
             this.useLocal = false;
         }
 
+        /**
+         * Set the base url to 'http://localhost:8080'.
+         *
+         * @return Builder instance, to chain calls
+         */
         public Builder setLocal() {
             this.useLocal = true;
             return this;
         }
 
+        /**
+         * Set a custom LogInterceptor.
+         *
+         * @param logInterceptor a instance of a LogInterceptor
+         * @return Builder instance, to chain calls
+         */
         public Builder setLogInterceptor(LogInterceptor logInterceptor) {
             this.logInterceptor = logInterceptor;
             return this;
         }
 
+        /**
+         * Build an instance of OkLogInterceptor.
+         *
+         * @return instance of OkLogInterceptor
+         */
         public OkLogInterceptor build() {
             return new OkLogInterceptor(this.useLocal, this.logInterceptor);
         }

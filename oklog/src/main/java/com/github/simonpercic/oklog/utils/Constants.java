@@ -1,11 +1,14 @@
 package com.github.simonpercic.oklog.utils;
 
 /**
+ * Constants.
+ *
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
 public final class Constants {
 
     private Constants() {
+
     }
 
     public static final String LOG_TAG = "OKLOG";

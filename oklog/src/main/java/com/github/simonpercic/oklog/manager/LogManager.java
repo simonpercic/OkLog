@@ -11,6 +11,9 @@ import java.io.IOException;
 import timber.log.Timber;
 
 /**
+ * Log manager.
+ * Logs the received response body.
+ *
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
 public class LogManager {
@@ -18,11 +21,22 @@ public class LogManager {
     private final String logUrlBase;
     private final LogInterceptor logInterceptor;
 
-    public LogManager(String url, LogInterceptor logInterceptor) {
-        this.logUrlBase = url;
+    /**
+     * Constructor.
+     *
+     * @param urlBase url base to use
+     * @param logInterceptor optional log interceptor
+     */
+    public LogManager(String urlBase, LogInterceptor logInterceptor) {
+        this.logUrlBase = urlBase;
         this.logInterceptor = logInterceptor;
     }
 
+    /**
+     * Logs response body using Timber.
+     *
+     * @param body response body
+     */
     public void log(String body) {
         String compressed;
 

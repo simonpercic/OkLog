@@ -1,0 +1,8 @@
+#!/bin/bash
+if [ "$TEST_SUITE" = "static" ]
+then
+    ./gradlew check
+elif [ "$TEST_SUITE" = "integration" ]
+then
+    ./gradlew connectedCheck
+fi

@@ -13,7 +13,7 @@ OkLog writes a clickable link to the Android log with the OkHttp's response as a
 
 OkLog intercepts responses from OkHttp, it then gzips and Base64 encodes every response string and generates an url link with the encoded string as a param. It then logs the url using [Timber](https://github.com/JakeWharton/timber).
 
-That url points to a web app that does the exact opposite, i.e. Base64 decodes and unpacks the url param and returns the response as a string for easier debugging.
+That url points to a hosted instance of the [ResponseEcho](https://github.com/simonpercic/ResponseEcho) web app that does the exact opposite, i.e. Base64 decodes and unpacks the url param and returns the response as a string for easier debugging. 
 
 ## Usage
 

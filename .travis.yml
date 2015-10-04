@@ -1,0 +1,29 @@
+language: android
+jdk: oraclejdk7
+
+env:
+  global:
+  - ADB_INSTALL_TIMEOUT=5
+  matrix:
+  - ANDROID_TARGET=android-22  ANDROID_ABI=armeabi-v7a  TEST_SUITE=static
+  - ANDROID_TARGET=android-19  ANDROID_ABI=armeabi-v7a  TEST_SUITE=integration
+
+android:
+  components:
+  - build-tools-23.0.1
+  - android-19
+  - android-22
+  - sys-img-armeabi-v7a-android-22
+  - extra-google-m2repository
+  - extra-android-m2repository
+
+before_install:
+  - ./config/ci/create-emulator
+  - echo "disablePreDex" >> gradle.properties
+
+before_script:
+  - ./gradlew dependencies
+  - ./config/ci/android-wait-for-emulator
+
+script:
+  - ./config/ci/run-test-suite

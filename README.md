@@ -3,6 +3,8 @@
 Response logging interceptor for OkHttp. 
 Logs a url link with url-encoded response for every OkHttp call.
 
+[![Build Status](https://api.travis-ci.org/simonpercic/OkLog.svg?branch=master)](https://travis-ci.org/simonpercic/OkLog)
+
 ## Motivation
 
 Debugging Android responses should be easier. Even with Retrofit logging enabled, copying multi-line responses from logcat is cumbersome and annoying.

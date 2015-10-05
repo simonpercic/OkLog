@@ -21,7 +21,7 @@ That url points to a hosted instance of the [ResponseEcho](https://github.com/si
 
 Add using Gradle:
 ```groovy
-compile 'TODO'
+compile 'com.github.simonpercic:oklog:0.1.0'
 ```
 
 ```java

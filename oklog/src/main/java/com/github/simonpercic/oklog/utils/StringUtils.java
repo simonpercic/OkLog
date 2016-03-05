@@ -19,6 +19,16 @@ public final class StringUtils {
     }
 
     /**
+     * Returns <tt>true</tt> if the string is null or of zero length.
+     *
+     * @param string string
+     * @return <tt>true</tt> if string is null or of zero length
+     */
+    public static boolean isEmpty(String string) {
+        return string == null || string.length() == 0;
+    }
+
+    /**
      * Compresses the given string with gzip, returns it Base64 encoded.
      *
      * @param string input string

@@ -2,6 +2,7 @@ package com.github.simonpercic.oklog;
 
 import com.github.simonpercic.oklog.manager.LogManager;
 import com.github.simonpercic.oklog.utils.Constants;
+import com.github.simonpercic.oklog.utils.StringUtils;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Request;
@@ -20,8 +21,7 @@ public final class OkLogInterceptor implements Interceptor {
 
     private final LogManager logManager;
 
-    private OkLogInterceptor(boolean useLocal, LogInterceptor logInterceptor) {
-        String logUrlBase = useLocal ? Constants.LOG_URL_BASE_LOCAL : Constants.LOG_URL_BASE_REMOTE;
+    private OkLogInterceptor(String logUrlBase, LogInterceptor logInterceptor) {
         this.logManager = new LogManager(logUrlBase, logInterceptor);
     }
 
@@ -51,11 +51,11 @@ public final class OkLogInterceptor implements Interceptor {
 
     public static final class Builder {
 
-        private boolean useLocal;
+        private String logUrlBase;
         private LogInterceptor logInterceptor;
 
         private Builder() {
-            this.useLocal = false;
+            this.logUrlBase = Constants.LOG_URL_BASE_REMOTE;
         }
 
         /**
@@ -64,7 +64,22 @@ public final class OkLogInterceptor implements Interceptor {
          * @return Builder instance, to chain calls
          */
         public Builder setLocal() {
-            this.useLocal = true;
+            return setBaseUrl(Constants.LOG_URL_BASE_LOCAL);
+        }
+
+        /**
+         * Set the base url.
+         * The set url should be without the trailing slash.
+         * e.g. http://www.example.com
+         *
+         * @return Builder instance, to chain calls
+         */
+        public Builder setBaseUrl(String url) {
+            if (StringUtils.isEmpty(url)) {
+                return this;
+            }
+
+            this.logUrlBase = url;
             return this;
         }
 
@@ -85,7 +100,7 @@ public final class OkLogInterceptor implements Interceptor {
          * @return instance of OkLogInterceptor
          */
         public OkLogInterceptor build() {
-            return new OkLogInterceptor(this.useLocal, this.logInterceptor);
+            return new OkLogInterceptor(this.logUrlBase, this.logInterceptor);
         }
     }
 

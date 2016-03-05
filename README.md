@@ -57,6 +57,10 @@ Unfortunately, there is no workaround with the current system. Nevertheless, eve
 This library uses [Timber](https://github.com/JakeWharton/timber) for the actual logging, which splits lines that are too long, so you can see if a response was longer than the limit.
 
 
+## Change Log
+See [CHANGELOG.md](CHANGELOG.md)
+
+
 ## License
 
 Open source, distributed under the MIT License. See [LICENSE](LICENSE) for details.

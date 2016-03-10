@@ -28,7 +28,7 @@ android {
 dependencies {
     compile project(':oklog-core')
 
-    compile 'com.squareup.okhttp:okhttp:2.7.4'
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
 
     // Static code rules
     checkstyleRules files('../config/soter/checkstyle-0.3.xml')

@@ -1,19 +1,24 @@
-package com.github.simonpercic.oklog;
+package com.github.simonpercic.oklog3;
+
+/**
+ * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
+ */
 
 import com.github.simonpercic.oklog.core.LogInterceptor;
 import com.github.simonpercic.oklog.core.manager.LogManager;
 import com.github.simonpercic.oklog.core.utils.Constants;
 import com.github.simonpercic.oklog.core.utils.StringUtils;
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.ResponseBody;
 
 import java.io.IOException;
 
+import okhttp3.Interceptor;
+import okhttp3.MediaType;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
 /**
- * Interceptor for OkHttp.
+ * Interceptor for OkHttp3.
  * Call builder() to create an instance.
  *
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>

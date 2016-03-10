@@ -10,6 +10,8 @@ android {
         targetSdkVersion 23
         versionCode Integer.parseInt(VERSION_CODE)
         versionName VERSION_NAME
+
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
 
     buildTypes {
@@ -26,14 +28,37 @@ android {
 }
 
 dependencies {
-    compile project(':oklog-core')
+    compile 'com.jakewharton.timber:timber:4.1.1'
 
-    compile 'com.squareup.okhttp:okhttp:2.7.4'
+    // Unit test dependencies
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'org.powermock:powermock-module-junit4:1.6.2'
+    testCompile 'org.powermock:powermock-api-mockito:1.6.2'
+
+    // Android test dependencies
+    androidTestCompile 'com.android.support.test:runner:0.4'
+    androidTestCompile 'com.android.support.test:rules:0.4'
 
     // Static code rules
     checkstyleRules files('../config/soter/checkstyle-0.3.xml')
     findbugsRules files('../config/soter/findbugs-0.1.xml')
     pmdRules files('../config/soter/pmd-0.1.xml')
+}
+
+soter {
+    checkstyle {
+        enabled true
+    }
+
+    findbugs {
+        enabled true
+        reportLevel 'high'
+    }
+
+    pmd {
+        enabled true
+    }
 }
 
 apply from: '../jcenterupload.gradle'

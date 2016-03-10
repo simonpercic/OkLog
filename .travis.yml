@@ -14,6 +14,7 @@ android:
   - android-19
   - android-23
   - sys-img-armeabi-v7a-android-19
+  - sys-img-armeabi-v7a-android-23
   - extra-google-m2repository
   - extra-android-m2repository
 

@@ -22,8 +22,8 @@ public final class OkLogInterceptor implements Interceptor {
 
     private final LogManager logManager;
 
-    private OkLogInterceptor(String logUrlBase, LogInterceptor logInterceptor) {
-        this.logManager = new LogManager(logUrlBase, logInterceptor);
+    private OkLogInterceptor(String logUrlBase, LogInterceptor logInterceptor, boolean useAndroidLog) {
+        this.logManager = new LogManager(logUrlBase, logInterceptor, useAndroidLog);
     }
 
     @Override public Response intercept(Chain chain) throws IOException {
@@ -54,6 +54,7 @@ public final class OkLogInterceptor implements Interceptor {
 
         private String logUrlBase;
         private LogInterceptor logInterceptor;
+        private boolean useAndroidLog;
 
         private Builder() {
             this.logUrlBase = Constants.LOG_URL_BASE_REMOTE;
@@ -86,6 +87,18 @@ public final class OkLogInterceptor implements Interceptor {
         }
 
         /**
+         * Set whether to use Android's Log methods to log, instead of Timber.
+         * Defaults to false.
+         *
+         * @param useAndroidLog true to use Android's Log methods, false to use Timber.
+         * @return Builder instance, to chain calls
+         */
+        public Builder useAndroidLog(boolean useAndroidLog) {
+            this.useAndroidLog = useAndroidLog;
+            return this;
+        }
+
+        /**
          * Set a custom LogInterceptor.
          *
          * @param logInterceptor a instance of a LogInterceptor
@@ -102,7 +115,7 @@ public final class OkLogInterceptor implements Interceptor {
          * @return instance of OkLogInterceptor
          */
         public OkLogInterceptor build() {
-            return new OkLogInterceptor(this.logUrlBase, this.logInterceptor);
+            return new OkLogInterceptor(this.logUrlBase, this.logInterceptor, this.useAndroidLog);
         }
     }
 

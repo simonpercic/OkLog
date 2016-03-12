@@ -1,5 +1,7 @@
 package com.github.simonpercic.oklog.core.manager;
 
+import android.util.Log;
+
 import com.github.simonpercic.oklog.core.LogInterceptor;
 import com.github.simonpercic.oklog.core.utils.Constants;
 import com.github.simonpercic.oklog.core.utils.StringUtils;
@@ -18,16 +20,19 @@ public class LogManager {
 
     private final String logUrlBase;
     private final LogInterceptor logInterceptor;
+    private final boolean useAndroidLog;
 
     /**
      * Constructor.
      *
      * @param urlBase url base to use
      * @param logInterceptor optional log interceptor
+     * @param useAndroidLog true to use Android's Log methods, false to use Timber
      */
-    public LogManager(String urlBase, LogInterceptor logInterceptor) {
+    public LogManager(String urlBase, LogInterceptor logInterceptor, boolean useAndroidLog) {
         this.logUrlBase = urlBase;
         this.logInterceptor = logInterceptor;
+        this.useAndroidLog = useAndroidLog;
     }
 
     /**
@@ -49,12 +54,23 @@ public class LogManager {
         try {
             compressed = StringUtils.gzipBase64(body);
         } catch (IOException e) {
-            Timber.e(e, "LogManager: %s", e.getMessage());
+            if (useAndroidLog) {
+                Log.e(Constants.LOG_TAG, String.format("LogManager: %s", e.getMessage()));
+            } else {
+                Timber.e(e, "LogManager: %s", e.getMessage());
+            }
+
             return null;
         }
 
         if (compressed == null || compressed.length() == 0) {
-            Timber.w("LogManager: compressed string is empty");
+            String message = "LogManager: compressed string is empty";
+            if (useAndroidLog) {
+                Log.w(Constants.LOG_TAG, message);
+            } else {
+                Timber.w(message);
+            }
+
             return null;
         }
 
@@ -64,6 +80,10 @@ public class LogManager {
     }
 
     void logDebug(String logUrl) {
-        Timber.d("%s - %s", Constants.LOG_TAG, logUrl);
+        if (useAndroidLog) {
+            Log.d(Constants.LOG_TAG, String.format("%s - %s", Constants.LOG_TAG, logUrl));
+        } else {
+            Timber.d("%s - %s", Constants.LOG_TAG, logUrl);
+        }
     }
 }

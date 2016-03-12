@@ -43,7 +43,7 @@ public class LogManagerTest {
     public void testGetLogUrlIOException() throws Exception {
         when(StringUtils.gzipBase64(anyString())).thenThrow(new IOException());
 
-        LogManager logManager = new LogManager(null, null);
+        LogManager logManager = new LogManager(null, null, false);
 
         String logUrl = logManager.getLogUrl("");
 
@@ -54,7 +54,7 @@ public class LogManagerTest {
     public void testGetLogUrlEmpty() throws Exception {
         when(StringUtils.gzipBase64(anyString())).thenReturn("");
 
-        LogManager logManager = new LogManager(null, null);
+        LogManager logManager = new LogManager(null, null, false);
 
         String logUrl = logManager.getLogUrl("");
 
@@ -75,7 +75,7 @@ public class LogManagerTest {
 
         when(StringUtils.gzipBase64(anyString())).thenReturn(gzipped);
 
-        LogManager logManager = new LogManager(null, null);
+        LogManager logManager = new LogManager(null, null, false);
 
         String logUrl = logManager.getLogUrl("");
 
@@ -99,7 +99,7 @@ public class LogManagerTest {
         when(StringUtils.gzipBase64(anyString())).thenReturn(gzipped);
 
         String baseUrl = "http://example.com";
-        LogManager logManager = new LogManager(baseUrl, null);
+        LogManager logManager = new LogManager(baseUrl, null, false);
 
         String logUrl = logManager.getLogUrl("");
 
@@ -114,7 +114,7 @@ public class LogManagerTest {
         when(StringUtils.gzipBase64(anyString())).thenReturn(compressedString);
 
         String baseUrl = "http://example.com";
-        LogManager logManager = spy(new LogManager(baseUrl, null));
+        LogManager logManager = spy(new LogManager(baseUrl, null, false));
 
         logManager.log("");
 
@@ -130,7 +130,7 @@ public class LogManagerTest {
         LogInterceptor logInterceptor = mock(LogInterceptor.class);
 
         String baseUrl = "http://example.com";
-        LogManager logManager = new LogManager(baseUrl, logInterceptor);
+        LogManager logManager = new LogManager(baseUrl, logInterceptor, false);
 
         logManager.log("");
 
@@ -146,7 +146,7 @@ public class LogManagerTest {
         LogInterceptor logInterceptor = mock(LogInterceptor.class);
         when(logInterceptor.onLog(anyString())).thenReturn(true);
 
-        LogManager logManager = spy(new LogManager(null, logInterceptor));
+        LogManager logManager = spy(new LogManager(null, logInterceptor, false));
 
         logManager.log("");
 
@@ -162,7 +162,7 @@ public class LogManagerTest {
         when(logInterceptor.onLog(anyString())).thenReturn(false);
 
         String baseUrl = "http://example.com";
-        LogManager logManager = spy(new LogManager(baseUrl, logInterceptor));
+        LogManager logManager = spy(new LogManager(baseUrl, logInterceptor, false));
 
         logManager.log("");
 

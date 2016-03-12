@@ -3,7 +3,7 @@ apply plugin: 'si.dlabs.soter'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '23.0.1'
+    buildToolsVersion '23.0.2'
 
     defaultConfig {
         minSdkVersion 15
@@ -29,7 +29,7 @@ android {
 dependencies {
     compile project(':oklog-core')
 
-    compile 'com.squareup.okhttp:okhttp:2.7.4'
+    compile 'com.squareup.okhttp:okhttp:2.7.5'
 
     // Static code rules
     checkstyleRules files('../config/soter/checkstyle-0.3.xml')

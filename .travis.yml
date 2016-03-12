@@ -10,10 +10,12 @@ env:
 
 android:
   components:
-  - build-tools-23.0.1
+  - platform-tools
+  - tools
+  - build-tools-23.0.2
   - android-19
   - android-23
-  - sys-img-armeabi-v7a-android-22
+  - sys-img-armeabi-v7a-android-19
   - extra-google-m2repository
   - extra-android-m2repository
 

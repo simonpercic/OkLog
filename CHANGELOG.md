@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 0.2.0 *(2016-03-13)*
+----------------------------
+
+ * New: OkLog3 to support OkHttp3.
+ * New: Added an option to Builder to use Android's Log methods instead of Timber.
+
+
 Version 0.1.1 *(2016-03-05)*
 ----------------------------
 

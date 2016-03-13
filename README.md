@@ -22,29 +22,62 @@ That url points to a hosted instance of the [ResponseEcho](https://github.com/si
 
 ## Usage
 
+### OkLog for OkHttp (use for Retrofit 1.x)
+
 Add using Gradle:
 ```groovy
-compile 'com.github.simonpercic:oklog:0.1.1'
+compile 'com.github.simonpercic:oklog:0.2.0'
 ```
 
 ```java
 // create an instance of OkLogInterceptor using a builder()
 OkLogInterceptor okLogInterceptor = OkLogInterceptor.builder().build();
 
-OkHttpClient client = new OkHttpClient();
-List<Interceptor> clientInterceptors = client.interceptors();
+// create an instance of OkHttpClient
+OkHttpClient okHttpClient = new OkHttpClient();
 
 // add OkLogInterceptor to OkHttpClient interceptors
+List<Interceptor> clientInterceptors = okHttpClient.interceptors();
 Collections.addAll(clientInterceptors, okLogInterceptor);
 ```
 
 ```java
-// with Retrofit
-Client okClient = new OkClient(client);
+// use with Retrofit
+Client okClient = new OkClient(okHttpClient);
 
 new RestAdapter.Builder()
-    .setClient(okClient)
     .setEndpoint(endpoint)
+    .setClient(okClient)
+    ...
+    .build();
+```
+
+### OkLog3 for OkHttp3 (use for Retrofit 2.x)
+
+Add using Gradle:
+```groovy
+compile 'com.github.simonpercic:oklog3:0.2.0'
+```
+
+```java
+// create an instance of OkLogInterceptor using a builder()
+OkLogInterceptor okLogInterceptor = OkLogInterceptor.builder().build();
+
+// create an instance of OkHttpClient builder
+OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
+
+// add OkLogInterceptor to OkHttpClient's application interceptors
+okHttpBuilder.addInterceptor(okLogInterceptor);
+
+// build
+OkHttpClient okHttpClient = okHttpBuilder.build();
+```
+
+```java
+// use with Retrofit2
+new Retrofit.Builder()
+    .baseUrl(baseUrl)
+    .client(okHttpClient)
     ...
     .build();
 ```

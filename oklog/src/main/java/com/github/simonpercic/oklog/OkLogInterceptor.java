@@ -9,6 +9,7 @@ import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ResponseBody;
+import com.squareup.okhttp.internal.http.HttpEngine;
 
 import java.io.IOException;
 
@@ -30,7 +31,7 @@ public final class OkLogInterceptor implements Interceptor {
         Request request = chain.request();
         Response response = chain.proceed(request);
 
-        if (response.request().method().equals("HEAD")) {
+        if (!HttpEngine.hasBody(response)) {
             return response;
         }
 

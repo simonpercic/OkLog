@@ -16,6 +16,7 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okhttp3.internal.http.HttpEngine;
 
 /**
  * Interceptor for OkHttp3.
@@ -35,7 +36,7 @@ public final class OkLogInterceptor implements Interceptor {
         Request request = chain.request();
         Response response = chain.proceed(request);
 
-        if (response.request().method().equals("HEAD")) {
+        if (!HttpEngine.hasBody(response)) {
             return response;
         }
 

@@ -35,6 +35,10 @@ public final class OkLogInterceptor implements Interceptor {
         Request request = chain.request();
         Response response = chain.proceed(request);
 
+        if (response.request().method().equals("HEAD")) {
+            return response;
+        }
+
         MediaType contentType = response.body().contentType();
         String bodyString = response.body().string();
 

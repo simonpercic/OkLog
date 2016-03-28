@@ -6,5 +6,7 @@
     <issue id="GradleDependency" severity="warning" />
 
     <issue id="InvalidPackage" severity="ignore" />
+    <issue id="UnusedIds" severity="ignore" />
+    <issue id="UnusedResources" severity="ignore" />
     <issue id="LogNotTimber" severity="ignore" />
 </lint>

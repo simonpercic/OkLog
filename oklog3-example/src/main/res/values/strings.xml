@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">OkLog3-Example</string>
+    <string name="button_get">GET</string>
+    <string name="button_post">POST</string>
+    <string name="button_put">PUT</string>
+    <string name="button_delete">DELETE</string>
+    <string name="button_header">HEADER</string>
+</resources>

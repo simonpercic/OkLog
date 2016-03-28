@@ -37,4 +37,19 @@ dependencies {
     pmdRules files('../config/soter/pmd-0.1.xml')
 }
 
+soter {
+    checkstyle {
+        enabled true
+    }
+
+    findbugs {
+        enabled true
+        reportLevel 'high'
+    }
+
+    pmd {
+        enabled true
+    }
+}
+
 apply from: '../jcenterupload.gradle'

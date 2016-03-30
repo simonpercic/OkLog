@@ -29,7 +29,7 @@ android {
 }
 
 dependencies {
-    compile 'com.jakewharton.timber:timber:4.1.1'
+    provided 'com.jakewharton.timber:timber:4.1.1'
 
     // Unit test dependencies
     testCompile 'junit:junit:4.12'

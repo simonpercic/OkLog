@@ -5,6 +5,7 @@ import android.util.Log;
 import com.github.simonpercic.oklog.core.LogInterceptor;
 import com.github.simonpercic.oklog.core.utils.Constants;
 import com.github.simonpercic.oklog.core.utils.StringUtils;
+import com.github.simonpercic.oklog.core.utils.TimberUtils;
 
 import java.io.IOException;
 
@@ -20,7 +21,7 @@ public class LogManager {
 
     private final String logUrlBase;
     private final LogInterceptor logInterceptor;
-    private final boolean useAndroidLog;
+    final boolean useAndroidLog;
 
     /**
      * Constructor.
@@ -32,7 +33,7 @@ public class LogManager {
     public LogManager(String urlBase, LogInterceptor logInterceptor, boolean useAndroidLog) {
         this.logUrlBase = urlBase;
         this.logInterceptor = logInterceptor;
-        this.useAndroidLog = useAndroidLog;
+        this.useAndroidLog = useAndroidLog || !TimberUtils.hasTimber();
     }
 
     /**

@@ -3,6 +3,7 @@ package com.github.simonpercic.oklog.core.manager;
 import com.github.simonpercic.oklog.core.LogInterceptor;
 import com.github.simonpercic.oklog.core.utils.Constants;
 import com.github.simonpercic.oklog.core.utils.StringUtils;
+import com.github.simonpercic.oklog.core.utils.TimberUtils;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +30,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(StringUtils.class)
+@PrepareForTest({StringUtils.class, TimberUtils.class})
 public class LogManagerTest {
 
     @Before
@@ -168,5 +169,31 @@ public class LogManagerTest {
 
         String expected = String.format("%s%s%s", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH, compressedString);
         verify(logManager).logDebug(eq(expected));
+    }
+
+    @Test
+    public void testUseAndroidLog() throws Exception {
+        LogManager logManager = new LogManager(null, null, true);
+        assertEquals(true, logManager.useAndroidLog);
+    }
+
+    @Test
+    public void testUseAndroidLogNoTimber() throws Exception {
+        mockStatic(TimberUtils.class);
+
+        when(TimberUtils.hasTimber()).thenReturn(false);
+
+        LogManager logManager = new LogManager(null, null, false);
+        assertEquals(true, logManager.useAndroidLog);
+    }
+
+    @Test
+    public void testUseAndroidLogTimber() throws Exception {
+        mockStatic(TimberUtils.class);
+
+        when(TimberUtils.hasTimber()).thenReturn(true);
+
+        LogManager logManager = new LogManager(null, null, false);
+        assertEquals(false, logManager.useAndroidLog);
     }
 }

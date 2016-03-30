@@ -16,7 +16,7 @@ OkLog writes a clickable link to the Android log with the OkHttp's response as a
 
 ## How does it work?
 
-OkLog intercepts responses from OkHttp, it then gzips and Base64 encodes every response string and generates an url link with the encoded string as a param. It then logs the url using [Timber](https://github.com/JakeWharton/timber).
+OkLog intercepts responses from OkHttp, it then gzips and Base64 encodes every response string and generates an url link with the encoded string as a param. It then logs the url using [Timber](https://github.com/JakeWharton/timber) (if you have it, or Android's built-in Log methods if you don't).
 
 That url points to a hosted instance of the [ResponseEcho](https://github.com/simonpercic/ResponseEcho) web app that does the exact opposite, i.e. Base64 decodes and unpacks the url param and returns the response as a string for easier debugging. 
 
@@ -82,6 +82,19 @@ new Retrofit.Builder()
     .build();
 ```
 
+### Builder options
+
+- `setBaseUrl(String url)`
+    Set the base url to prefix the logs with (if you're self-hosting [ResponseEcho](https://github.com/simonpercic/ResponseEcho)). 
+    Defaults to an OpenShift hosted instance at: 'http://responseecho-simonpercic.rhcloud.com'
+   
+- `setLogInterceptor(LogInterceptor logInterceptor)` 
+    Set custom log interceptor to do your own logging. See [LogInterceptor](core/src/main/java/com/github/simonpercic/oklog/core/LogInterceptor.java) for details.
+    
+- `useAndroidLog(boolean useAndroidLog)`
+    Use 'true' to use Android's Log methods for logging, instead of Timber. 
+    Since Timber is an optional dependency, OkLog will use it only if it's included it in your app's dependencies. If not, it will default to Android's Log methods either way.
+
 ## Known limitations
 OkLog writes logs to Android's logging system, which has [a limited line length (~4000 chars)](http://stackoverflow.com/a/8899735). 
 
@@ -89,7 +102,7 @@ Even though the generated urls are gzipped and Base64 encoded, they **might stil
 
 Unfortunately, there is no workaround with the current system. Nevertheless, everything should work fine for the majority of cases.
 
-This library uses [Timber](https://github.com/JakeWharton/timber) for the actual logging, which splits lines that are too long, so you can see if a response was longer than the limit.
+This library optionally uses [Timber](https://github.com/JakeWharton/timber) for the actual logging, which splits lines that are too long, so you can see if a response was longer than the limit.
 
 
 ## Change Log

@@ -9,6 +9,11 @@ public final class TimberUtils {
         // no instance
     }
 
+    /**
+     * Determines if Timber is available at runtime.
+     *
+     * @return true if Timber is available, false otherwise
+     */
     public static boolean hasTimber() {
         try {
             Class.forName("timber.log.Timber");

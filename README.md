@@ -85,15 +85,15 @@ new Retrofit.Builder()
 ### Builder options
 
 - `setBaseUrl(String url)`
-    Set the base url to prefix the logs with (if you're self-hosting [ResponseEcho](https://github.com/simonpercic/ResponseEcho)). 
+    Set the base url to prefix the logs with. Useful if you're self-hosting [ResponseEcho](https://github.com/simonpercic/ResponseEcho). 
     Defaults to an OpenShift hosted instance at: 'http://responseecho-simonpercic.rhcloud.com'
    
 - `setLogInterceptor(LogInterceptor logInterceptor)` 
-    Set custom log interceptor to do your own logging. See [LogInterceptor](core/src/main/java/com/github/simonpercic/oklog/core/LogInterceptor.java) for details.
+    Set a custom log interceptor to do your own logging. See [LogInterceptor](core/src/main/java/com/github/simonpercic/oklog/core/LogInterceptor.java) for details.
     
 - `useAndroidLog(boolean useAndroidLog)`
-    Use 'true' to use Android's Log methods for logging, instead of Timber. 
-    Since Timber is an optional dependency, OkLog will use it only if it's included it in your app's dependencies. If not, it will default to Android's Log methods either way.
+    Pass 'true' to use Android's Log methods for logging, instead of Timber. 
+    Since Timber is an optional dependency, OkLog will use it only if it's included it in your app's dependencies. If not, it will fallback to using Android's built-in Log methods.
 
 ## Known limitations
 OkLog writes logs to Android's logging system, which has [a limited line length (~4000 chars)](http://stackoverflow.com/a/8899735). 

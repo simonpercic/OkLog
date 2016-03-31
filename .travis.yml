@@ -3,7 +3,7 @@ jdk: oraclejdk8
 
 env:
   global:
-  - ADB_INSTALL_TIMEOUT=5
+  - ADB_INSTALL_TIMEOUT=10
   matrix:
   - ANDROID_TARGET=android-23  ANDROID_ABI=armeabi-v7a  TEST_SUITE=static
   - ANDROID_TARGET=android-19  ANDROID_ABI=armeabi-v7a  TEST_SUITE=integration

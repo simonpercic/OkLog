@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 0.2.1 *(2016-04-02)*
+----------------------------
+
+ * New: Timber is now an optional dependency.
+ * Fix: Responses without a body are not logged anymore.
+
+
 Version 0.2.0 *(2016-03-13)*
 ----------------------------
 

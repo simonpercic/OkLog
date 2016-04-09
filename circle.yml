@@ -2,11 +2,6 @@ machine:
   java:
     version: oraclejdk8
 
-dependencies:
-  pre:
-    - echo y | android update sdk --no-ui --all --filter "tools"
-    - echo y | android update sdk --no-ui --all --filter "build-tools-23.0.2"
-
 test:
   override:
     - config/circleci/run-tests.sh:

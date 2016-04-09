@@ -16,7 +16,6 @@ test:
     - emulator -avd circleci-android23 -no-audio -no-window:
         background: true
         parallel: true
-    - circle-android wait-for-boot
   override:
-      - ./gradlew check
+      - circle-android wait-for-boot
       - ./gradlew connectedCheck

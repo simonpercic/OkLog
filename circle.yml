@@ -13,9 +13,16 @@ dependencies:
 
 test:
   override:
-    - emulator -avd circleci-android22 -no-audio -no-window:
-        background: true
+    - |
+      case $CIRCLE_NODE_INDEX in
+        0)
+          ./gradlew check
+          ;;
+        1)
+          - emulator -avd circleci-android22 -no-audio -no-window
+          - circle-android wait-for-boot
+          ./gradlew connectedCheck
+          ;;
+        esac
+      :
         parallel: true
-    - circle-android wait-for-boot
-    - ./gradlew connectedCheck
-    - ./gradlew check

@@ -13,16 +13,5 @@ dependencies:
 
 test:
   override:
-    - |
-      case $CIRCLE_NODE_INDEX in
-        0)
-          ./gradlew check
-          ;;
-        1)
-          - emulator -avd circleci-android22 -no-audio -no-window
-          - circle-android wait-for-boot
-          ./gradlew connectedCheck
-          ;;
-        esac
-      :
+    - config/circleci/run-tests.sh:
         parallel: true

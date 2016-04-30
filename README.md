@@ -3,6 +3,7 @@
 Response logging interceptor for OkHttp. 
 Logs a url link with url-encoded response for every OkHttp call.
 
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-OkLog-green.svg?style=true)](https://android-arsenal.com/details/1/3513)
 [![Build Status](https://api.travis-ci.org/simonpercic/OkLog.svg?branch=master)](https://travis-ci.org/simonpercic/OkLog)
 [ ![Download](https://api.bintray.com/packages/simonpercic/maven/oklog/images/download.svg) ](https://bintray.com/simonpercic/maven/oklog/_latestVersion)
 

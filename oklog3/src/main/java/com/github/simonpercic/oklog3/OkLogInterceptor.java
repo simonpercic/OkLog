@@ -4,19 +4,19 @@ package com.github.simonpercic.oklog3;
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
 
+import com.github.simonpercic.oklog.core.LogDataBuilder;
 import com.github.simonpercic.oklog.core.LogInterceptor;
-import com.github.simonpercic.oklog.core.manager.LogManager;
-import com.github.simonpercic.oklog.core.utils.Constants;
-import com.github.simonpercic.oklog.core.utils.StringUtils;
+import com.github.simonpercic.oklog.core.LogManager;
+import com.github.simonpercic.oklog.core.Constants;
+import com.github.simonpercic.oklog.core.StringUtils;
+import com.github.simonpercic.oklog3.LogDataInterceptor.RequestLogData;
+import com.github.simonpercic.oklog3.LogDataInterceptor.ResponseLogData;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
-import okhttp3.MediaType;
-import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
-import okhttp3.internal.http.HttpEngine;
 
 /**
  * Interceptor for OkHttp3.
@@ -33,20 +33,25 @@ public final class OkLogInterceptor implements Interceptor {
     }
 
     @Override public Response intercept(Chain chain) throws IOException {
-        Request request = chain.request();
-        Response response = chain.proceed(request);
+        RequestLogData requestLogData = LogDataInterceptor.processRequest(chain);
+        LogDataBuilder logDataBuilder = requestLogData.getLogData();
 
-        if (!HttpEngine.hasBody(response)) {
-            return response;
+        long startNs = System.nanoTime();
+        Response response;
+        try {
+            response = chain.proceed(requestLogData.getRequest());
+        } catch (Exception e) {
+            logDataBuilder.requestFailed();
+            logManager.log(logDataBuilder);
+            throw e;
         }
+        long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
+        logDataBuilder.responseDurationMs(tookMs);
 
-        MediaType contentType = response.body().contentType();
-        String bodyString = response.body().string();
+        ResponseLogData responseLogData = LogDataInterceptor.processResponse(logDataBuilder, response);
+        logManager.log(responseLogData.getLogData());
 
-        logManager.log(bodyString);
-
-        ResponseBody body = ResponseBody.create(contentType, bodyString);
-        return response.newBuilder().body(body).build();
+        return responseLogData.getResponse();
     }
 
     /**

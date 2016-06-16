@@ -1,11 +1,6 @@
-package com.github.simonpercic.oklog.core.manager;
+package com.github.simonpercic.oklog.core;
 
 import android.util.Log;
-
-import com.github.simonpercic.oklog.core.LogInterceptor;
-import com.github.simonpercic.oklog.core.utils.Constants;
-import com.github.simonpercic.oklog.core.utils.StringUtils;
-import com.github.simonpercic.oklog.core.utils.TimberUtils;
 
 import java.io.IOException;
 
@@ -41,7 +36,7 @@ public class LogManager {
      *
      * @param body response body
      */
-    public void log(String body) {
+    public void log(LogDataBuilder body) {
         String logUrl = getLogUrl(body);
 
         if (logInterceptor == null || !logInterceptor.onLog(logUrl)) {
@@ -49,11 +44,11 @@ public class LogManager {
         }
     }
 
-    String getLogUrl(String body) {
+    String getLogUrl(LogDataBuilder body) {
         String compressed;
 
         try {
-            compressed = StringUtils.gzipBase64(body);
+            compressed = StringUtils.gzipBase64(body.getResponseBody());
         } catch (IOException e) {
             if (useAndroidLog) {
                 Log.e(Constants.LOG_TAG, String.format("LogManager: %s", e.getMessage()));

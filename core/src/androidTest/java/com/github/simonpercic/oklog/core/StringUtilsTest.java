@@ -1,4 +1,4 @@
-package com.github.simonpercic.oklog.core.utils;
+package com.github.simonpercic.oklog.core;
 
 import junit.framework.Assert;
 

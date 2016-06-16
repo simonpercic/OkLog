@@ -1,9 +1,4 @@
-package com.github.simonpercic.oklog.core.manager;
-
-import com.github.simonpercic.oklog.core.LogInterceptor;
-import com.github.simonpercic.oklog.core.utils.Constants;
-import com.github.simonpercic.oklog.core.utils.StringUtils;
-import com.github.simonpercic.oklog.core.utils.TimberUtils;
+package com.github.simonpercic.oklog.core;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +41,7 @@ public class LogManagerTest {
 
         LogManager logManager = new LogManager(null, null, false);
 
-        String logUrl = logManager.getLogUrl("");
+        String logUrl = logManager.getLogUrl(new LogDataBuilder().responseBody(""));
 
         assertNull(logUrl);
     }
@@ -57,7 +52,7 @@ public class LogManagerTest {
 
         LogManager logManager = new LogManager(null, null, false);
 
-        String logUrl = logManager.getLogUrl("");
+        String logUrl = logManager.getLogUrl(new LogDataBuilder().responseBody(""));
 
         assertNull(logUrl);
     }
@@ -78,7 +73,7 @@ public class LogManagerTest {
 
         LogManager logManager = new LogManager(null, null, false);
 
-        String logUrl = logManager.getLogUrl("");
+        String logUrl = logManager.getLogUrl(new LogDataBuilder().responseBody(""));
 
         if (logUrl.contains("\n")) {
             fail();
@@ -102,7 +97,7 @@ public class LogManagerTest {
         String baseUrl = "http://example.com";
         LogManager logManager = new LogManager(baseUrl, null, false);
 
-        String logUrl = logManager.getLogUrl("");
+        String logUrl = logManager.getLogUrl(new LogDataBuilder().responseBody(""));
 
         String gzippedNoNewLine = gzipped.replaceAll("\n", "");
         String expected = String.format("%s%s%s", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH, gzippedNoNewLine);
@@ -117,7 +112,7 @@ public class LogManagerTest {
         String baseUrl = "http://example.com";
         LogManager logManager = spy(new LogManager(baseUrl, null, false));
 
-        logManager.log("");
+        logManager.log(new LogDataBuilder().responseBody(""));
 
         String expected = String.format("%s%s%s", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH, compressedString);
         verify(logManager).logDebug(eq(expected));
@@ -133,7 +128,7 @@ public class LogManagerTest {
         String baseUrl = "http://example.com";
         LogManager logManager = new LogManager(baseUrl, logInterceptor, false);
 
-        logManager.log("");
+        logManager.log(new LogDataBuilder().responseBody(""));
 
         String expected = String.format("%s%s%s", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH, compressedString);
         verify(logInterceptor).onLog(eq(expected));
@@ -149,7 +144,7 @@ public class LogManagerTest {
 
         LogManager logManager = spy(new LogManager(null, logInterceptor, false));
 
-        logManager.log("");
+        logManager.log(new LogDataBuilder().responseBody(""));
 
         verify(logManager, never()).logDebug(anyString());
     }
@@ -165,7 +160,7 @@ public class LogManagerTest {
         String baseUrl = "http://example.com";
         LogManager logManager = spy(new LogManager(baseUrl, logInterceptor, false));
 
-        logManager.log("");
+        logManager.log(new LogDataBuilder().responseBody(""));
 
         String expected = String.format("%s%s%s", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH, compressedString);
         verify(logManager).logDebug(eq(expected));

@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'si.dlabs.soter'
+apply plugin: 'com.uber.infer.android'
 
 android {
     compileSdkVersion 23

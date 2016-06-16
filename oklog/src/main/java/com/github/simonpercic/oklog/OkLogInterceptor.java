@@ -67,17 +67,6 @@ public final class OkLogInterceptor implements Interceptor {
         }
 
         /**
-         * Set the base url to 'http://localhost:8080'.
-         *
-         * @return Builder instance, to chain calls
-         * @deprecated You can pass "http://localhost:8080" to {@link #setBaseUrl(String)} to achieve the same result.
-         */
-        @Deprecated
-        public Builder setLocal() {
-            return setBaseUrl(Constants.LOG_URL_BASE_LOCAL);
-        }
-
-        /**
          * Set the base url.
          * The set url should be without the trailing slash.
          * e.g. http://www.example.com

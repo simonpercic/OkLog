@@ -228,7 +228,7 @@ public class LogDataBuilder {
 
     // endregion Getters
 
-    static class HeaderData {
+    static final class HeaderData {
 
         private final String name;
         private final String value;

@@ -21,11 +21,13 @@ import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 /**
+ * LogManager unit test.
+ *
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({StringUtils.class, TimberUtils.class})
-public class LogManagerTest {
+public class LogManagerUnitTest {
 
     @Before
     public void setUp() throws Exception {

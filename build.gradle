@@ -33,4 +33,12 @@ subprojects {
             project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
         }
     }
+
+    project.ext {
+        supportVersion = '23.4.0'
+        powermockVersion = '1.6.4'
+        testSupportVersion = '0.5'
+        junitVersion = '4.12'
+        mockitoVersion = '1.10.19'
+    }
 }

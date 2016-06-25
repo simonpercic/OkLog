@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
-    <issue id="all" severity="error" />
-
-    <issue id="NewerVersionAvailable" severity="warning" />
-    <issue id="GradleDependency" severity="warning" />
+    <issue id="NewerVersionAvailable" severity="informational" />
+    <issue id="GradleDependency" severity="informational" />
+    <issue id="OldTargetApi" severity="informational" />
 
     <issue id="InvalidPackage" severity="ignore" />
     <issue id="UnusedIds" severity="ignore" />

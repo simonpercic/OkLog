@@ -23,6 +23,7 @@ android {
     lintOptions {
         checkReleaseBuilds true
         textReport true
+        warningsAsErrors true
         lintConfig file('../config/check/lint/lint.xml')
     }
 

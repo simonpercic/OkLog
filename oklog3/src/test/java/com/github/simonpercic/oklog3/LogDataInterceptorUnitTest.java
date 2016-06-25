@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -33,7 +32,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.verify;
 
 /**
  * LogDataInterceptor unit test. Inspired by: https://github.com/square/okhttp/tree/master/okhttp-logging-interceptor.
@@ -82,13 +80,13 @@ public class LogDataInterceptorUnitTest {
                 .responseCode(RESPONSE_CODE_OK)
                 .responseMessage(MESSAGE_OK);
 
-        LogDataBuilder appValue = getLogData(applicationLogManager);
+        LogDataBuilder appValue = TestUtils.getLogData(applicationLogManager);
 
-        assertData(expectedValue, appValue);
+        TestUtils.assertData(expectedValue, appValue);
         assertNull(appValue.getRequestHeaders());
 
-        LogDataBuilder networkValue = getLogData(networkLogManager);
-        assertData(expectedValue, networkValue);
+        LogDataBuilder networkValue = TestUtils.getLogData(networkLogManager);
+        TestUtils.assertData(expectedValue, networkValue);
         assertRequestHeaders(networkValue.getRequestHeaders());
     }
 
@@ -112,12 +110,12 @@ public class LogDataInterceptorUnitTest {
                 .responseCode(code)
                 .responseMessage("No Content");
 
-        LogDataBuilder appValue = getLogData(applicationLogManager);
-        assertData(expectedValue, appValue);
+        LogDataBuilder appValue = TestUtils.getLogData(applicationLogManager);
+        TestUtils.assertData(expectedValue, appValue);
         assertNull(appValue.getRequestHeaders());
 
-        LogDataBuilder networkValue = getLogData(networkLogManager);
-        assertData(expectedValue, networkValue);
+        LogDataBuilder networkValue = TestUtils.getLogData(networkLogManager);
+        TestUtils.assertData(expectedValue, networkValue);
         assertRequestHeaders(networkValue.getRequestHeaders());
     }
 
@@ -135,12 +133,12 @@ public class LogDataInterceptorUnitTest {
                 .responseCode(RESPONSE_CODE_OK)
                 .responseMessage(MESSAGE_OK);
 
-        LogDataBuilder appValue = getLogData(applicationLogManager);
-        assertData(expectedValue, appValue);
+        LogDataBuilder appValue = TestUtils.getLogData(applicationLogManager);
+        TestUtils.assertData(expectedValue, appValue);
         assertNull(appValue.getRequestHeaders());
 
-        LogDataBuilder networkValue = getLogData(networkLogManager);
-        assertData(expectedValue, appValue);
+        LogDataBuilder networkValue = TestUtils.getLogData(networkLogManager);
+        TestUtils.assertData(expectedValue, appValue);
         assertRequestHeaders(networkValue.getRequestHeaders());
     }
 
@@ -160,13 +158,13 @@ public class LogDataInterceptorUnitTest {
                 .responseContentLength(6)
                 .responseBody("Hello!");
 
-        LogDataBuilder appValue = getLogData(applicationLogManager);
-        assertData(expectedValue, appValue);
+        LogDataBuilder appValue = TestUtils.getLogData(applicationLogManager);
+        TestUtils.assertData(expectedValue, appValue);
         assertNull(appValue.getRequestHeaders());
         assertHeaderData(appValue.getResponseHeaders(), CONTENT_TYPE, new PredicateEquals<>(PLAIN.toString()));
 
-        LogDataBuilder networkValue = getLogData(networkLogManager);
-        assertData(expectedValue, networkValue);
+        LogDataBuilder networkValue = TestUtils.getLogData(networkLogManager);
+        TestUtils.assertData(expectedValue, networkValue);
         assertRequestHeaders(networkValue.getRequestHeaders());
         assertHeaderData(appValue.getResponseHeaders(), CONTENT_TYPE, new PredicateEquals<>(PLAIN.toString()));
     }
@@ -187,14 +185,14 @@ public class LogDataInterceptorUnitTest {
                 .responseContentLength(-1)
                 .responseBody("Hello!");
 
-        LogDataBuilder appValue = getLogData(applicationLogManager);
-        assertData(expectedValue, appValue);
+        LogDataBuilder appValue = TestUtils.getLogData(applicationLogManager);
+        TestUtils.assertData(expectedValue, appValue);
         assertNull(appValue.getRequestHeaders());
         assertHeaderData(appValue.getResponseHeaders(), "Transfer-encoding", new PredicateEquals<>("chunked"));
         assertHeaderData(appValue.getResponseHeaders(), CONTENT_TYPE, new PredicateEquals<>(PLAIN.toString()));
 
-        LogDataBuilder networkValue = getLogData(networkLogManager);
-        assertData(expectedValue, networkValue);
+        LogDataBuilder networkValue = TestUtils.getLogData(networkLogManager);
+        TestUtils.assertData(expectedValue, networkValue);
         assertRequestHeaders(networkValue.getRequestHeaders());
         assertHeaderData(networkValue.getResponseHeaders(), "Transfer-encoding", new PredicateEquals<>("chunked"));
         assertHeaderData(networkValue.getResponseHeaders(), CONTENT_TYPE, new PredicateEquals<>(PLAIN.toString()));
@@ -218,8 +216,8 @@ public class LogDataInterceptorUnitTest {
                 .responseContentLength(-1)
                 .responseBody("Hello, Hello, Hello");
 
-        LogDataBuilder appValue = getLogData(applicationLogManager);
-        assertData(expectedValue, appValue);
+        LogDataBuilder appValue = TestUtils.getLogData(applicationLogManager);
+        TestUtils.assertData(expectedValue, appValue);
         assertNull(appValue.getRequestHeaders());
         assertHeaderData(appValue.getResponseHeaders(), CONTENT_TYPE, new PredicateEquals<>(PLAIN.toString()));
 
@@ -229,8 +227,8 @@ public class LogDataInterceptorUnitTest {
                 .responseBodyState(LogDataBuilder.ENCODED_BODY)
                 .responseBody(null);
 
-        LogDataBuilder networkValue = getLogData(networkLogManager);
-        assertData(expectedValue, networkValue);
+        LogDataBuilder networkValue = TestUtils.getLogData(networkLogManager);
+        TestUtils.assertData(expectedValue, networkValue);
         assertRequestHeaders(networkValue.getRequestHeaders());
         assertHeaderData(networkValue.getResponseHeaders(), CONTENT_TYPE, new PredicateEquals<>(PLAIN.toString()));
         assertHeaderData(networkValue.getResponseHeaders(), "Content-Encoding", new PredicateEquals<>("gzip"));
@@ -253,13 +251,13 @@ public class LogDataInterceptorUnitTest {
                 .responseContentLength(11)
                 .responseBodyState(LogDataBuilder.CHARSET_MALFORMED);
 
-        LogDataBuilder appValue = getLogData(applicationLogManager);
-        assertData(expectedValue, appValue);
+        LogDataBuilder appValue = TestUtils.getLogData(applicationLogManager);
+        TestUtils.assertData(expectedValue, appValue);
         assertNull(appValue.getRequestHeaders());
         assertHeaderData(appValue.getResponseHeaders(), CONTENT_TYPE, new PredicateEquals<>(contentType));
 
-        LogDataBuilder networkValue = getLogData(networkLogManager);
-        assertData(expectedValue, networkValue);
+        LogDataBuilder networkValue = TestUtils.getLogData(networkLogManager);
+        TestUtils.assertData(expectedValue, networkValue);
         assertRequestHeaders(networkValue.getRequestHeaders());
         assertHeaderData(networkValue.getResponseHeaders(), CONTENT_TYPE, new PredicateEquals<>(contentType));
     }
@@ -291,13 +289,13 @@ public class LogDataInterceptorUnitTest {
                 .responseContentLength(9)
                 .responseBodyState(LogDataBuilder.BINARY_BODY);
 
-        LogDataBuilder appValue = getLogData(applicationLogManager);
-        assertData(expectedValue, appValue);
+        LogDataBuilder appValue = TestUtils.getLogData(applicationLogManager);
+        TestUtils.assertData(expectedValue, appValue);
         assertNull(appValue.getRequestHeaders());
         assertHeaderData(appValue.getResponseHeaders(), CONTENT_TYPE, new PredicateEquals<>(contentType));
 
-        LogDataBuilder networkValue = getLogData(networkLogManager);
-        assertData(expectedValue, networkValue);
+        LogDataBuilder networkValue = TestUtils.getLogData(networkLogManager);
+        TestUtils.assertData(expectedValue, networkValue);
         assertRequestHeaders(networkValue.getRequestHeaders());
         assertHeaderData(networkValue.getResponseHeaders(), CONTENT_TYPE, new PredicateEquals<>(contentType));
     }
@@ -316,33 +314,10 @@ public class LogDataInterceptorUnitTest {
         return new Request.Builder().url(url);
     }
 
-    private static void assertData(LogDataBuilder expected, LogDataBuilder value) {
-        assertEquals(expected.getRequestMethod(), value.getRequestMethod());
-        assertEquals(expected.getRequestUrl(), value.getRequestUrl());
-        assertEquals(expected.getRequestContentType(), value.getRequestContentType());
-        assertEquals(expected.getRequestContentLength(), value.getRequestContentLength());
-        assertEquals(expected.getRequestBody(), value.getRequestBody());
-        assertEquals(expected.getRequestBodyState(), value.getRequestBodyState());
-        assertEquals(expected.isRequestFailed(), value.isRequestFailed());
-        assertEquals(expected.getResponseCode(), value.getResponseCode());
-        assertEquals(expected.getResponseMessage(), value.getResponseMessage());
-        assertEquals(expected.getResponseUrl(), value.getResponseUrl());
-        assertEquals(expected.getResponseContentLength(), value.getResponseContentLength());
-        assertEquals(expected.getResponseBodyState(), value.getResponseBodyState());
-        assertEquals(expected.getResponseBodySize(), value.getResponseBodySize());
-        assertEquals(expected.getResponseBody(), value.getResponseBody());
-    }
-
     private LogDataBuilder expectedLogData() {
         return new LogDataBuilder()
                 .requestUrl(url.toString())
                 .responseUrl(url.toString());
-    }
-
-    private static LogDataBuilder getLogData(LogManager logManager) {
-        ArgumentCaptor<LogDataBuilder> appCaptor = ArgumentCaptor.forClass(LogDataBuilder.class);
-        verify(logManager).log(appCaptor.capture());
-        return appCaptor.getValue();
     }
 
     private void assertRequestHeaders(List<HeaderData> requestHeaders) {

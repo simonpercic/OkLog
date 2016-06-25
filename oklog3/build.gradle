@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'si.dlabs.soter'
+apply plugin: 'com.uber.infer.android'
 
 android {
     compileSdkVersion 23
@@ -22,6 +23,7 @@ android {
     lintOptions {
         checkReleaseBuilds true
         textReport true
+        warningsAsErrors true
         lintConfig file('../config/check/lint/lint.xml')
     }
 
@@ -32,10 +34,17 @@ android {
     }
 }
 
+ext.okhttpVersion = '3.2.0'
+
 dependencies {
     compile project(':oklog-core')
 
-    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile "com.squareup.okhttp3:okhttp:$okhttpVersion"
+
+    // Unit test dependencies
+    testCompile "junit:junit:$junitVersion"
+    testCompile "org.mockito:mockito-core:$mockitoVersion"
+    testCompile "com.squareup.okhttp3:mockwebserver:$okhttpVersion"
 
     // Static code rules
     checkstyleRules files('../config/soter/checkstyle-0.3.xml')

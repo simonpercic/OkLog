@@ -1,10 +1,12 @@
-package com.github.simonpercic.oklog.core.utils;
+package com.github.simonpercic.oklog.core;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
 /**
+ * StringUtils unit test.
+ *
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
 public class StringUtilsTest {

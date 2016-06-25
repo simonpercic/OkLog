@@ -1,9 +1,10 @@
 package com.github.simonpercic.oklog;
 
+import com.github.simonpercic.oklog.core.LogDataBuilder;
 import com.github.simonpercic.oklog.core.LogInterceptor;
-import com.github.simonpercic.oklog.core.manager.LogManager;
-import com.github.simonpercic.oklog.core.utils.Constants;
-import com.github.simonpercic.oklog.core.utils.StringUtils;
+import com.github.simonpercic.oklog.core.LogManager;
+import com.github.simonpercic.oklog.core.Constants;
+import com.github.simonpercic.oklog.core.StringUtils;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Request;
@@ -38,7 +39,7 @@ public final class OkLogInterceptor implements Interceptor {
         MediaType contentType = response.body().contentType();
         String bodyString = response.body().string();
 
-        logManager.log(bodyString);
+        logManager.log(new LogDataBuilder().responseBody(bodyString));
 
         ResponseBody body = ResponseBody.create(contentType, bodyString);
         return response.newBuilder().body(body).build();
@@ -63,17 +64,6 @@ public final class OkLogInterceptor implements Interceptor {
 
         private Builder() {
             this.logUrlBase = Constants.LOG_URL_BASE_REMOTE;
-        }
-
-        /**
-         * Set the base url to 'http://localhost:8080'.
-         *
-         * @return Builder instance, to chain calls
-         * @deprecated You can pass "http://localhost:8080" to {@link #setBaseUrl(String)} to achieve the same result.
-         */
-        @Deprecated
-        public Builder setLocal() {
-            return setBaseUrl(Constants.LOG_URL_BASE_LOCAL);
         }
 
         /**

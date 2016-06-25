@@ -1,6 +1,5 @@
-package com.github.simonpercic.oklog.core.utils;
+package com.github.simonpercic.oklog.core;
 
-import android.text.TextUtils;
 import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
@@ -15,7 +14,7 @@ import java.util.zip.GZIPOutputStream;
 public final class StringUtils {
 
     private StringUtils() {
-
+        // no instance
     }
 
     /**
@@ -35,8 +34,8 @@ public final class StringUtils {
      * @return gzipped and Base64 encoded input string
      * @throws IOException IO Exception
      */
-    public static String gzipBase64(String string) throws IOException {
-        if (TextUtils.isEmpty(string)) {
+    static String gzipBase64(String string) throws IOException {
+        if (isEmpty(string)) {
             return string;
         }
 

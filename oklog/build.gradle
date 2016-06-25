@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'si.dlabs.soter'
+apply plugin: 'com.uber.infer.android'
 
 android {
     compileSdkVersion 23
@@ -22,6 +23,7 @@ android {
     lintOptions {
         checkReleaseBuilds true
         textReport true
+        warningsAsErrors true
         lintConfig file('../config/check/lint/lint.xml')
     }
 

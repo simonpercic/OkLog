@@ -4,19 +4,21 @@ package com.github.simonpercic.oklog3;
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
 
+import android.support.annotation.VisibleForTesting;
+
+import com.github.simonpercic.oklog.core.LogDataBuilder;
 import com.github.simonpercic.oklog.core.LogInterceptor;
-import com.github.simonpercic.oklog.core.manager.LogManager;
-import com.github.simonpercic.oklog.core.utils.Constants;
-import com.github.simonpercic.oklog.core.utils.StringUtils;
+import com.github.simonpercic.oklog.core.LogManager;
+import com.github.simonpercic.oklog.core.Constants;
+import com.github.simonpercic.oklog.core.StringUtils;
+import com.github.simonpercic.oklog3.LogDataInterceptor.RequestLogData;
+import com.github.simonpercic.oklog3.LogDataInterceptor.ResponseLogData;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
-import okhttp3.MediaType;
-import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
-import okhttp3.internal.http.HttpEngine;
 
 /**
  * Interceptor for OkHttp3.
@@ -29,24 +31,33 @@ public final class OkLogInterceptor implements Interceptor {
     private final LogManager logManager;
 
     private OkLogInterceptor(String logUrlBase, LogInterceptor logInterceptor, boolean useAndroidLog) {
-        this.logManager = new LogManager(logUrlBase, logInterceptor, useAndroidLog);
+        this(new LogManager(logUrlBase, logInterceptor, useAndroidLog));
+    }
+
+    @VisibleForTesting OkLogInterceptor(LogManager logManager) {
+        this.logManager = logManager;
     }
 
     @Override public Response intercept(Chain chain) throws IOException {
-        Request request = chain.request();
-        Response response = chain.proceed(request);
+        RequestLogData requestLogData = LogDataInterceptor.processRequest(chain);
+        LogDataBuilder logDataBuilder = requestLogData.getLogData();
 
-        if (!HttpEngine.hasBody(response)) {
-            return response;
+        long startNs = System.nanoTime();
+        Response response;
+        try {
+            response = chain.proceed(requestLogData.getRequest());
+        } catch (Exception e) {
+            logDataBuilder.requestFailed();
+            logManager.log(logDataBuilder);
+            throw e;
         }
+        long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
+        logDataBuilder.responseDurationMs(tookMs);
 
-        MediaType contentType = response.body().contentType();
-        String bodyString = response.body().string();
+        ResponseLogData responseLogData = LogDataInterceptor.processResponse(logDataBuilder, response);
+        logManager.log(responseLogData.getLogData());
 
-        logManager.log(bodyString);
-
-        ResponseBody body = ResponseBody.create(contentType, bodyString);
-        return response.newBuilder().body(body).build();
+        return responseLogData.getResponse();
     }
 
     /**
@@ -68,17 +79,6 @@ public final class OkLogInterceptor implements Interceptor {
 
         private Builder() {
             this.logUrlBase = Constants.LOG_URL_BASE_REMOTE;
-        }
-
-        /**
-         * Set the base url to 'http://localhost:8080'.
-         *
-         * @return Builder instance, to chain calls
-         * @deprecated You can pass "http://localhost:8080" to {@link #setBaseUrl(String)} to achieve the same result.
-         */
-        @Deprecated
-        public Builder setLocal() {
-            return setBaseUrl(Constants.LOG_URL_BASE_LOCAL);
         }
 
         /**

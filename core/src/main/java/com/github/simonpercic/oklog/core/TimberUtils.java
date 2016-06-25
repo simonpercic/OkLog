@@ -1,9 +1,11 @@
-package com.github.simonpercic.oklog.core.utils;
+package com.github.simonpercic.oklog.core;
 
 /**
+ * Timber-related utils.
+ *
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
-public final class TimberUtils {
+final class TimberUtils {
 
     private TimberUtils() {
         // no instance
@@ -14,7 +16,7 @@ public final class TimberUtils {
      *
      * @return true if Timber is available, false otherwise
      */
-    public static boolean hasTimber() {
+    static boolean hasTimber() {
         try {
             Class.forName("timber.log.Timber");
             return true;

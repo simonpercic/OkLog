@@ -69,12 +69,12 @@ public class LogDataBuilder {
         return this;
     }
 
-    public LogDataBuilder contentType(String contentType) {
+    public LogDataBuilder requestContentType(String contentType) {
         this.requestContentType = contentType;
         return this;
     }
 
-    public LogDataBuilder contentLength(long contentLength) {
+    public LogDataBuilder requestContentLength(long contentLength) {
         this.requestContentLength = contentLength;
         return this;
     }
@@ -154,81 +154,118 @@ public class LogDataBuilder {
 
     // region Getters
 
-    String getRequestMethod() {
+    public String getRequestMethod() {
         return requestMethod;
     }
 
-    String getRequestUrl() {
+    public String getRequestUrl() {
         return requestUrl;
     }
 
-    String getProtocol() {
+    public String getProtocol() {
         return protocol;
     }
 
-    String getRequestContentType() {
+    public String getRequestContentType() {
         return requestContentType;
     }
 
-    long getRequestContentLength() {
+    public long getRequestContentLength() {
         return requestContentLength;
     }
 
-    List<HeaderData> getRequestHeaders() {
+    public List<HeaderData> getRequestHeaders() {
         return requestHeaders;
     }
 
-    String getRequestBody() {
+    public String getRequestBody() {
         return requestBody;
     }
 
-    int getRequestBodyState() {
+    @BodyState public int getRequestBodyState() {
         return requestBodyState;
     }
 
-    boolean isRequestFailed() {
+    public boolean isRequestFailed() {
         return requestFailed;
     }
 
-    int getResponseCode() {
+    public int getResponseCode() {
         return responseCode;
     }
 
-    String getResponseMessage() {
+    public String getResponseMessage() {
         return responseMessage;
     }
 
-    String getResponseUrl() {
+    public String getResponseUrl() {
         return responseUrl;
     }
 
-    long getResponseDurationMs() {
+    public long getResponseDurationMs() {
         return responseDurationMs;
     }
 
-    long getResponseContentLength() {
+    public long getResponseContentLength() {
         return responseContentLength;
     }
 
-    List<HeaderData> getResponseHeaders() {
+    public List<HeaderData> getResponseHeaders() {
         return responseHeaders;
     }
 
-    int getResponseBodyState() {
+    @BodyState public int getResponseBodyState() {
         return responseBodyState;
     }
 
-    long getResponseBodySize() {
+    public long getResponseBodySize() {
         return responseBodySize;
     }
 
-    String getResponseBody() {
+    public String getResponseBody() {
         return responseBody;
     }
 
     // endregion Getters
 
-    static final class HeaderData {
+    @Override public String toString() {
+        String requestHeadersString = "";
+        if (requestHeaders != null) {
+            for (HeaderData requestHeader : requestHeaders) {
+                requestHeadersString += requestHeader.toString() + " ";
+            }
+        }
+
+        String responseHeadersString = "";
+        if (responseHeaders != null) {
+            for (HeaderData responseHeader : responseHeaders) {
+                responseHeadersString += responseHeader.toString() + " ";
+            }
+        }
+
+        return "LogDataBuilder{"
+                + "\n" + "requestMethod='" + requestMethod + '\''
+                + "\n" + ", requestUrl='" + requestUrl + '\''
+                + "\n" + ", protocol='" + protocol + '\''
+                + "\n" + ", requestContentType='" + requestContentType + '\''
+                + "\n" + ", requestContentLength=" + requestContentLength
+                + "\n" + ", requestHeaders=" + requestHeadersString
+                + "\n" + ", requestBody='" + requestBody + '\''
+                + "\n" + ", requestBodyState=" + requestBodyState
+                + "\n" + ", requestFailed=" + requestFailed
+                + "\n" + ", responseCode=" + responseCode
+                + "\n" + ", responseMessage='" + responseMessage + '\''
+                + "\n" + ", responseUrl='" + responseUrl + '\''
+                + "\n" + ", responseDurationMs=" + responseDurationMs
+                + "\n" + ", responseContentLength=" + responseContentLength
+                + "\n" + ", responseHeaders=" + responseHeadersString
+                + "\n" + ", responseBodyState=" + responseBodyState
+                + "\n" + ", responseBodySize=" + responseBodySize
+                + "\n" + ", responseBody='" + responseBody + '\''
+                + "\n" + '}';
+    }
+
+    public static final class HeaderData {
 
         private final String name;
         private final String value;
@@ -238,12 +275,19 @@ public class LogDataBuilder {
             this.value = value;
         }
 
-        String getName() {
+        public String getName() {
             return name;
         }
 
-        String getValue() {
+        public String getValue() {
             return value;
+        }
+
+        @Override public String toString() {
+            return "HeaderData{"
+                    + "name='" + name + '\''
+                    + ", value='" + value + '\''
+                    + '}';
         }
     }
 }

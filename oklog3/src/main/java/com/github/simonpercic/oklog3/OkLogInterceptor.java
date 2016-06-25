@@ -4,6 +4,8 @@ package com.github.simonpercic.oklog3;
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
 
+import android.support.annotation.VisibleForTesting;
+
 import com.github.simonpercic.oklog.core.LogDataBuilder;
 import com.github.simonpercic.oklog.core.LogInterceptor;
 import com.github.simonpercic.oklog.core.LogManager;
@@ -29,7 +31,11 @@ public final class OkLogInterceptor implements Interceptor {
     private final LogManager logManager;
 
     private OkLogInterceptor(String logUrlBase, LogInterceptor logInterceptor, boolean useAndroidLog) {
-        this.logManager = new LogManager(logUrlBase, logInterceptor, useAndroidLog);
+        this(new LogManager(logUrlBase, logInterceptor, useAndroidLog));
+    }
+
+    @VisibleForTesting OkLogInterceptor(LogManager logManager) {
+        this.logManager = logManager;
     }
 
     @Override public Response intercept(Chain chain) throws IOException {

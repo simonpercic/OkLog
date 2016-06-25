@@ -1,6 +1,7 @@
 package com.github.simonpercic.oklog3;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 
 import com.github.simonpercic.oklog.core.LogDataBuilder;
 
@@ -23,13 +24,17 @@ import okio.Buffer;
 import okio.BufferedSource;
 
 /**
- * Log data interceptor util.
+ * Log data interceptor util. Inspired by: https://github.com/square/okhttp/tree/master/okhttp-logging-interceptor.
  *
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
 final class LogDataInterceptor {
 
     private static final Charset UTF8 = Charset.forName("UTF-8");
+    private static final String CONTENT_ENCODING = "Content-Encoding";
+    private static final String CONTENT_TYPE = "Content-Type";
+    private static final String CONTENT_LENGTH = "Content-Length";
+    private static final String IDENTITY = "identity";
 
     private LogDataInterceptor() {
         // no instance
@@ -51,14 +56,14 @@ final class LogDataInterceptor {
                 .protocol(protocol.toString());
 
         if (hasRequestBody) {
-            // Request body headers are only present when installed as a network interceptor. Force
-            // them to be included (when available) so there values are known.
+            // Request body headers are only present when installed as a network interceptor.
+            // Explicitly include content type and content length.
             if (requestBody.contentType() != null) {
-                logDataBuilder.contentType(requestBody.contentType().toString());
+                logDataBuilder.requestContentType(requestBody.contentType().toString());
             }
 
             if (requestBody.contentLength() != -1) {
-                logDataBuilder.contentLength(requestBody.contentLength());
+                logDataBuilder.requestContentLength(requestBody.contentLength());
             }
         }
 
@@ -66,7 +71,7 @@ final class LogDataInterceptor {
         for (int i = 0, count = headers.size(); i < count; i++) {
             String name = headers.name(i);
             // Skip headers from the request body as they are explicitly logged above.
-            if (!"Content-Type".equalsIgnoreCase(name) && !"Content-Length".equalsIgnoreCase(name)) {
+            if (!CONTENT_TYPE.equalsIgnoreCase(name) && !CONTENT_LENGTH.equalsIgnoreCase(name)) {
                 logDataBuilder.addRequestHeader(name, headers.value(i));
             }
         }
@@ -107,7 +112,11 @@ final class LogDataInterceptor {
 
         Headers responseHeaders = response.headers();
         for (int i = 0, count = responseHeaders.size(); i < count; i++) {
-            logDataBuilder.addResponseHeader(responseHeaders.name(i), responseHeaders.value(i));
+            String name = responseHeaders.name(i);
+            // skip content-length, since it's already logged above
+            if (!CONTENT_LENGTH.equalsIgnoreCase(name)) {
+                logDataBuilder.addResponseHeader(name, responseHeaders.value(i));
+            }
         }
 
         if (!HttpEngine.hasBody(response)) {
@@ -150,7 +159,7 @@ final class LogDataInterceptor {
      * Returns true if the body in question probably contains human readable text. Uses a small sample
      * of code points to detect unicode control characters commonly used in binary file signatures.
      */
-    private static boolean isPlaintext(Buffer buffer) throws EOFException {
+    @VisibleForTesting static boolean isPlaintext(Buffer buffer) throws EOFException {
         try {
             Buffer prefix = new Buffer();
             long byteCount = buffer.size() < 64 ? buffer.size() : 64;
@@ -171,8 +180,8 @@ final class LogDataInterceptor {
     }
 
     private static boolean bodyEncoded(Headers headers) {
-        String contentEncoding = headers.get("Content-Encoding");
-        return contentEncoding != null && !contentEncoding.equalsIgnoreCase("identity");
+        String contentEncoding = headers.get(CONTENT_ENCODING);
+        return contentEncoding != null && !contentEncoding.equalsIgnoreCase(IDENTITY);
     }
 
     static final class RequestLogData {

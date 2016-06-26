@@ -27,11 +27,7 @@ import rx.functions.Action1;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private static final ButterKnife.Setter<View, Boolean> ENABLE_VIEW = new ButterKnife.Setter<View, Boolean>() {
-        @Override public void set(View view, Boolean value, int index) {
-            view.setEnabled(value);
-        }
-    };
+    private static final ButterKnife.Setter<View, Boolean> ENABLE_VIEW = (view, value, index) -> view.setEnabled(value);
 
     @Bind(R.id.activity_root_coordinator_layout) CoordinatorLayout coordinatorLayout;
     @Bind({R.id.btn_get, R.id.btn_post, R.id.btn_put, R.id.btn_delete, R.id.btn_header}) List<View> buttonViews;

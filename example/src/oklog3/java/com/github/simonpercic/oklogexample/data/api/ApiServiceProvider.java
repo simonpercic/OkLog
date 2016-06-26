@@ -24,7 +24,7 @@ public final class ApiServiceProvider {
     }
 
     /**
-     * Creates an Retrofit ApiService.
+     * Creates an ApiService.
      * You should use Dagger DI to provide your ApiService, this pattern is used just to simplify the example app.
      *
      * @return ApiService

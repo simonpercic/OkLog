@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">OkLog-Example</string>
     <string name="button_get">GET</string>
     <string name="button_post">POST</string>
     <string name="button_put">PUT</string>

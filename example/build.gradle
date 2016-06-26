@@ -5,11 +5,13 @@ buildscript {
 
     dependencies {
         classpath 'me.tatarka:gradle-retrolambda:3.2.5'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
 
 apply plugin: 'com.android.application'
 apply plugin: 'si.dlabs.soter'
+apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
@@ -43,6 +45,16 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    productFlavors {
+        oklog {
+            applicationIdSuffix ".oklog"
+        }
+
+        oklog3 {
+            applicationIdSuffix ".oklog3"
+        }
+    }
+
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
         exclude 'LICENSE.txt'
@@ -51,28 +63,29 @@ android {
     }
 }
 
-ext.supportVersion = '23.2.1'
-ext.retrofitVersion = '2.0.0'
-ext.okHttpVersion = '3.2.0'
+ext.butterknifeVersion = '8.1.0'
+ext.retrofit2Version = '2.1.0'
+ext.okHttp3Version = '3.3.1'
 
 dependencies {
     compile "com.android.support:appcompat-v7:$supportVersion"
     compile "com.android.support:design:$supportVersion"
+    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'com.jakewharton.timber:timber:4.1.2'
+    compile "com.jakewharton:butterknife:$butterknifeVersion"
+    apt "com.jakewharton:butterknife-compiler:$butterknifeVersion"
 
-    compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    compile "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
+    oklog3Compile project(':oklog3')
+    oklog3Compile "com.squareup.retrofit2:retrofit:$retrofit2Version"
+    oklog3Compile "com.squareup.retrofit2:converter-gson:$retrofit2Version"
+    oklog3Compile "com.squareup.retrofit2:adapter-rxjava:$retrofit2Version"
+    oklog3Compile "com.squareup.okhttp3:okhttp:$okHttp3Version"
+    oklog3Compile "com.squareup.okhttp3:logging-interceptor:$okHttp3Version"
 
-    compile "com.squareup.okhttp3:okhttp:$okHttpVersion"
-    compile "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
-
-    compile 'io.reactivex:rxjava:1.1.2'
-    compile 'io.reactivex:rxandroid:1.1.0'
-
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.jakewharton.timber:timber:4.1.1'
-
-    compile project(':oklog3')
+    oklogCompile project(':oklog')
+    oklogCompile 'com.squareup.retrofit:retrofit:1.9.0'
+    oklogCompile 'com.squareup.okhttp:okhttp:2.7.5'
 
     // Static code rules
     checkstyleRules files('../config/soter/checkstyle-0.3.xml')

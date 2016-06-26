@@ -15,7 +15,8 @@ import com.github.simonpercic.oklogexample.data.api.model.request.watched.Watche
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
@@ -29,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final ButterKnife.Setter<View, Boolean> ENABLE_VIEW = (view, value, index) -> view.setEnabled(value);
 
-    @Bind(R.id.activity_root_coordinator_layout) CoordinatorLayout coordinatorLayout;
-    @Bind({R.id.btn_get, R.id.btn_post, R.id.btn_put, R.id.btn_delete, R.id.btn_header}) List<View> buttonViews;
+    @BindView(R.id.activity_root_coordinator_layout) CoordinatorLayout coordinatorLayout;
+    @BindViews({R.id.btn_get, R.id.btn_post, R.id.btn_put, R.id.btn_delete, R.id.btn_header}) List<View> buttonViews;
 
     private ApiService apiService;
     private Subscription subscription;

@@ -1,2 +1,2 @@
-include ':oklog', ':core', ':oklog3', ':oklog3-example'
+include ':oklog', ':core', ':oklog3', ':example'
 findProject(':core')?.name = 'oklog-core'

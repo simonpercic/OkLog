@@ -1,9 +1,5 @@
 package com.github.simonpercic.oklog3;
 
-/**
- * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
- */
-
 import android.support.annotation.VisibleForTesting;
 
 import com.github.simonpercic.oklog.core.LogDataBuilder;

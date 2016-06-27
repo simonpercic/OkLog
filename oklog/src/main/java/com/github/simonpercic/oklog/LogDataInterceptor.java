@@ -1,18 +1,18 @@
-package com.github.simonpercic.oklog3;
+package com.github.simonpercic.oklog;
 
 import com.github.simonpercic.oklog.core.BaseLogDataInterceptor;
+import com.squareup.okhttp.Connection;
+import com.squareup.okhttp.Headers;
+import com.squareup.okhttp.Interceptor.Chain;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Protocol;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import com.squareup.okhttp.internal.http.HttpEngine;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import okhttp3.Connection;
-import okhttp3.Headers;
-import okhttp3.Interceptor.Chain;
-import okhttp3.MediaType;
-import okhttp3.Protocol;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.internal.http.HttpEngine;
 import okio.Buffer;
 import okio.BufferedSource;
 
@@ -29,7 +29,7 @@ class LogDataInterceptor extends BaseLogDataInterceptor<Chain, Request, Response
 
     @Override protected String protocol(Chain chain) {
         Connection connection = chain.connection();
-        Protocol protocol = connection != null ? connection.protocol() : Protocol.HTTP_1_1;
+        Protocol protocol = connection != null ? connection.getProtocol() : Protocol.HTTP_1_1;
         return protocol.toString();
     }
 
@@ -38,11 +38,11 @@ class LogDataInterceptor extends BaseLogDataInterceptor<Chain, Request, Response
     }
 
     @Override protected String requestUrl(Request request) {
-        return request.url().toString();
+        return request.httpUrl().toString();
     }
 
     @Override protected String responseUrl(Response response) {
-        return response.request().url().toString();
+        return response.request().httpUrl().toString();
     }
 
     @Override protected Headers requestHeaders(Request request) {

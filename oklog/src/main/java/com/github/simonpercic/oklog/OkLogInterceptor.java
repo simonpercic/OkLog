@@ -1,18 +1,20 @@
 package com.github.simonpercic.oklog;
 
+import android.support.annotation.VisibleForTesting;
+
+import com.github.simonpercic.oklog.core.BaseLogDataInterceptor.RequestLogData;
+import com.github.simonpercic.oklog.core.BaseLogDataInterceptor.ResponseLogData;
+import com.github.simonpercic.oklog.core.Constants;
 import com.github.simonpercic.oklog.core.LogDataBuilder;
 import com.github.simonpercic.oklog.core.LogInterceptor;
 import com.github.simonpercic.oklog.core.LogManager;
-import com.github.simonpercic.oklog.core.Constants;
 import com.github.simonpercic.oklog.core.StringUtils;
 import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-import com.squareup.okhttp.ResponseBody;
-import com.squareup.okhttp.internal.http.HttpEngine;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Interceptor for OkHttp.
@@ -23,26 +25,37 @@ import java.io.IOException;
 public final class OkLogInterceptor implements Interceptor {
 
     private final LogManager logManager;
+    private final LogDataInterceptor logDataInterceptor;
 
     private OkLogInterceptor(String logUrlBase, LogInterceptor logInterceptor, boolean useAndroidLog) {
-        this.logManager = new LogManager(logUrlBase, logInterceptor, useAndroidLog);
+        this(new LogManager(logUrlBase, logInterceptor, useAndroidLog));
+    }
+
+    @VisibleForTesting OkLogInterceptor(LogManager logManager) {
+        this.logManager = logManager;
+        this.logDataInterceptor = new LogDataInterceptor();
     }
 
     @Override public Response intercept(Chain chain) throws IOException {
-        Request request = chain.request();
-        Response response = chain.proceed(request);
+        RequestLogData<Request> requestLogData = logDataInterceptor.processRequest(chain);
+        LogDataBuilder logDataBuilder = requestLogData.getLogData();
 
-        if (!HttpEngine.hasBody(response)) {
-            return response;
+        long startNs = System.nanoTime();
+        Response response;
+        try {
+            response = chain.proceed(requestLogData.getRequest());
+        } catch (Exception e) {
+            logDataBuilder.requestFailed();
+            logManager.log(logDataBuilder);
+            throw e;
         }
+        long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
+        logDataBuilder.responseDurationMs(tookMs);
 
-        MediaType contentType = response.body().contentType();
-        String bodyString = response.body().string();
+        ResponseLogData<Response> responseLogData = logDataInterceptor.processResponse(logDataBuilder, response);
+        logManager.log(responseLogData.getLogData());
 
-        logManager.log(new LogDataBuilder().responseBody(bodyString));
-
-        ResponseBody body = ResponseBody.create(contentType, bodyString);
-        return response.newBuilder().body(body).build();
+        return responseLogData.getResponse();
     }
 
     /**

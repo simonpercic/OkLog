@@ -28,7 +28,6 @@ import okio.Buffer;
 import okio.ByteString;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -298,16 +297,6 @@ public class LogDataInterceptorUnitTest {
         TestUtils.assertData(expectedValue, networkValue);
         assertRequestHeaders(networkValue.getRequestHeaders());
         assertHeaderData(networkValue.getResponseHeaders(), CONTENT_TYPE, new PredicateEquals<>(contentType));
-    }
-
-    @Test public void isPlaintext() throws IOException {
-        assertTrue(LogDataInterceptor.isPlaintext(new Buffer()));
-        assertTrue(LogDataInterceptor.isPlaintext(new Buffer().writeUtf8("abc")));
-        assertTrue(LogDataInterceptor.isPlaintext(new Buffer().writeUtf8("new\r\nlines")));
-        assertTrue(LogDataInterceptor.isPlaintext(new Buffer().writeUtf8("white\t space")));
-        assertTrue(LogDataInterceptor.isPlaintext(new Buffer().writeByte(0x80)));
-        assertFalse(LogDataInterceptor.isPlaintext(new Buffer().writeByte(0x00)));
-        assertFalse(LogDataInterceptor.isPlaintext(new Buffer().writeByte(0xc0)));
     }
 
     private Request.Builder request() {

@@ -2,18 +2,19 @@ package com.github.simonpercic.oklog3;
 
 import android.support.annotation.VisibleForTesting;
 
+import com.github.simonpercic.oklog.core.BaseLogDataInterceptor.RequestLogData;
+import com.github.simonpercic.oklog.core.BaseLogDataInterceptor.ResponseLogData;
+import com.github.simonpercic.oklog.core.Constants;
 import com.github.simonpercic.oklog.core.LogDataBuilder;
 import com.github.simonpercic.oklog.core.LogInterceptor;
 import com.github.simonpercic.oklog.core.LogManager;
-import com.github.simonpercic.oklog.core.Constants;
 import com.github.simonpercic.oklog.core.StringUtils;
-import com.github.simonpercic.oklog3.LogDataInterceptor.RequestLogData;
-import com.github.simonpercic.oklog3.LogDataInterceptor.ResponseLogData;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
+import okhttp3.Request;
 import okhttp3.Response;
 
 /**
@@ -25,6 +26,7 @@ import okhttp3.Response;
 public final class OkLogInterceptor implements Interceptor {
 
     private final LogManager logManager;
+    private final LogDataInterceptor logDataInterceptor;
 
     private OkLogInterceptor(String logUrlBase, LogInterceptor logInterceptor, boolean useAndroidLog) {
         this(new LogManager(logUrlBase, logInterceptor, useAndroidLog));
@@ -32,10 +34,11 @@ public final class OkLogInterceptor implements Interceptor {
 
     @VisibleForTesting OkLogInterceptor(LogManager logManager) {
         this.logManager = logManager;
+        this.logDataInterceptor = new LogDataInterceptor();
     }
 
     @Override public Response intercept(Chain chain) throws IOException {
-        RequestLogData requestLogData = LogDataInterceptor.processRequest(chain);
+        RequestLogData<Request> requestLogData = logDataInterceptor.processRequest(chain);
         LogDataBuilder logDataBuilder = requestLogData.getLogData();
 
         long startNs = System.nanoTime();
@@ -50,7 +53,7 @@ public final class OkLogInterceptor implements Interceptor {
         long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
         logDataBuilder.responseDurationMs(tookMs);
 
-        ResponseLogData responseLogData = LogDataInterceptor.processResponse(logDataBuilder, response);
+        ResponseLogData<Response> responseLogData = logDataInterceptor.processResponse(logDataBuilder, response);
         logManager.log(responseLogData.getLogData());
 
         return responseLogData.getResponse();

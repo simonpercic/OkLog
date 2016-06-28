@@ -42,8 +42,7 @@ dependencies {
     compile "com.squareup.okhttp3:okhttp:$okhttpVersion"
 
     // Unit test dependencies
-    testCompile "junit:junit:$junitVersion"
-    testCompile "org.mockito:mockito-core:$mockitoVersion"
+    testCompile project(':oklog-core-test')
     testCompile "com.squareup.okhttp3:mockwebserver:$okhttpVersion"
 
     // Static code rules

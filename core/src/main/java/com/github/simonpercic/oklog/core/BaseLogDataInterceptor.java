@@ -194,7 +194,7 @@ public abstract class BaseLogDataInterceptor<Chain, Request, Response, Headers, 
      * Returns true if the body in question probably contains human readable text. Uses a small sample
      * of code points to detect unicode control characters commonly used in binary file signatures.
      */
-    @VisibleForTesting static boolean isPlaintext(Buffer buffer) throws EOFException {
+    @VisibleForTesting public static boolean isPlaintext(Buffer buffer) throws EOFException {
         try {
             Buffer prefix = new Buffer();
             long byteCount = buffer.size() < 64 ? buffer.size() : 64;

@@ -2,6 +2,7 @@ package com.github.simonpercic.oklog3;
 
 import com.github.simonpercic.oklog.core.LogDataBuilder;
 import com.github.simonpercic.oklog.core.LogManager;
+import com.github.simonpercic.oklog.coretest.TestUtils;
 
 import org.junit.Before;
 import org.junit.Rule;

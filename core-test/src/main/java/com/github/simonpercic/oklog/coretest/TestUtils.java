@@ -1,4 +1,4 @@
-package com.github.simonpercic.oklog3;
+package com.github.simonpercic.oklog.coretest;
 
 import com.github.simonpercic.oklog.core.LogDataBuilder;
 import com.github.simonpercic.oklog.core.LogManager;

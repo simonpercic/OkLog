@@ -34,10 +34,16 @@ android {
     }
 }
 
+ext.okhttpVersion = '2.7.5'
+
 dependencies {
     compile project(':oklog-core')
 
-    compile 'com.squareup.okhttp:okhttp:2.7.5'
+    compile "com.squareup.okhttp:okhttp:$okhttpVersion"
+
+    // Unit test dependencies
+    testCompile project(':oklog-core-test')
+    testCompile "com.squareup.okhttp:mockwebserver:$okhttpVersion"
 
     // Static code rules
     checkstyleRules files('../config/soter/checkstyle-0.3.xml')

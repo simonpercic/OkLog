@@ -32,23 +32,23 @@ public class LogManager {
     }
 
     /**
-     * Logs response body using Timber.
+     * Logs response data.
      *
-     * @param body response body
+     * @param data response data
      */
-    public void log(LogDataBuilder body) {
-        String logUrl = getLogUrl(body);
+    public void log(LogDataBuilder data) {
+        String logUrl = getLogUrl(data);
 
         if (logInterceptor == null || !logInterceptor.onLog(logUrl)) {
             logDebug(logUrl);
         }
     }
 
-    String getLogUrl(LogDataBuilder body) {
+    String getLogUrl(LogDataBuilder data) {
         String compressed;
 
         try {
-            compressed = StringUtils.gzipBase64(body.getResponseBody());
+            compressed = StringUtils.gzipBase64(data.getResponseBody());
         } catch (IOException e) {
             if (useAndroidLog) {
                 Log.e(Constants.LOG_TAG, String.format("LogManager: %s", e.getMessage()));

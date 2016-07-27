@@ -13,5 +13,5 @@ public final class Constants {
 
     public static final String LOG_TAG = "OKLOG";
     public static final String LOG_URL_BASE_REMOTE = "http://responseecho-simonpercic.rhcloud.com";
-    public static final String LOG_URL_ECHO_RESPONSE_PATH = "/re/";
+    public static final String LOG_URL_ECHO_RESPONSE_PATH = "/v1/re/";
 }

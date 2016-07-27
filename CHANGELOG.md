@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+Version 1.0.0 *(2016-07-27)*
+----------------------------
+
+ * New: Completely rewrote request and response data collection, based on OkHttp's [HttpLoggingInterceptor](https://github.com/square/okhttp/tree/master/okhttp-logging-interceptor).
+ * New: Removed previously deprecated fields and methods.
+ * New: Added flavors to example app to show example usage of both OkLog and OkLog3.
+ * New: Response echo endpoint now points to /v1/re/ at [ResponseEcho](https://github.com/simonpercic/ResponseEcho).
+
+
 Version 0.2.1 *(2016-04-02)*
 ----------------------------
 

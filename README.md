@@ -6,7 +6,7 @@ Logs a url link with url-encoded response for every OkHttp call.
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-OkLog-green.svg?style=true)](https://android-arsenal.com/details/1/3513)
 [![Build Status](https://api.travis-ci.org/simonpercic/OkLog.svg?branch=master)](https://travis-ci.org/simonpercic/OkLog)
 [![CircleCI](https://circleci.com/gh/simonpercic/OkLog.svg?style=shield&circle-token=2b7aab79c2852149996b6abdd6be36fdcd70c5ba)](https://circleci.com/gh/simonpercic/OkLog)
-[ ![Download](https://api.bintray.com/packages/simonpercic/maven/oklog/images/download.svg) ](https://bintray.com/simonpercic/maven/oklog/_latestVersion)
+[ ![Download](https://api.bintray.com/packages/simonpercic/maven/oklog3/images/download.svg) ](https://bintray.com/simonpercic/maven/oklog3/_latestVersion)
 
 ## Motivation
 

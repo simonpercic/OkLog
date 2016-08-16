@@ -31,9 +31,9 @@ android {
 
 dependencies {
     provided 'com.jakewharton.timber:timber:4.2.0'
+    provided "com.squareup.okio:okio:$okioVersion"
 
     compile "com.android.support:support-annotations:$supportVersion"
-    compile 'com.squareup.okio:okio:1.9.0'
 
     // Unit test dependencies
     testCompile "junit:junit:$junitVersion"

@@ -37,6 +37,7 @@ subprojects {
         minSdkVersion = 15
         targetSdkVersion = 23
         supportVersion = '23.4.0'
+        okioVersion = '1.9.0'
         powermockVersion = '1.6.4'
         testSupportVersion = '0.5'
         junitVersion = '4.12'

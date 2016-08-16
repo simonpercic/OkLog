@@ -20,6 +20,7 @@ android {
 
 dependencies {
     compile project(':oklog-core')
+    compile "com.squareup.okio:okio:$okioVersion"
 
     compile "junit:junit:$junitVersion"
     compile "org.mockito:mockito-core:$mockitoVersion"

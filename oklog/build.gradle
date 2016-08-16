@@ -39,7 +39,7 @@ ext.okhttpVersion = '2.7.5'
 dependencies {
     compile project(':oklog-core')
 
-    compile "com.squareup.okhttp:okhttp:$okhttpVersion"
+    provided "com.squareup.okhttp:okhttp:$okhttpVersion"
 
     // Unit test dependencies
     testCompile project(':oklog-core-test')

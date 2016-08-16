@@ -1,8 +1,12 @@
 package com.github.simonpercic.oklog3;
 
+import android.support.annotation.NonNull;
+
 import com.github.simonpercic.oklog.core.BaseLogDataInterceptor;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 
 import okhttp3.Connection;
@@ -12,7 +16,6 @@ import okhttp3.MediaType;
 import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.internal.http.HttpEngine;
 import okio.Buffer;
 import okio.BufferedSource;
 
@@ -74,7 +77,21 @@ class LogDataInterceptor extends BaseLogDataInterceptor<Chain, Request, Response
     }
 
     @Override protected boolean hasResponseBody(Response response) {
-        return HttpEngine.hasBody(response);
+        Method method = getHasResponseBodyMethod("okhttp3.internal.http.HttpHeaders");
+
+        if (method == null) {
+            method = getHasResponseBodyMethod("okhttp3.internal.http.HttpEngine");
+        }
+
+        if (method != null) {
+            try {
+                return (boolean) method.invoke(null, response);
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                throw new IllegalStateException("Failed to invoke hasBody method: " + e.getMessage(), e);
+            }
+        } else {
+            throw new IllegalStateException("Response hasBody method was not found");
+        }
     }
 
     @Override protected int responseCode(Response response) {
@@ -115,5 +132,9 @@ class LogDataInterceptor extends BaseLogDataInterceptor<Chain, Request, Response
 
     @Override protected BufferedSource responseBodySource(Response response) throws IOException {
         return response.body().source();
+    }
+
+    private static Method getHasResponseBodyMethod(@NonNull String className) {
+        return ReflectionUtils.getMethod(className, "hasBody", Response.class);
     }
 }

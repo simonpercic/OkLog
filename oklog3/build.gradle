@@ -34,12 +34,12 @@ android {
     }
 }
 
-ext.okhttpVersion = '3.2.0'
+ext.okhttpVersion = '3.4.1'
 
 dependencies {
     compile project(':oklog-core')
 
-    compile "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    provided "com.squareup.okhttp3:okhttp:$okhttpVersion"
 
     // Unit test dependencies
     testCompile project(':oklog-core-test')

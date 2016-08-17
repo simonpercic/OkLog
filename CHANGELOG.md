@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+Version 1.0.1 *(2016-08-17)*
+----------------------------
+
+ * **`OkLog3`** Fix: Using backward-compatible hasBody method from OkHttp:
+    - HttpEngine.hasBody if using OkHttp <= 3.3.1 and
+    - HttpHeaders.hasBody if using OkHttp >= 3.4.0-RC1
+ * **`OkLog3`** New: Included ProGuard config.
+ * **`OkLog & OkLog3`** New: OkLog / OkLog3 no longer directly depend on either OkHttp / OkHttp3 or Okio. 
+
+
 Version 1.0.0 *(2016-07-27)*
 ----------------------------
 

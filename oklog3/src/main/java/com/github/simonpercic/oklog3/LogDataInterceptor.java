@@ -5,8 +5,6 @@ import android.support.annotation.NonNull;
 import com.github.simonpercic.oklog.core.BaseLogDataInterceptor;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 
 import okhttp3.Connection;
@@ -25,6 +23,12 @@ import okio.BufferedSource;
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
 class LogDataInterceptor extends BaseLogDataInterceptor<Chain, Request, Response, Headers, MediaType> {
+
+    @NonNull private final HasResponseBodyManager hasResponseBodyManager;
+
+    public LogDataInterceptor() {
+        hasResponseBodyManager = HasResponseBodyManager.create();
+    }
 
     @Override protected Request request(Chain chain) {
         return chain.request();
@@ -77,21 +81,7 @@ class LogDataInterceptor extends BaseLogDataInterceptor<Chain, Request, Response
     }
 
     @Override protected boolean hasResponseBody(Response response) {
-        Method method = getHasResponseBodyMethod("okhttp3.internal.http.HttpHeaders");
-
-        if (method == null) {
-            method = getHasResponseBodyMethod("okhttp3.internal.http.HttpEngine");
-        }
-
-        if (method != null) {
-            try {
-                return (boolean) method.invoke(null, response);
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                throw new IllegalStateException("Failed to invoke hasBody method: " + e.getMessage(), e);
-            }
-        } else {
-            throw new IllegalStateException("Response hasBody method was not found");
-        }
+        return hasResponseBodyManager.hasBody(response);
     }
 
     @Override protected int responseCode(Response response) {
@@ -132,9 +122,5 @@ class LogDataInterceptor extends BaseLogDataInterceptor<Chain, Request, Response
 
     @Override protected BufferedSource responseBodySource(Response response) throws IOException {
         return response.body().source();
-    }
-
-    private static Method getHasResponseBodyMethod(@NonNull String className) {
-        return ReflectionUtils.getMethod(className, "hasBody", Response.class);
     }
 }

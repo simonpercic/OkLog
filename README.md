@@ -106,6 +106,9 @@ Unfortunately, there is no workaround with the current system. Nevertheless, eve
 
 This library optionally uses [Timber](https://github.com/JakeWharton/timber) for the actual logging, which splits lines that are too long, so you can see if a response was longer than the limit.
 
+## ProGuard
+
+ProGuard configuration is already bundled with OkLog/3, so you can safely use it with ProGuard.
 
 ## Change Log
 See [CHANGELOG.md](CHANGELOG.md)

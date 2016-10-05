@@ -1,0 +1,28 @@
+syntax = "proto2";
+
+package logdata;
+
+option java_package = "com.github.simonpercic.oklog.shared.data";
+
+import "logdata/headerdata.proto";
+import "logdata/bodystate.proto";
+
+message LogData {
+
+    optional string request_method = 1;
+    optional string request_url = 2;
+    optional string protocol = 3;
+    optional string request_content_type = 4;
+    optional int64 request_content_length = 5;
+    repeated logdata.HeaderData request_headers = 6;
+    optional logdata.BodyState request_body_state = 7;
+    optional bool request_failed = 8;
+    optional int32 response_code = 9;
+    optional string response_message = 10;
+    optional string response_url = 11;
+    optional int64 response_duration_ms = 12;
+    optional int64 response_content_length = 13;
+    repeated logdata.HeaderData response_headers = 14;
+    optional logdata.BodyState response_body_state = 15;
+    optional int64 response_body_size = 16;
+}

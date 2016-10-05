@@ -1,11 +1,5 @@
 package com.github.simonpercic.oklog.core;
 
-import android.util.Base64;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.zip.GZIPOutputStream;
-
 /**
  * String utilities.
  *
@@ -25,30 +19,5 @@ public final class StringUtils {
      */
     public static boolean isEmpty(String string) {
         return string == null || string.length() == 0;
-    }
-
-    /**
-     * Compresses the given string with gzip, returns it Base64 encoded.
-     *
-     * @param string input string
-     * @return gzipped and Base64 encoded input string
-     * @throws IOException IO Exception
-     */
-    static String gzipBase64(String string) throws IOException {
-        if (isEmpty(string)) {
-            return string;
-        }
-
-        ByteArrayOutputStream byteOut = new ByteArrayOutputStream(string.length());
-
-        GZIPOutputStream gzip = new GZIPOutputStream(byteOut);
-        gzip.write(string.getBytes("UTF-8"));
-        gzip.close();
-
-        byte[] bytes = byteOut.toByteArray();
-
-        byteOut.close();
-
-        return Base64.encodeToString(bytes, Base64.URL_SAFE);
     }
 }

@@ -2,7 +2,6 @@ package com.github.simonpercic.oklog.coretest;
 
 import com.github.simonpercic.oklog.core.BaseLogDataInterceptor;
 import com.github.simonpercic.oklog.core.LogDataBuilder;
-import com.github.simonpercic.oklog.core.LogDataBuilder.HeaderData;
 import com.github.simonpercic.oklog.core.LogManager;
 import com.github.simonpercic.oklog.core.StringUtils;
 
@@ -319,12 +318,13 @@ public abstract class BaseLogDataInterceptorUnitTest<MockResponse, Request> {
                 .responseUrl(getUrlString());
     }
 
-    private void assertRequestHeaders(List<HeaderData> requestHeaders) {
+    private void assertRequestHeaders(List<LogDataBuilder.HeaderDataBuilder> requestHeaders) {
         assertHeaderData(requestHeaders, "Host", new PredicateEquals<>(host));
         assertHeaderData(requestHeaders, "User-Agent", new PredicateStartsWith("okhttp"));
     }
 
-    private void assertHeaderData(List<HeaderData> headers, String name, Predicate<String> assertPredicate) {
+    private void assertHeaderData(List<LogDataBuilder.HeaderDataBuilder> headers, String name,
+            Predicate<String> assertPredicate) {
         if (headers == null || headers.size() == 0) {
             fail("Headers are empty");
         }
@@ -333,7 +333,7 @@ public abstract class BaseLogDataInterceptorUnitTest<MockResponse, Request> {
             fail("Header name is empty");
         }
 
-        for (HeaderData header : headers) {
+        for (LogDataBuilder.HeaderDataBuilder header : headers) {
             if (name.equalsIgnoreCase(header.getName())) {
                 assertPredicate.assertValue(header.getValue());
                 return;

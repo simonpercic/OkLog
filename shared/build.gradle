@@ -1,0 +1,46 @@
+def protoPath = 'src/main/proto'
+def wireGeneratedPath = 'build/generated/source/wire'
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.squareup.wire:wire-compiler:2.2.0'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+
+dependencies {
+    compile 'com.squareup.wire:wire-runtime:2.2.0'
+}
+
+// This handles the protocol buffer generation with wire
+task generateWireClasses {
+    description = 'Generate Java classes from protocol buffer (.proto) schema files for use with Square\'s wire library'
+    delete(wireGeneratedPath)
+    fileTree(dir: protoPath, include: '**/*.proto').each { File file ->
+        doLast {
+            javaexec {
+                main = 'com.squareup.wire.WireCompiler'
+                classpath = buildscript.configurations.classpath
+                args = ["--proto_path=${protoPath}", "--java_out=${wireGeneratedPath}", "${file}"]
+            }
+        }
+    }
+}
+
+tasks.compileJava.dependsOn generateWireClasses
+
+sourceSets.main.java.srcDirs += wireGeneratedPath
+
+apply from: '../gradle-publish/java/jcenterupload.gradle'

@@ -1,0 +1,18 @@
+syntax = "proto2";
+
+package logdata;
+
+option java_package = "com.github.simonpercic.oklog.shared.data";
+
+enum BodyState {
+
+    PLAIN_BODY = 1;
+
+    NO_BODY = 2;
+
+    ENCODED_BODY = 3;
+
+    BINARY_BODY = 4;
+
+    CHARSET_MALFORMED = 5;
+}

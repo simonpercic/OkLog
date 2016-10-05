@@ -1,6 +1,15 @@
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+    dependencies {
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$gradleBintrayVersion"
+        classpath "com.github.dcendents:android-maven-gradle-plugin:$androidGradleMavenVersion"
+    }
+}
+
 apply plugin: 'com.android.library'
 apply plugin: 'si.dlabs.soter'
-apply plugin: 'com.uber.infer.android'
 
 android {
     compileSdkVersion project.ext.compileSdkVersion
@@ -33,6 +42,7 @@ dependencies {
     provided 'com.jakewharton.timber:timber:4.2.0'
     provided "com.squareup.okio:okio:$okioVersion"
 
+    compile project(':oklog-shared')
     compile "com.android.support:support-annotations:$supportVersion"
 
     // Unit test dependencies
@@ -66,4 +76,4 @@ soter {
     }
 }
 
-apply from: '../jcenterupload.gradle'
+apply from: '../gradle-publish/android/jcenterupload.gradle'

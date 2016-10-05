@@ -1,6 +1,10 @@
 package com.github.simonpercic.oklog.core;
 
+import android.support.annotation.Nullable;
 import android.util.Log;
+
+import com.github.simonpercic.oklog.shared.LogDataSerializer;
+import com.github.simonpercic.oklog.shared.data.LogData;
 
 import java.io.IOException;
 
@@ -13,6 +17,8 @@ import timber.log.Timber;
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
 public class LogManager {
+
+    private static final String LOG_FORMAT = "LogManager: %s";
 
     private final String logUrlBase;
     private final LogInterceptor logInterceptor;
@@ -37,23 +43,24 @@ public class LogManager {
      * @param data response data
      */
     public void log(LogDataBuilder data) {
-        String logUrl = getLogUrl(data);
+        LogData logData = LogDataConverter.convert(data);
+        String logUrl = getLogUrl(data.getResponseBody(), logData);
 
         if (logInterceptor == null || !logInterceptor.onLog(logUrl)) {
             logDebug(logUrl);
         }
     }
 
-    String getLogUrl(LogDataBuilder data) {
+    String getLogUrl(@Nullable String responseBody, @Nullable LogData logData) {
         String compressed;
 
         try {
-            compressed = StringUtils.gzipBase64(data.getResponseBody());
+            compressed = CompressionUtils.gzipBase64UrlSafe(responseBody);
         } catch (IOException e) {
             if (useAndroidLog) {
-                Log.e(Constants.LOG_TAG, String.format("LogManager: %s", e.getMessage()));
+                Log.e(Constants.LOG_TAG, String.format(LOG_FORMAT, e.getMessage()));
             } else {
-                Timber.e(e, "LogManager: %s", e.getMessage());
+                Timber.e(e, LOG_FORMAT, e.getMessage());
             }
 
             return null;
@@ -70,9 +77,25 @@ public class LogManager {
             return null;
         }
 
-        compressed = compressed.replaceAll("\n", "");
+        String url = String.format("%s%s%s", logUrlBase, Constants.LOG_URL_ECHO_RESPONSE_PATH, compressed);
 
-        return String.format("%s%s%s", logUrlBase, Constants.LOG_URL_ECHO_RESPONSE_PATH, compressed);
+        String logDataString = LogDataSerializer.serialize(logData);
+
+        try {
+            logDataString = CompressionUtils.gzipBase64UrlSafe(logDataString);
+        } catch (IOException e) {
+            if (useAndroidLog) {
+                Log.e(Constants.LOG_TAG, String.format(LOG_FORMAT, e.getMessage()));
+            } else {
+                Timber.e(e, LOG_FORMAT, e.getMessage());
+            }
+        }
+
+        if (!StringUtils.isEmpty(logDataString)) {
+            url = String.format("%s?d=%s", url, logDataString);
+        }
+
+        return url;
     }
 
     void logDebug(String logUrl) {

@@ -1,0 +1,11 @@
+syntax = "proto2";
+
+package logdata;
+
+option java_package = "com.github.simonpercic.oklog.shared.data";
+
+message HeaderData {
+
+    optional string name = 1;
+    optional string value = 2;
+}

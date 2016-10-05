@@ -1,0 +1,82 @@
+version = VERSION_NAME
+group = GROUP_ID
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+publishing {
+    publications {
+        bintray(MavenPublication) {
+            from components.java
+            groupId GROUP_ID
+            artifactId project.name
+            version VERSION_NAME
+
+            artifact sourcesJar {
+                classifier 'sources'
+            }
+
+            artifact javadocJar {
+                classifier 'javadoc'
+            }
+
+            pom.withXml { xmlProvider ->
+                xmlProvider.asNode().appendNode('name', LIBRARY_NAME)
+                xmlProvider.asNode().appendNode('description', LIBRARY_DESCRIPTION)
+                xmlProvider.asNode().appendNode('url', SITE_URL)
+
+                def license = xmlProvider.asNode().appendNode('licenses').appendNode('license')
+                license.appendNode('name', 'The MIT License (MIT)')
+                license.appendNode('url', 'http://opensource.org/licenses/MIT')
+
+                def developer = xmlProvider.asNode().appendNode('developers').appendNode('developer')
+                developer.appendNode('id', DEVELOPER_ID)
+                developer.appendNode('name', DEVELOPER_NAME)
+                developer.appendNode('email', DEVELOPER_EMAIL)
+
+                def scm = xmlProvider.asNode().appendNode('scm')
+                scm.appendNode('connection', GIT_URL)
+                scm.appendNode('developerConnection', GIT_URL)
+                scm.appendNode('url', SITE_URL)
+            }
+        }
+    }
+}
+
+// Bintray
+bintray {
+    user = project.hasProperty('bintrayUser') ? bintrayUser : null
+    key = project.hasProperty('bintrayApiKey') ? bintrayApiKey : null
+
+    configurations = ['archives']
+    pkg {
+        repo = 'maven'
+        name = BINTRAY_NAME
+        desc = LIBRARY_DESCRIPTION
+        websiteUrl = SITE_URL
+        vcsUrl = GIT_URL
+        licenses = ["MIT"]
+        publish = true
+        publicDownloadNumbers = true
+        version {
+            desc = LIBRARY_DESCRIPTION
+            gpg {
+                sign = true
+                passphrase = project.hasProperty('bintrayGpgPassword') ? bintrayGpgPassword : null
+            }
+        }
+    }
+    publications = ['bintray']
+}

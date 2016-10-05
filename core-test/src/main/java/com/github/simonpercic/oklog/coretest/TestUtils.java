@@ -18,9 +18,9 @@ public final class TestUtils {
     }
 
     public static LogDataBuilder getLogData(LogManager logManager) {
-        ArgumentCaptor<LogDataBuilder> appCaptor = ArgumentCaptor.forClass(LogDataBuilder.class);
-        verify(logManager).log(appCaptor.capture());
-        return appCaptor.getValue();
+        ArgumentCaptor<LogDataBuilder> dataCaptor = ArgumentCaptor.forClass(LogDataBuilder.class);
+        verify(logManager).log(dataCaptor.capture());
+        return dataCaptor.getValue();
     }
 
     public static void assertData(LogDataBuilder expected, LogDataBuilder value) {

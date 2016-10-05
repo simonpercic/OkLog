@@ -5,18 +5,18 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 /**
- * StringUtils unit test.
+ * CompressionUtils unit test.
  *
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
-public class StringUtilsTest {
+public class CompressionUtilsTest {
 
     @Test
     public void testGzipBase64Empty() throws Exception {
-        String nullResult = StringUtils.gzipBase64(null);
+        String nullResult = CompressionUtils.gzipBase64(null);
         Assert.assertEquals(null, nullResult);
 
-        String emptyResult = StringUtils.gzipBase64("");
+        String emptyResult = CompressionUtils.gzipBase64("");
         Assert.assertEquals("", emptyResult);
     }
 
@@ -88,7 +88,7 @@ public class StringUtilsTest {
                 + "  }\n"
                 + "]";
 
-        String compressed = StringUtils.gzipBase64(json);
+        String compressed = CompressionUtils.gzipBase64(json);
 
         String expected = "H4sIAAAAAAAAALXVzY7TMBAH8Ps-RZXzbmKPPZ5Jr7wBV4TQ-ItWtNvQpBfQvjuGVkJa7aoGxYfk\n"
                 + "ENvzT_yLxp8eNpuf5dpsumc5pm7bTXJOz8sT9Nir7vE69GM_eTkcvlzOhzJjtyzTvB0Gmfb91_2y\n"

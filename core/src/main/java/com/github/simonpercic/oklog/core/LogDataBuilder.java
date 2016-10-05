@@ -21,11 +21,11 @@ public class LogDataBuilder {
     public @interface BodyState {
     }
 
-    public static final int PLAIN_BODY = 0;
-    public static final int NO_BODY = 1;
-    public static final int ENCODED_BODY = 2;
-    public static final int BINARY_BODY = 3;
-    public static final int CHARSET_MALFORMED = 4;
+    public static final int PLAIN_BODY = 1;
+    public static final int NO_BODY = 2;
+    public static final int ENCODED_BODY = 3;
+    public static final int BINARY_BODY = 4;
+    public static final int CHARSET_MALFORMED = 5;
 
     // endregion BodyState IntDef
 
@@ -34,7 +34,7 @@ public class LogDataBuilder {
     private String protocol;
     private String requestContentType;
     private long requestContentLength;
-    private List<HeaderData> requestHeaders;
+    private List<HeaderDataBuilder> requestHeaders;
     private String requestBody;
     @BodyState private int requestBodyState;
     private boolean requestFailed;
@@ -44,7 +44,7 @@ public class LogDataBuilder {
     private String responseUrl;
     private long responseDurationMs;
     private long responseContentLength;
-    private List<HeaderData> responseHeaders;
+    private List<HeaderDataBuilder> responseHeaders;
     @BodyState private int responseBodyState;
     private long responseBodySize;
     private String responseBody;
@@ -84,7 +84,7 @@ public class LogDataBuilder {
             this.requestHeaders = new ArrayList<>();
         }
 
-        this.requestHeaders.add(new HeaderData(name, value));
+        this.requestHeaders.add(new HeaderDataBuilder(name, value));
         return this;
     }
 
@@ -133,7 +133,7 @@ public class LogDataBuilder {
             this.responseHeaders = new ArrayList<>();
         }
 
-        this.responseHeaders.add(new HeaderData(name, value));
+        this.responseHeaders.add(new HeaderDataBuilder(name, value));
         return this;
     }
 
@@ -174,7 +174,7 @@ public class LogDataBuilder {
         return requestContentLength;
     }
 
-    public List<HeaderData> getRequestHeaders() {
+    public List<HeaderDataBuilder> getRequestHeaders() {
         return requestHeaders;
     }
 
@@ -210,7 +210,7 @@ public class LogDataBuilder {
         return responseContentLength;
     }
 
-    public List<HeaderData> getResponseHeaders() {
+    public List<HeaderDataBuilder> getResponseHeaders() {
         return responseHeaders;
     }
 
@@ -231,14 +231,14 @@ public class LogDataBuilder {
     @Override public String toString() {
         String requestHeadersString = "";
         if (requestHeaders != null) {
-            for (HeaderData requestHeader : requestHeaders) {
+            for (HeaderDataBuilder requestHeader : requestHeaders) {
                 requestHeadersString += requestHeader.toString() + " ";
             }
         }
 
         String responseHeadersString = "";
         if (responseHeaders != null) {
-            for (HeaderData responseHeader : responseHeaders) {
+            for (HeaderDataBuilder responseHeader : responseHeaders) {
                 responseHeadersString += responseHeader.toString() + " ";
             }
         }
@@ -265,12 +265,12 @@ public class LogDataBuilder {
                 + "\n" + '}';
     }
 
-    public static final class HeaderData {
+    public static final class HeaderDataBuilder {
 
         private final String name;
         private final String value;
 
-        private HeaderData(String name, String value) {
+        private HeaderDataBuilder(String name, String value) {
             this.name = name;
             this.value = value;
         }
@@ -284,7 +284,7 @@ public class LogDataBuilder {
         }
 
         @Override public String toString() {
-            return "HeaderData{"
+            return "HeaderDataBuilder{"
                     + "name='" + name + '\''
                     + ", value='" + value + '\''
                     + '}';

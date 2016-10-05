@@ -2,7 +2,7 @@ package com.github.simonpercic.oklog.shared;
 
 import com.github.simonpercic.oklog.shared.data.LogData;
 
-import java.nio.charset.Charset;
+import java.io.IOException;
 
 /**
  * Log data serializer.
@@ -21,6 +21,15 @@ public final class LogDataSerializer {
         }
 
         byte[] bytes = LogData.ADAPTER.encode(logData);
-        return new String(bytes, Charset.forName("UTF-8"));
+        return new String(bytes, SharedConstants.CHARSET_UTF8);
+    }
+
+    public static LogData deserialize(String string) throws IOException {
+        if (string == null || string.length() == 0) {
+            return null;
+        }
+
+        byte[] bytes = string.getBytes(SharedConstants.CHARSET_UTF8);
+        return LogData.ADAPTER.decode(bytes);
     }
 }

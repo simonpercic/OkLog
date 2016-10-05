@@ -2,6 +2,8 @@ package com.github.simonpercic.oklog.core;
 
 import android.util.Base64;
 
+import com.github.simonpercic.oklog.shared.SharedConstants;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.zip.GZIPOutputStream;
@@ -32,7 +34,7 @@ public final class CompressionUtils {
         ByteArrayOutputStream byteOut = new ByteArrayOutputStream(string.length());
 
         GZIPOutputStream gzip = new GZIPOutputStream(byteOut);
-        gzip.write(string.getBytes("UTF-8"));
+        gzip.write(string.getBytes(SharedConstants.UTF8));
         gzip.close();
 
         byte[] bytes = byteOut.toByteArray();

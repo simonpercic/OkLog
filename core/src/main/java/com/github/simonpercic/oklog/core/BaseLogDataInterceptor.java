@@ -3,6 +3,8 @@ package com.github.simonpercic.oklog.core;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
+import com.github.simonpercic.oklog.shared.SharedConstants;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -18,7 +20,6 @@ import okio.BufferedSource;
  */
 public abstract class BaseLogDataInterceptor<Chain, Request, Response, Headers, MediaType> {
 
-    private static final Charset UTF8 = Charset.forName("UTF-8");
     private static final String CONTENT_ENCODING = "Content-Encoding";
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String CONTENT_LENGTH = "Content-Length";
@@ -118,10 +119,10 @@ public abstract class BaseLogDataInterceptor<Chain, Request, Response, Headers, 
             Buffer buffer = new Buffer();
             writeRequestBody(request, buffer);
 
-            Charset charset = UTF8;
+            Charset charset = SharedConstants.CHARSET_UTF8;
             MediaType contentType = requestContentType(request);
             if (contentType != null) {
-                charset = contentTypeCharset(contentType, UTF8);
+                charset = contentTypeCharset(contentType, SharedConstants.CHARSET_UTF8);
             }
 
             if (isPlaintext(buffer)) {
@@ -163,11 +164,11 @@ public abstract class BaseLogDataInterceptor<Chain, Request, Response, Headers, 
             source.request(Long.MAX_VALUE); // Buffer the entire body.
             Buffer buffer = source.buffer();
 
-            Charset charset = UTF8;
+            Charset charset = SharedConstants.CHARSET_UTF8;
             MediaType contentType = responseContentType(response);
             if (contentType != null) {
                 try {
-                    charset = contentTypeCharset(contentType, UTF8);
+                    charset = contentTypeCharset(contentType, SharedConstants.CHARSET_UTF8);
                 } catch (UnsupportedCharsetException e) {
                     logDataBuilder.responseBodyState(LogDataBuilder.CHARSET_MALFORMED);
                     return new ResponseLogData<>(response, logDataBuilder);

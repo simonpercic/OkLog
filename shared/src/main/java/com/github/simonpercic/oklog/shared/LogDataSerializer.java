@@ -15,21 +15,19 @@ public final class LogDataSerializer {
         // no instance
     }
 
-    public static String serialize(LogData logData) {
+    public static byte[] serialize(LogData logData) {
         if (logData == null) {
             return null;
         }
 
-        byte[] bytes = LogData.ADAPTER.encode(logData);
-        return new String(bytes, SharedConstants.CHARSET_UTF8);
+        return LogData.ADAPTER.encode(logData);
     }
 
-    public static LogData deserialize(String string) throws IOException {
-        if (string == null || string.length() == 0) {
+    public static LogData deserialize(byte[] bytes) throws IOException {
+        if (bytes == null || bytes.length == 0) {
             return null;
         }
 
-        byte[] bytes = string.getBytes(SharedConstants.CHARSET_UTF8);
         return LogData.ADAPTER.decode(bytes);
     }
 }

@@ -19,10 +19,10 @@ message LogData {
     optional bool request_failed = 8;
     optional int32 response_code = 9;
     optional string response_message = 10;
-    optional string response_url = 11;
-    optional int64 response_duration_ms = 12;
-    optional int64 response_content_length = 13;
-    repeated logdata.HeaderData response_headers = 14;
-    optional logdata.BodyState response_body_state = 15;
-    optional int64 response_body_size = 16;
+    optional int64 response_duration_ms = 11;
+    optional int64 response_content_length = 12;
+    repeated logdata.HeaderData response_headers = 13;
+    optional logdata.BodyState response_body_state = 14;
+    optional int64 response_body_size = 15;
+    optional string response_url = 16;
 }

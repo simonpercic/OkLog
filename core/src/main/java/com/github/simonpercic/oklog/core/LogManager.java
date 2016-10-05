@@ -79,10 +79,11 @@ public class LogManager {
 
         String url = String.format("%s%s%s", logUrlBase, Constants.LOG_URL_ECHO_RESPONSE_PATH, compressed);
 
-        String logDataString = LogDataSerializer.serialize(logData);
+        byte[] logDataBytes = LogDataSerializer.serialize(logData);
 
+        String logDataString = null;
         try {
-            logDataString = CompressionUtils.gzipBase64UrlSafe(logDataString);
+            logDataString = CompressionUtils.gzipBase64UrlSafe(logDataBytes);
         } catch (IOException e) {
             if (useAndroidLog) {
                 Log.e(Constants.LOG_TAG, String.format(LOG_FORMAT, e.getMessage()));

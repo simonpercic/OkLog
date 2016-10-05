@@ -10,6 +10,7 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -83,6 +84,7 @@ public class LogManagerUnitTest {
     public void testLogDebugCalled() throws Exception {
         String compressedString = "compressedString";
         when(CompressionUtils.gzipBase64UrlSafe(anyString())).thenReturn(compressedString);
+        when(CompressionUtils.gzipBase64UrlSafe((byte[]) anyObject())).thenReturn(compressedString);
 
         String baseUrl = "http://example.com";
         LogManager logManager = spy(new LogManager(baseUrl, null, false));
@@ -99,6 +101,7 @@ public class LogManagerUnitTest {
     public void testLogInterceptorCalled() throws Exception {
         String compressedString = "compressedString";
         when(CompressionUtils.gzipBase64UrlSafe(anyString())).thenReturn(compressedString);
+        when(CompressionUtils.gzipBase64UrlSafe((byte[]) anyObject())).thenReturn(compressedString);
 
         LogInterceptor logInterceptor = mock(LogInterceptor.class);
 
@@ -132,6 +135,7 @@ public class LogManagerUnitTest {
     public void testLogInterceptorNotHandled() throws Exception {
         String compressedString = "compressedString";
         when(CompressionUtils.gzipBase64UrlSafe(anyString())).thenReturn(compressedString);
+        when(CompressionUtils.gzipBase64UrlSafe((byte[]) anyObject())).thenReturn(compressedString);
 
         LogInterceptor logInterceptor = mock(LogInterceptor.class);
         when(logInterceptor.onLog(anyString())).thenReturn(false);

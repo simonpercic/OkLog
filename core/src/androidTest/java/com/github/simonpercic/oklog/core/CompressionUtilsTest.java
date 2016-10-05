@@ -13,7 +13,7 @@ public class CompressionUtilsTest {
 
     @Test
     public void testGzipBase64Empty() throws Exception {
-        String nullResult = CompressionUtils.gzipBase64(null);
+        String nullResult = CompressionUtils.gzipBase64((String) null);
         Assert.assertEquals(null, nullResult);
 
         String emptyResult = CompressionUtils.gzipBase64("");

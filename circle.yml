@@ -4,14 +4,16 @@ machine:
 
 dependencies:
   pre:
+    - if ! $(grep -q "Revision=38.0.0" $ANDROID_HOME/extras/android/m2repository/source.properties); then echo y | android update sdk --no-ui --all --filter "extra-android-m2repository"; fi
     - if ! $(grep -q "Revision=25.2.2" $ANDROID_HOME/tools/source.properties); then echo y | android update sdk --no-ui --all --filter "tools"; fi
     - if ! $(grep -q "Revision=24.0.3" $ANDROID_HOME/platform-tools/source.properties); then echo y | android update sdk --no-ui --all --filter "platform-tools"; fi
-    - if ! $(grep -q "Revision=38.0.0" $ANDROID_HOME/extras/android/m2repository/source.properties); then echo y | android update sdk --no-ui --all --filter "extra-android-m2repository"; fi
+    - if [ ! -e $ANDROID_HOME/platforms/android-24 ]; then echo y | android update sdk --no-ui --all --filter "android-24"; fi
     - if [ ! -e $ANDROID_HOME/build-tools/24.0.2 ]; then echo y | android update sdk --no-ui --all --filter "build-tools-24.0.2"; fi
   cache_directories:
+    - /usr/local/android-sdk-linux/extras/android/m2repository
     - /usr/local/android-sdk-linux/tools
     - /usr/local/android-sdk-linux/platform-tools
-    - /usr/local/android-sdk-linux/extras/android/m2repository
+    - /usr/local/android-sdk-linux/platforms/android-24
     - /usr/local/android-sdk-linux/build-tools/24.0.2
 
 test:

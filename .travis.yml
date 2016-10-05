@@ -10,14 +10,14 @@ env:
 
 android:
   components:
-  - platform-tools
+  - extra-google-m2repository
+  - extra-android-m2repository
   - tools
+  - platform-tools
   - build-tools-24.0.2
   - android-19
   - android-24
   - sys-img-armeabi-v7a-android-19
-  - extra-google-m2repository
-  - extra-android-m2repository
 
 before_install:
   - ./config/ci/create-emulator

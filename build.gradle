@@ -29,11 +29,11 @@ subprojects {
     }
 
     project.ext {
-        compileSdkVersion = 23
-        buildToolsVersion = '23.0.2'
+        compileSdkVersion = 24
+        buildToolsVersion = '24.0.2'
         minSdkVersion = 15
-        targetSdkVersion = 23
-        supportVersion = '23.4.0'
+        targetSdkVersion = 24
+        supportVersion = '24.2.1'
         okioVersion = '1.9.0'
         powermockVersion = '1.6.4'
         testSupportVersion = '0.5'

@@ -1,7 +1,7 @@
 package com.github.simonpercic.oklog;
 
 import com.github.simonpercic.oklog.core.LogManager;
-import com.github.simonpercic.oklog.coretest.BaseLogDataInterceptorUnitTest;
+import com.github.simonpercic.oklog.core.BaseLogDataInterceptorUnitTest;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;

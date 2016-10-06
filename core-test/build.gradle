@@ -3,6 +3,7 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion project.ext.compileSdkVersion
     buildToolsVersion project.ext.buildToolsVersion
+    enforceUniquePackageName = false
 
     defaultConfig {
         minSdkVersion project.ext.minSdkVersion

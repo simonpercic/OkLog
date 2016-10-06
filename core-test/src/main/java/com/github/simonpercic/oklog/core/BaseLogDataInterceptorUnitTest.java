@@ -1,9 +1,4 @@
-package com.github.simonpercic.oklog.coretest;
-
-import com.github.simonpercic.oklog.core.BaseLogDataInterceptor;
-import com.github.simonpercic.oklog.core.LogDataBuilder;
-import com.github.simonpercic.oklog.core.LogManager;
-import com.github.simonpercic.oklog.core.StringUtils;
+package com.github.simonpercic.oklog.core;
 
 import org.junit.Before;
 import org.junit.Test;

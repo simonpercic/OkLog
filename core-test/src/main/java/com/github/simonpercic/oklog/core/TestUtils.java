@@ -1,7 +1,4 @@
-package com.github.simonpercic.oklog.coretest;
-
-import com.github.simonpercic.oklog.core.LogDataBuilder;
-import com.github.simonpercic.oklog.core.LogManager;
+package com.github.simonpercic.oklog.core;
 
 import org.mockito.ArgumentCaptor;
 

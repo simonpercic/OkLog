@@ -1,7 +1,7 @@
 package com.github.simonpercic.oklog3;
 
 import com.github.simonpercic.oklog.core.LogManager;
-import com.github.simonpercic.oklog.coretest.BaseLogDataInterceptorUnitTest;
+import com.github.simonpercic.oklog.core.BaseLogDataInterceptorUnitTest;
 
 import org.junit.Rule;
 import org.junit.runner.RunWith;

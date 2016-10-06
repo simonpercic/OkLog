@@ -3,6 +3,7 @@ package com.github.simonpercic.oklog.core;
 import org.mockito.ArgumentCaptor;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -35,5 +36,24 @@ public final class TestUtils {
         assertEquals(expected.getResponseBodyState(), value.getResponseBodyState());
         assertEquals(expected.getResponseBodySize(), value.getResponseBodySize());
         assertEquals(expected.getResponseBody(), value.getResponseBody());
+    }
+
+    public static void assertData(String requestMethod, String requestUrl,
+            int requestBodyState, boolean failed, LogDataBuilder value) {
+
+        LogDataBuilder expectedValue = new LogDataBuilder()
+                .requestMethod(requestMethod)
+                .requestUrl(requestUrl)
+                .requestBodyState(requestBodyState);
+
+        if (failed) {
+            expectedValue.requestFailed();
+        }
+
+        assertData(expectedValue, value);
+    }
+
+    public static void assertNoRequestHeaders(LogDataBuilder value) {
+        assertNull(value.getRequestHeaders());
     }
 }

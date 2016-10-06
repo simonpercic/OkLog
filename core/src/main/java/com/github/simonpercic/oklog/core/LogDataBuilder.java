@@ -17,15 +17,14 @@ public class LogDataBuilder {
     // region BodyState IntDef
 
     @IntDef({PLAIN_BODY, NO_BODY, ENCODED_BODY, BINARY_BODY, CHARSET_MALFORMED})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface BodyState {
+    @Retention(RetentionPolicy.SOURCE) @interface BodyState {
     }
 
-    public static final int PLAIN_BODY = 1;
-    public static final int NO_BODY = 2;
-    public static final int ENCODED_BODY = 3;
-    public static final int BINARY_BODY = 4;
-    public static final int CHARSET_MALFORMED = 5;
+    static final int PLAIN_BODY = 1;
+    static final int NO_BODY = 2;
+    static final int ENCODED_BODY = 3;
+    static final int BINARY_BODY = 4;
+    static final int CHARSET_MALFORMED = 5;
 
     // endregion BodyState IntDef
 
@@ -49,37 +48,37 @@ public class LogDataBuilder {
     private long responseBodySize;
     private String responseBody;
 
-    public LogDataBuilder() {
+    LogDataBuilder() {
         this.requestBodyState = PLAIN_BODY;
         this.responseBodyState = PLAIN_BODY;
     }
 
-    public LogDataBuilder requestMethod(String requestMethod) {
+    LogDataBuilder requestMethod(String requestMethod) {
         this.requestMethod = requestMethod;
         return this;
     }
 
-    public LogDataBuilder requestUrl(String requestUrl) {
+    LogDataBuilder requestUrl(String requestUrl) {
         this.requestUrl = requestUrl;
         return this;
     }
 
-    public LogDataBuilder protocol(String protocol) {
+    LogDataBuilder protocol(String protocol) {
         this.protocol = protocol;
         return this;
     }
 
-    public LogDataBuilder requestContentType(String contentType) {
+    LogDataBuilder requestContentType(String contentType) {
         this.requestContentType = contentType;
         return this;
     }
 
-    public LogDataBuilder requestContentLength(long contentLength) {
+    LogDataBuilder requestContentLength(long contentLength) {
         this.requestContentLength = contentLength;
         return this;
     }
 
-    public LogDataBuilder addRequestHeader(String name, String value) {
+    LogDataBuilder addRequestHeader(String name, String value) {
         if (this.requestHeaders == null) {
             this.requestHeaders = new ArrayList<>();
         }
@@ -88,12 +87,12 @@ public class LogDataBuilder {
         return this;
     }
 
-    public LogDataBuilder requestBody(String requestBody) {
+    LogDataBuilder requestBody(String requestBody) {
         this.requestBody = requestBody;
         return this;
     }
 
-    public LogDataBuilder requestBodyState(@BodyState int requestBodyState) {
+    LogDataBuilder requestBodyState(@BodyState int requestBodyState) {
         this.requestBodyState = requestBodyState;
         return this;
     }
@@ -103,17 +102,17 @@ public class LogDataBuilder {
         return this;
     }
 
-    public LogDataBuilder responseCode(int responseCode) {
+    LogDataBuilder responseCode(int responseCode) {
         this.responseCode = responseCode;
         return this;
     }
 
-    public LogDataBuilder responseMessage(String responseMessage) {
+    LogDataBuilder responseMessage(String responseMessage) {
         this.responseMessage = responseMessage;
         return this;
     }
 
-    public LogDataBuilder responseUrl(String responseUrl) {
+    LogDataBuilder responseUrl(String responseUrl) {
         this.responseUrl = responseUrl;
         return this;
     }
@@ -123,12 +122,12 @@ public class LogDataBuilder {
         return this;
     }
 
-    public LogDataBuilder responseContentLength(long responseContentLength) {
+    LogDataBuilder responseContentLength(long responseContentLength) {
         this.responseContentLength = responseContentLength;
         return this;
     }
 
-    public LogDataBuilder addResponseHeader(String name, String value) {
+    LogDataBuilder addResponseHeader(String name, String value) {
         if (this.responseHeaders == null) {
             this.responseHeaders = new ArrayList<>();
         }
@@ -137,92 +136,92 @@ public class LogDataBuilder {
         return this;
     }
 
-    public LogDataBuilder responseBodyState(@BodyState int responseBodyState) {
+    LogDataBuilder responseBodyState(@BodyState int responseBodyState) {
         this.responseBodyState = responseBodyState;
         return this;
     }
 
-    public LogDataBuilder responseBodySize(long responseBodySize) {
+    LogDataBuilder responseBodySize(long responseBodySize) {
         this.responseBodySize = responseBodySize;
         return this;
     }
 
-    public LogDataBuilder responseBody(String responseBody) {
+    LogDataBuilder responseBody(String responseBody) {
         this.responseBody = responseBody;
         return this;
     }
 
     // region Getters
 
-    public String getRequestMethod() {
+    String getRequestMethod() {
         return requestMethod;
     }
 
-    public String getRequestUrl() {
+    String getRequestUrl() {
         return requestUrl;
     }
 
-    public String getProtocol() {
+    String getProtocol() {
         return protocol;
     }
 
-    public String getRequestContentType() {
+    String getRequestContentType() {
         return requestContentType;
     }
 
-    public long getRequestContentLength() {
+    long getRequestContentLength() {
         return requestContentLength;
     }
 
-    public List<HeaderDataBuilder> getRequestHeaders() {
+    List<HeaderDataBuilder> getRequestHeaders() {
         return requestHeaders;
     }
 
-    public String getRequestBody() {
+    String getRequestBody() {
         return requestBody;
     }
 
-    @BodyState public int getRequestBodyState() {
+    @BodyState int getRequestBodyState() {
         return requestBodyState;
     }
 
-    public boolean isRequestFailed() {
+    boolean isRequestFailed() {
         return requestFailed;
     }
 
-    public int getResponseCode() {
+    int getResponseCode() {
         return responseCode;
     }
 
-    public String getResponseMessage() {
+    String getResponseMessage() {
         return responseMessage;
     }
 
-    public String getResponseUrl() {
+    String getResponseUrl() {
         return responseUrl;
     }
 
-    public long getResponseDurationMs() {
+    long getResponseDurationMs() {
         return responseDurationMs;
     }
 
-    public long getResponseContentLength() {
+    long getResponseContentLength() {
         return responseContentLength;
     }
 
-    public List<HeaderDataBuilder> getResponseHeaders() {
+    List<HeaderDataBuilder> getResponseHeaders() {
         return responseHeaders;
     }
 
-    @BodyState public int getResponseBodyState() {
+    @BodyState int getResponseBodyState() {
         return responseBodyState;
     }
 
-    public long getResponseBodySize() {
+    long getResponseBodySize() {
         return responseBodySize;
     }
 
-    public String getResponseBody() {
+    String getResponseBody() {
         return responseBody;
     }
 
@@ -265,7 +264,7 @@ public class LogDataBuilder {
                 + "\n" + '}';
     }
 
-    public static final class HeaderDataBuilder {
+    static final class HeaderDataBuilder {
 
         private final String name;
         private final String value;
@@ -275,11 +274,11 @@ public class LogDataBuilder {
             this.value = value;
         }
 
-        public String getName() {
+        String getName() {
             return name;
         }
 
-        public String getValue() {
+        String getValue() {
             return value;
         }
 

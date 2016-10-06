@@ -338,7 +338,7 @@ public abstract class BaseLogDataInterceptorUnitTest<MockResponse, Request> {
         fail(String.format("No header with name: %s", name));
     }
 
-    class PredicateStartsWith implements Predicate<String> {
+    private class PredicateStartsWith implements Predicate<String> {
 
         final String expected;
 
@@ -351,7 +351,7 @@ public abstract class BaseLogDataInterceptorUnitTest<MockResponse, Request> {
         }
     }
 
-    class PredicateEquals<T> implements Predicate<T> {
+    private class PredicateEquals<T> implements Predicate<T> {
 
         final T expected;
 

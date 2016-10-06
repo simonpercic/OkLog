@@ -9,8 +9,8 @@ import java.nio.charset.Charset;
  */
 public final class Constants {
 
-    static final String LOG_TAG = "OKLOG";
     public static final String LOG_URL_BASE_REMOTE = "http://responseecho-simonpercic.rhcloud.com";
+    static final String LOG_TAG = "OKLOG";
     static final String LOG_URL_ECHO_RESPONSE_PATH = "/v1/re/";
 
     private static final String UTF8 = "UTF-8";

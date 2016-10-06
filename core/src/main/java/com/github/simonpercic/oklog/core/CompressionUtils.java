@@ -11,7 +11,7 @@ import java.util.zip.GZIPOutputStream;
  *
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
-public final class CompressionUtils {
+final class CompressionUtils {
 
     private CompressionUtils() {
         // no instance

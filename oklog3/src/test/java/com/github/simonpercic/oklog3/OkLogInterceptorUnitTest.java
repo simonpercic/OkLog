@@ -23,7 +23,6 @@ import okhttp3.OkHttpClient.Builder;
 import okhttp3.Request;
 import okhttp3.mockwebserver.MockWebServer;
 
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 /**
@@ -63,15 +62,9 @@ public class OkLogInterceptorUnitTest {
             client.newCall(request().build()).execute();
             fail();
         } catch (UnknownHostException expected) {
-            LogDataBuilder expectedValue = new LogDataBuilder()
-                    .requestMethod(GET)
-                    .requestUrl(url.toString())
-                    .requestBodyState(LogDataBuilder.NO_BODY)
-                    .requestFailed();
-
             LogDataBuilder appValue = TestUtils.getLogData(applicationLogManager);
-            TestUtils.assertData(expectedValue, appValue);
-            assertNull(appValue.getRequestHeaders());
+            TestUtils.assertData(GET, url.toString(), 2, true, appValue);
+            TestUtils.assertNoRequestHeaders(appValue);
         }
     }
 

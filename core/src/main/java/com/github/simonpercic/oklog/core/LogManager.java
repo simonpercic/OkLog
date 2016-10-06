@@ -52,10 +52,10 @@ public class LogManager {
     }
 
     String getLogUrl(@Nullable String responseBody, @Nullable LogData logData) {
-        String compressed;
+        String responseBodyString;
 
         try {
-            compressed = CompressionUtils.gzipBase64UrlSafe(responseBody);
+            responseBodyString = CompressionUtils.gzipBase64UrlSafe(responseBody);
         } catch (IOException e) {
             if (useAndroidLog) {
                 Log.e(Constants.LOG_TAG, String.format(LOG_FORMAT, e.getMessage()));
@@ -66,18 +66,18 @@ public class LogManager {
             return null;
         }
 
-        if (compressed == null || compressed.length() == 0) {
-            String message = "LogManager: compressed string is empty";
+        if (responseBodyString == null || responseBodyString.length() == 0) {
+            String message = "LogManager: responseBodyString string is empty";
             if (useAndroidLog) {
                 Log.w(Constants.LOG_TAG, message);
             } else {
                 Timber.w(message);
             }
 
-            return null;
+            responseBodyString = "0";
         }
 
-        String url = String.format("%s%s%s", logUrlBase, Constants.LOG_URL_ECHO_RESPONSE_PATH, compressed);
+        String url = String.format("%s%s%s", logUrlBase, Constants.LOG_URL_ECHO_RESPONSE_PATH, responseBodyString);
 
         byte[] logDataBytes = LogDataSerializer.serialize(logData);
 

@@ -9,7 +9,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
@@ -38,22 +37,26 @@ public class LogManagerUnitTest {
     public void testGetLogUrlIOException() throws Exception {
         when(CompressionUtils.gzipBase64(anyString())).thenThrow(new IOException());
 
-        LogManager logManager = new LogManager(null, null, false);
+        String baseUrl = "http://example.com";
+        LogManager logManager = new LogManager(baseUrl, null, false);
 
         String logUrl = logManager.getLogUrl("", null);
+        String expected = String.format("%s%s0", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH);
 
-        assertNull(logUrl);
+        assertEquals(expected, logUrl);
     }
 
     @Test
     public void testGetLogUrlEmpty() throws Exception {
         when(CompressionUtils.gzipBase64(anyString())).thenReturn("");
 
-        LogManager logManager = new LogManager(null, null, false);
+        String baseUrl = "http://example.com";
+        LogManager logManager = new LogManager(baseUrl, null, false);
 
         String logUrl = logManager.getLogUrl("", null);
+        String expected = String.format("%s%s0", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH);
 
-        assertNull(logUrl);
+        assertEquals(expected, logUrl);
     }
 
     @Test

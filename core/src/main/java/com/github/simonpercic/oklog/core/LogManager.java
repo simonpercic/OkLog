@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.github.simonpercic.oklog.shared.LogDataSerializer;
+import com.github.simonpercic.oklog.shared.SharedConstants;
 import com.github.simonpercic.oklog.shared.data.LogData;
 
 import java.io.IOException;
@@ -74,7 +75,7 @@ public class LogManager {
                 Timber.w(message);
             }
 
-            responseBodyString = "0";
+            responseBodyString = SharedConstants.EMPTY_RESPONSE_BODY;
         }
 
         String url = String.format("%s%s%s", logUrlBase, Constants.LOG_URL_ECHO_RESPONSE_PATH, responseBodyString);

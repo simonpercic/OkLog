@@ -101,13 +101,7 @@ public class LogManager {
     private StringBuilder getRequestBodyQuery(@NonNull StringBuilder queryParams, @Nullable String requestBody) {
         String requestBodyString = compressBody(requestBody);
 
-        if (!StringUtils.isEmpty(requestBodyString)) {
-            appendQuerySymbol(queryParams);
-            queryParams.append("qb=");
-            queryParams.append(requestBodyString);
-        }
-
-        return queryParams;
+        return appendQuerySymbol(queryParams, SharedConstants.QUERY_PARAM_REQUEST_BODY, requestBodyString);
     }
 
     @NonNull private StringBuilder getLogDataQuery(@NonNull StringBuilder queryParams, @Nullable LogData logData) {
@@ -124,13 +118,7 @@ public class LogManager {
             }
         }
 
-        if (!StringUtils.isEmpty(logDataString)) {
-            appendQuerySymbol(queryParams);
-            queryParams.append("d=");
-            queryParams.append(logDataString);
-        }
-
-        return queryParams;
+        return appendQuerySymbol(queryParams, SharedConstants.QUERY_PARAM_DATA, logDataString);
     }
 
     @VisibleForTesting void logDebug(String logUrl) {
@@ -141,8 +129,17 @@ public class LogManager {
         }
     }
 
-    private static void appendQuerySymbol(@NonNull StringBuilder queryParams) {
-        boolean first = queryParams.length() == 0;
-        queryParams.append(first ? "?" : "&");
+    @NonNull private static StringBuilder appendQuerySymbol(@NonNull StringBuilder queryParams, String querySymbol,
+            String string) {
+
+        if (!StringUtils.isEmpty(string)) {
+            boolean first = queryParams.length() == 0;
+            queryParams.append(first ? "?" : "&");
+            queryParams.append(querySymbol);
+            queryParams.append('=');
+            queryParams.append(string);
+        }
+
+        return queryParams;
     }
 }

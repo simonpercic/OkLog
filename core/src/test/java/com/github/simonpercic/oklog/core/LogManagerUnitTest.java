@@ -46,7 +46,7 @@ public class LogManagerUnitTest {
         String baseUrl = "http://example.com";
         LogManager logManager = new LogManager(baseUrl, null, false);
 
-        String logUrl = logManager.getLogUrl("", null);
+        String logUrl = logManager.getLogUrl("", "", null);
         String expected = String.format("%s%s0", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH);
 
         assertEquals(expected, logUrl);
@@ -59,7 +59,7 @@ public class LogManagerUnitTest {
         String baseUrl = "http://example.com";
         LogManager logManager = new LogManager(baseUrl, null, false);
 
-        String logUrl = logManager.getLogUrl("", null);
+        String logUrl = logManager.getLogUrl("", "", null);
         String expected = String.format("%s%s0", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH);
 
         assertEquals(expected, logUrl);
@@ -78,14 +78,16 @@ public class LogManagerUnitTest {
                 + "AA==\n";
 
         when(CompressionUtils.gzipBase64UrlSafe(eq("response_body"))).thenReturn(gzipped.replaceAll("\n", ""));
+        when(CompressionUtils.gzipBase64UrlSafe(eq("request_body"))).thenReturn("compressed_request_body");
 
         String baseUrl = "http://example.com";
         LogManager logManager = new LogManager(baseUrl, null, false);
 
-        String logUrl = logManager.getLogUrl("response_body", null);
+        String logUrl = logManager.getLogUrl("response_body", "request_body", null);
 
         String gzippedNoNewLine = gzipped.replaceAll("\n", "");
-        String expected = String.format("%s%s%s", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH, gzippedNoNewLine);
+        String expected = String.format("%s%s%s?qb=%s", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH, gzippedNoNewLine,
+                "compressed_request_body");
         assertEquals(expected, logUrl);
     }
 
@@ -102,6 +104,7 @@ public class LogManagerUnitTest {
                 + "AA==\n";
 
         when(CompressionUtils.gzipBase64UrlSafe(eq("response_body"))).thenReturn(gzipped.replaceAll("\n", ""));
+        when(CompressionUtils.gzipBase64UrlSafe(eq("request_body"))).thenReturn("compressed_request_body");
 
         String baseUrl = "http://example.com";
         LogManager logManager = new LogManager(baseUrl, null, false);
@@ -135,36 +138,34 @@ public class LogManagerUnitTest {
 
         when(CompressionUtils.gzipBase64UrlSafe(eq(bytes))).thenReturn(compressedLogData);
 
-        String logUrl = logManager.getLogUrl("response_body", logData);
+        String logUrl = logManager.getLogUrl("response_body", "request_body", logData);
 
         String gzippedNoNewLine = gzipped.replaceAll("\n", "");
-        String expected = String.format("%s%s%s?d=%s", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH, gzippedNoNewLine,
-                compressedLogData);
+        String expected = String.format("%s%s%s?qb=%s&d=%s", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH,
+                gzippedNoNewLine, "compressed_request_body", compressedLogData);
         assertEquals(expected, logUrl);
     }
 
     @Test
     public void testLogDebugCalled() throws Exception {
-        String compressedString = "compressedString";
-        when(CompressionUtils.gzipBase64UrlSafe(anyString())).thenReturn(compressedString);
-        when(CompressionUtils.gzipBase64UrlSafe((byte[]) anyObject())).thenReturn(compressedString);
+        when(CompressionUtils.gzipBase64UrlSafe(eq("response_body"))).thenReturn("compressed_string");
+        when(CompressionUtils.gzipBase64UrlSafe((byte[]) anyObject())).thenReturn("compressed_data_string");
 
         String baseUrl = "http://example.com";
         LogManager logManager = spy(new LogManager(baseUrl, null, false));
 
         logManager.log(new LogDataBuilder().responseBody("response_body"));
 
-        String expected = String.format("%s%s%s?d=%s", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH, compressedString,
-                compressedString);
+        String expected = String.format("%s%s%s?d=%s", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH,
+                "compressed_string", "compressed_data_string");
 
         verify(logManager).logDebug(eq(expected));
     }
 
     @Test
     public void testLogInterceptorCalled() throws Exception {
-        String compressedString = "compressedString";
-        when(CompressionUtils.gzipBase64UrlSafe(anyString())).thenReturn(compressedString);
-        when(CompressionUtils.gzipBase64UrlSafe((byte[]) anyObject())).thenReturn(compressedString);
+        when(CompressionUtils.gzipBase64UrlSafe(eq("response_body"))).thenReturn("compressed_string");
+        when(CompressionUtils.gzipBase64UrlSafe((byte[]) anyObject())).thenReturn("compressed_data_string");
 
         LogInterceptor logInterceptor = mock(LogInterceptor.class);
 
@@ -173,8 +174,8 @@ public class LogManagerUnitTest {
 
         logManager.log(new LogDataBuilder().responseBody("response_body"));
 
-        String expected = String.format("%s%s%s?d=%s", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH, compressedString,
-                compressedString);
+        String expected = String.format("%s%s%s?d=%s", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH,
+                "compressed_string", "compressed_data_string");
 
         verify(logInterceptor).onLog(eq(expected));
     }
@@ -196,9 +197,8 @@ public class LogManagerUnitTest {
 
     @Test
     public void testLogInterceptorNotHandled() throws Exception {
-        String compressedString = "compressedString";
-        when(CompressionUtils.gzipBase64UrlSafe(anyString())).thenReturn(compressedString);
-        when(CompressionUtils.gzipBase64UrlSafe((byte[]) anyObject())).thenReturn(compressedString);
+        when(CompressionUtils.gzipBase64UrlSafe(eq("response_body"))).thenReturn("compressed_string");
+        when(CompressionUtils.gzipBase64UrlSafe((byte[]) anyObject())).thenReturn("compressed_data_string");
 
         LogInterceptor logInterceptor = mock(LogInterceptor.class);
         when(logInterceptor.onLog(anyString())).thenReturn(false);
@@ -208,8 +208,8 @@ public class LogManagerUnitTest {
 
         logManager.log(new LogDataBuilder().responseBody("response_body"));
 
-        String expected = String.format("%s%s%s?d=%s", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH, compressedString,
-                compressedString);
+        String expected = String.format("%s%s%s?d=%s", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH,
+                "compressed_string", "compressed_data_string");
 
         verify(logManager).logDebug(eq(expected));
     }

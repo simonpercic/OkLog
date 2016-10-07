@@ -2,6 +2,7 @@ package com.github.simonpercic.oklog.core;
 
 import android.support.annotation.Nullable;
 
+import com.github.simonpercic.collectionhelper.CollectionHelper;
 import com.github.simonpercic.oklog.shared.data.BodyState;
 import com.github.simonpercic.oklog.shared.data.HeaderData;
 import com.github.simonpercic.oklog.shared.data.LogData;
@@ -56,7 +57,7 @@ final class LogDataConverter {
     }
 
     @Nullable private static List<HeaderData> convertHeaders(@Nullable List<LogDataBuilder.HeaderDataBuilder> headers) {
-        if (headers == null || headers.size() == 0) {
+        if (CollectionHelper.isEmpty(headers)) {
             return null;
         }
 

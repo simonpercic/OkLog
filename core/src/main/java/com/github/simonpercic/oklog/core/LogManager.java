@@ -66,7 +66,7 @@ public class LogManager {
             return null;
         }
 
-        if (responseBodyString == null || responseBodyString.length() == 0) {
+        if (StringUtils.isEmpty(responseBodyString)) {
             String message = "LogManager: responseBodyString string is empty";
             if (useAndroidLog) {
                 Log.w(Constants.LOG_TAG, message);

@@ -44,6 +44,7 @@ dependencies {
 
     compile project(':oklog-shared')
     compile "com.android.support:support-annotations:$supportVersion"
+    compile 'com.github.simonpercic:collectionhelper:1.2.1'
 
     // Unit test dependencies
     testCompile "junit:junit:$junitVersion"

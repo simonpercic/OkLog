@@ -1,5 +1,7 @@
 package com.github.simonpercic.oklog.core;
 
+import com.github.simonpercic.collectionhelper.CollectionHelper;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -320,7 +322,7 @@ public abstract class BaseLogDataInterceptorUnitTest<MockResponse, Request> {
 
     private void assertHeaderData(List<LogDataBuilder.HeaderDataBuilder> headers, String name,
             Predicate<String> assertPredicate) {
-        if (headers == null || headers.size() == 0) {
+        if (CollectionHelper.isEmpty(headers)) {
             fail("Headers are empty");
         }
 

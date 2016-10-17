@@ -34,7 +34,7 @@ final class LogDataConverter {
                 .request_url(builder.getRequestUrl())
                 .protocol(builder.getProtocol())
                 .request_content_type(builder.getRequestContentType())
-                .request_content_length(builder.getResponseContentLength())
+                .request_content_length(builder.getRequestContentLength())
                 .request_body_state(BodyState.fromValue(builder.getRequestBodyState()))
                 .request_failed(builder.isRequestFailed())
                 .response_code(builder.getResponseCode())

@@ -4,11 +4,11 @@ import android.support.annotation.VisibleForTesting;
 
 import com.github.simonpercic.oklog.core.BaseLogDataInterceptor.RequestLogData;
 import com.github.simonpercic.oklog.core.BaseLogDataInterceptor.ResponseLogData;
-import com.github.simonpercic.oklog.core.Constants;
+import com.github.simonpercic.oklog.core.BaseOkLogInterceptorBuilder;
 import com.github.simonpercic.oklog.core.LogDataBuilder;
+import com.github.simonpercic.oklog.core.LogDataConfig;
 import com.github.simonpercic.oklog.core.LogInterceptor;
 import com.github.simonpercic.oklog.core.LogManager;
-import com.github.simonpercic.oklog.core.StringUtils;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -28,8 +28,9 @@ public final class OkLogInterceptor implements Interceptor {
     private final LogManager logManager;
     private final LogDataInterceptor logDataInterceptor;
 
-    private OkLogInterceptor(String logUrlBase, LogInterceptor logInterceptor, boolean useAndroidLog) {
-        this(new LogManager(logUrlBase, logInterceptor, useAndroidLog));
+    private OkLogInterceptor(String logUrlBase, LogInterceptor logInterceptor, boolean useAndroidLog,
+            boolean withRequestBody, LogDataConfig logDataConfig) {
+        this(new LogManager(logUrlBase, logInterceptor, useAndroidLog, withRequestBody, logDataConfig));
     }
 
     @VisibleForTesting OkLogInterceptor(LogManager logManager) {
@@ -70,15 +71,7 @@ public final class OkLogInterceptor implements Interceptor {
 
     // region Builder
 
-    public static final class Builder {
-
-        private String logUrlBase;
-        private LogInterceptor logInterceptor;
-        private boolean useAndroidLog;
-
-        private Builder() {
-            this.logUrlBase = Constants.LOG_URL_BASE_REMOTE;
-        }
+    public static final class Builder extends BaseOkLogInterceptorBuilder {
 
         /**
          * Set the base url.
@@ -89,11 +82,7 @@ public final class OkLogInterceptor implements Interceptor {
          * @return Builder instance, to chain calls
          */
         public Builder setBaseUrl(String url) {
-            if (StringUtils.isEmpty(url)) {
-                return this;
-            }
-
-            this.logUrlBase = url;
+            baseSetBaseUrl(url);
             return this;
         }
 
@@ -105,7 +94,7 @@ public final class OkLogInterceptor implements Interceptor {
          * @return Builder instance, to chain calls
          */
         public Builder useAndroidLog(boolean useAndroidLog) {
-            this.useAndroidLog = useAndroidLog;
+            baseUseAndroidLog(useAndroidLog);
             return this;
         }
 
@@ -116,7 +105,203 @@ public final class OkLogInterceptor implements Interceptor {
          * @return Builder instance, to chain calls
          */
         public Builder setLogInterceptor(LogInterceptor logInterceptor) {
-            this.logInterceptor = logInterceptor;
+            baseSetLogInterceptor(logInterceptor);
+            return this;
+        }
+
+        /**
+         * Include request body.
+         *
+         * @param requestBody true to include, false to skip
+         * @return Builder instance, to chain calls
+         */
+        public Builder withRequestBody(boolean requestBody) {
+            baseWithRequestBody(requestBody);
+            return this;
+        }
+
+        /**
+         * Include request method.
+         *
+         * @param requestMethod true to include, false to skip
+         * @return Builder instance, to chain calls
+         */
+        public Builder withRequestMethod(boolean requestMethod) {
+            baseWithRequestMethod(requestMethod);
+            return this;
+        }
+
+        /**
+         * Include request url.
+         *
+         * @param requestUrl true to include, false to skip
+         * @return Builder instance, to chain calls
+         */
+        public Builder withRequestUrl(boolean requestUrl) {
+            baseWithRequestUrl(requestUrl);
+            return this;
+        }
+
+        /**
+         * Include protocol.
+         *
+         * @param protocol true to include, false to skip
+         * @return Builder instance, to chain calls
+         */
+        public Builder withProtocol(boolean protocol) {
+            baseWithProtocol(protocol);
+            return this;
+        }
+
+        /**
+         * Include request content type.
+         *
+         * @param requestContentType true to include, false to skip
+         * @return Builder instance, to chain calls
+         */
+        public Builder withRequestContentType(boolean requestContentType) {
+            baseWithRequestContentType(requestContentType);
+            return this;
+        }
+
+        /**
+         * Include request content length.
+         *
+         * @param requestContentLength true to include, false to skip
+         * @return Builder instance, to chain calls
+         */
+        public Builder withRequestContentLength(boolean requestContentLength) {
+            baseWithRequestContentLength(requestContentLength);
+            return this;
+        }
+
+        /**
+         * Include request body state.
+         *
+         * @param requestBodyState true to include, false to skip
+         * @return Builder instance, to chain calls
+         */
+        public Builder withRequestBodyState(boolean requestBodyState) {
+            baseWithRequestBodyState(requestBodyState);
+            return this;
+        }
+
+        /**
+         * Include request headers.
+         *
+         * @param requestHeaders true to include, false to skip
+         * @return Builder instance, to chain calls
+         */
+        public Builder withRequestHeaders(boolean requestHeaders) {
+            baseWithRequestHeaders(requestHeaders);
+            return this;
+        }
+
+        /**
+         * Include request failed state.
+         *
+         * @param requestFailedState true to include, false to skip
+         * @return Builder instance, to chain calls
+         */
+        public Builder withRequestFailedState(boolean requestFailedState) {
+            baseWithRequestFailedState(requestFailedState);
+            return this;
+        }
+
+        /**
+         * Include response code.
+         *
+         * @param responseCode true to include, false to skip
+         * @return Builder instance, to chain calls
+         */
+        public Builder withResponseCode(boolean responseCode) {
+            baseWithResponseCode(responseCode);
+            return this;
+        }
+
+        /**
+         * Include response message.
+         *
+         * @param responseMessage true to include, false to skip
+         * @return Builder instance, to chain calls
+         */
+        public Builder withResponseMessage(boolean responseMessage) {
+            baseWithResponseMessage(responseMessage);
+            return this;
+        }
+
+        /**
+         * Include response url.
+         *
+         * @param responseUrl true to include, false to skip
+         * @return Builder instance, to chain calls
+         */
+        public Builder withResponseUrl(boolean responseUrl) {
+            baseWithResponseUrl(responseUrl);
+            return this;
+        }
+
+        /**
+         * Include response duration.
+         *
+         * @param responseDuration true to include, false to skip
+         * @return Builder instance, to chain calls
+         */
+        public Builder withResponseDuration(boolean responseDuration) {
+            baseWithResponseDuration(responseDuration);
+            return this;
+        }
+
+        /**
+         * Include response size.
+         *
+         * @param responseSize true to include, false to skip
+         * @return Builder instance, to chain calls
+         */
+        public Builder withResponseSize(boolean responseSize) {
+            baseWithResponseSize(responseSize);
+            return this;
+        }
+
+        /**
+         * Include response body state.
+         *
+         * @param responseBodyState true to include, false to skip
+         * @return Builder instance, to chain calls
+         */
+        public Builder withResponseBodyState(boolean responseBodyState) {
+            baseWithResponseBodyState(responseBodyState);
+            return this;
+        }
+
+        /**
+         * Include response headers.
+         *
+         * @param responseHeaders true to include, false to skip
+         * @return Builder instance, to chain calls
+         */
+        public Builder withResponseHeaders(boolean responseHeaders) {
+            baseWithResponseHeaders(responseHeaders);
+            return this;
+        }
+
+        /**
+         * Don't include any additional log data.
+         *
+         * @return Builder instance, to chain calls
+         */
+        public Builder withNoLogData() {
+            baseWithNoLogData();
+            return this;
+        }
+
+        /**
+         * Include all additional log data.
+         *
+         * @return Builder instance, to chain calls
+         */
+        public Builder withAllLogData() {
+            baseWithAllLogData();
             return this;
         }
 
@@ -126,7 +311,7 @@ public final class OkLogInterceptor implements Interceptor {
          * @return instance of OkLogInterceptor
          */
         public OkLogInterceptor build() {
-            return new OkLogInterceptor(this.logUrlBase, this.logInterceptor, this.useAndroidLog);
+            return new OkLogInterceptor(logUrlBase, logInterceptor, useAndroidLog, requestBody, buildLogDataConfig());
         }
     }
 

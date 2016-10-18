@@ -7,9 +7,9 @@ import java.nio.charset.Charset;
  *
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
-public final class Constants {
+final class Constants {
 
-    public static final String LOG_URL_BASE_REMOTE = "http://responseecho-simonpercic.rhcloud.com";
+    static final String LOG_URL_BASE_REMOTE = "http://responseecho-simonpercic.rhcloud.com";
     static final String LOG_TAG = "OKLOG";
     static final String LOG_URL_ECHO_RESPONSE_PATH = "/v1/re/";
 

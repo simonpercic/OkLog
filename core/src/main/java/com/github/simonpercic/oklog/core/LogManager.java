@@ -33,8 +33,11 @@ public class LogManager {
      * @param urlBase url base to use
      * @param logInterceptor optional log interceptor
      * @param useAndroidLog true to use Android's Log methods, false to use Timber
+     * @param withRequestBody true to include request body
+     * @param logDataConfig log data config
      */
-    public LogManager(String urlBase, LogInterceptor logInterceptor, boolean useAndroidLog) {
+    public LogManager(String urlBase, LogInterceptor logInterceptor, boolean useAndroidLog, boolean withRequestBody,
+            LogDataConfig logDataConfig) {
         this.logUrlBase = urlBase;
         this.logInterceptor = logInterceptor;
         this.useAndroidLog = useAndroidLog || !TimberUtils.hasTimber();

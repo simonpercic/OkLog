@@ -41,4 +41,22 @@ public class LogDataConfig {
         this.responseBodyState = responseBodyState;
         this.responseHeaders = responseHeaders;
     }
+
+    boolean any() {
+        return requestMethod
+                || requestUrl
+                || protocol
+                || requestContentType
+                || requestContentLength
+                || requestBodyState
+                || requestHeaders
+                || requestFailedState
+                || responseCode
+                || responseMessage
+                || responseUrl
+                || responseDuration
+                || responseSize
+                || responseBodyState
+                || responseHeaders;
+    }
 }

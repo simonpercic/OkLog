@@ -1,5 +1,6 @@
 package com.github.simonpercic.oklog3;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
 import com.github.simonpercic.oklog.core.BaseLogDataInterceptor.RequestLogData;
@@ -29,7 +30,7 @@ public final class OkLogInterceptor implements Interceptor {
     private final LogDataInterceptor logDataInterceptor;
 
     private OkLogInterceptor(String logUrlBase, LogInterceptor logInterceptor, boolean useAndroidLog,
-            boolean withRequestBody, LogDataConfig logDataConfig) {
+            boolean withRequestBody, @NonNull LogDataConfig logDataConfig) {
         this(new LogManager(logUrlBase, logInterceptor, useAndroidLog, withRequestBody, logDataConfig));
     }
 

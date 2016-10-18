@@ -26,6 +26,8 @@ public class LogManager {
     private final String logUrlBase;
     private final LogInterceptor logInterceptor;
     final boolean useAndroidLog;
+    private final boolean withRequestBody;
+    @NonNull private final LogDataConfig logDataConfig;
 
     /**
      * Constructor.
@@ -37,10 +39,12 @@ public class LogManager {
      * @param logDataConfig log data config
      */
     public LogManager(String urlBase, LogInterceptor logInterceptor, boolean useAndroidLog, boolean withRequestBody,
-            LogDataConfig logDataConfig) {
+            @NonNull LogDataConfig logDataConfig) {
         this.logUrlBase = urlBase;
         this.logInterceptor = logInterceptor;
         this.useAndroidLog = useAndroidLog || !TimberUtils.hasTimber();
+        this.withRequestBody = withRequestBody;
+        this.logDataConfig = logDataConfig;
     }
 
     /**

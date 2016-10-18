@@ -53,7 +53,7 @@ public class LogManager {
      * @param data response data
      */
     public void log(LogDataBuilder data) {
-        LogData logData = LogDataConverter.convert(data);
+        LogData logData = LogDataConverter.convert(data, logDataConfig);
         String logUrl = getLogUrl(data.getResponseBody(), data.getRequestBody(), logData);
 
         if (logInterceptor == null || !logInterceptor.onLog(logUrl)) {
@@ -76,12 +76,16 @@ public class LogManager {
             responseBodyString = SharedConstants.EMPTY_RESPONSE_BODY;
         }
 
-        String url = String.format("%s%s%s", logUrlBase, Constants.LOG_URL_ECHO_RESPONSE_PATH, responseBodyString);
-
         StringBuilder queryParams = new StringBuilder();
 
-        queryParams = getRequestBodyQuery(queryParams, requestBody);
+        if (withRequestBody) {
+            queryParams = getRequestBodyQuery(queryParams, requestBody);
+        }
+
         queryParams = getLogDataQuery(queryParams, logData);
+
+        String urlPath = queryParams.length() > 0 ? Constants.LOG_URL_INFO_PATH : Constants.LOG_URL_ECHO_PATH;
+        String url = String.format("%s%s%s%s", logUrlBase, Constants.LOG_URL_BASE_PATH, urlPath, responseBodyString);
 
         return url.concat(queryParams.toString());
     }

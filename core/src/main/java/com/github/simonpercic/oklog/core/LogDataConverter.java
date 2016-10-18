@@ -1,5 +1,6 @@
 package com.github.simonpercic.oklog.core;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.github.simonpercic.collectionhelper.CollectionHelper;
@@ -21,29 +22,72 @@ final class LogDataConverter {
         // no instance
     }
 
-    @Nullable static LogData convert(@Nullable LogDataBuilder builder) {
+    @Nullable static LogData convert(@Nullable LogDataBuilder builder, @NonNull LogDataConfig config) {
         if (builder == null) {
             return null;
         }
 
-        List<HeaderData> requestHeaders = convertHeaders(builder.getRequestHeaders());
-        List<HeaderData> responseHeaders = convertHeaders(builder.getResponseHeaders());
+        if (!config.any()) {
+            return null;
+        }
 
-        LogData.Builder logDataBuilder = new LogData.Builder()
-                .request_method(builder.getRequestMethod())
-                .request_url(builder.getRequestUrl())
-                .protocol(builder.getProtocol())
-                .request_content_type(builder.getRequestContentType())
-                .request_content_length(builder.getRequestContentLength())
-                .request_body_state(BodyState.fromValue(builder.getRequestBodyState()))
-                .request_failed(builder.isRequestFailed())
-                .response_code(builder.getResponseCode())
-                .response_message(builder.getResponseMessage())
-                .response_url(builder.getResponseUrl())
-                .response_duration_ms(builder.getResponseDurationMs())
-                .response_content_length(builder.getResponseContentLength())
-                .response_body_state(BodyState.fromValue(builder.getResponseBodyState()))
-                .response_body_size(builder.getResponseBodySize());
+        List<HeaderData> requestHeaders = config.requestHeaders ? convertHeaders(builder.getRequestHeaders()) : null;
+        List<HeaderData> responseHeaders = config.responseHeaders ? convertHeaders(builder.getResponseHeaders()) : null;
+
+        LogData.Builder logDataBuilder = new LogData.Builder();
+
+        if (config.requestMethod) {
+            logDataBuilder.request_method(builder.getRequestMethod());
+        }
+
+        if (config.requestUrl) {
+            logDataBuilder.request_url(builder.getRequestUrl());
+        }
+
+        if (config.protocol) {
+            logDataBuilder.protocol(builder.getProtocol());
+        }
+
+        if (config.requestContentType) {
+            logDataBuilder.request_content_type(builder.getRequestContentType());
+        }
+
+        if (config.requestContentLength) {
+            logDataBuilder.request_content_length(builder.getRequestContentLength());
+        }
+
+        if (config.requestBodyState) {
+            logDataBuilder.request_body_state(BodyState.fromValue(builder.getRequestBodyState()));
+        }
+
+        if (config.requestFailedState) {
+            logDataBuilder.request_failed(builder.isRequestFailed());
+        }
+
+        if (config.responseCode) {
+            logDataBuilder.response_code(builder.getResponseCode());
+        }
+
+        if (config.responseMessage) {
+            logDataBuilder.response_message(builder.getResponseMessage());
+        }
+
+        if (config.responseUrl) {
+            logDataBuilder.response_url(builder.getResponseUrl());
+        }
+
+        if (config.responseDuration) {
+            logDataBuilder.response_duration_ms(builder.getResponseDurationMs());
+        }
+
+        if (config.responseBodyState) {
+            logDataBuilder.response_body_state(BodyState.fromValue(builder.getResponseBodyState()));
+        }
+
+        if (config.responseSize) {
+            logDataBuilder.response_content_length(builder.getResponseContentLength());
+            logDataBuilder.response_body_size(builder.getResponseBodySize());
+        }
 
         if (requestHeaders != null) {
             logDataBuilder.request_headers(requestHeaders);

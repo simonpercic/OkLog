@@ -50,7 +50,7 @@ public class LogManagerUnitTest {
         LogManager logManager = new LogManager(baseUrl, null, false, true, LOG_DATA_CONFIG_ALL);
 
         String logUrl = logManager.getLogUrl("", "", null);
-        String expected = String.format("%s%s0", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH);
+        String expected = String.format("%s%s0", baseUrl, "/v1/re/");
 
         assertEquals(expected, logUrl);
     }
@@ -63,7 +63,7 @@ public class LogManagerUnitTest {
         LogManager logManager = new LogManager(baseUrl, null, false, true, LOG_DATA_CONFIG_ALL);
 
         String logUrl = logManager.getLogUrl("", "", null);
-        String expected = String.format("%s%s0", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH);
+        String expected = String.format("%s%s0", baseUrl, "/v1/re/");
 
         assertEquals(expected, logUrl);
     }
@@ -89,7 +89,7 @@ public class LogManagerUnitTest {
         String logUrl = logManager.getLogUrl("response_body", "request_body", null);
 
         String gzippedNoNewLine = gzipped.replaceAll("\n", "");
-        String expected = String.format("%s%s%s?qb=%s", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH, gzippedNoNewLine,
+        String expected = String.format("%s%s%s?qb=%s", baseUrl, "/v1/r/", gzippedNoNewLine,
                 "compressed_request_body");
         assertEquals(expected, logUrl);
     }
@@ -144,7 +144,7 @@ public class LogManagerUnitTest {
         String logUrl = logManager.getLogUrl("response_body", "request_body", logData);
 
         String gzippedNoNewLine = gzipped.replaceAll("\n", "");
-        String expected = String.format("%s%s%s?qb=%s&d=%s", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH,
+        String expected = String.format("%s%s%s?qb=%s&d=%s", baseUrl, "/v1/r/",
                 gzippedNoNewLine, "compressed_request_body", compressedLogData);
         assertEquals(expected, logUrl);
     }
@@ -159,7 +159,7 @@ public class LogManagerUnitTest {
 
         logManager.log(new LogDataBuilder().responseBody("response_body"));
 
-        String expected = String.format("%s%s%s?d=%s", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH,
+        String expected = String.format("%s%s%s?d=%s", baseUrl, "/v1/r/",
                 "compressed_string", "compressed_data_string");
 
         verify(logManager).logDebug(eq(expected));
@@ -177,7 +177,7 @@ public class LogManagerUnitTest {
 
         logManager.log(new LogDataBuilder().responseBody("response_body"));
 
-        String expected = String.format("%s%s%s?d=%s", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH,
+        String expected = String.format("%s%s%s?d=%s", baseUrl, "/v1/r/",
                 "compressed_string", "compressed_data_string");
 
         verify(logInterceptor).onLog(eq(expected));
@@ -211,7 +211,7 @@ public class LogManagerUnitTest {
 
         logManager.log(new LogDataBuilder().responseBody("response_body"));
 
-        String expected = String.format("%s%s%s?d=%s", baseUrl, Constants.LOG_URL_ECHO_RESPONSE_PATH,
+        String expected = String.format("%s%s%s?d=%s", baseUrl, "/v1/r/",
                 "compressed_string", "compressed_data_string");
 
         verify(logManager).logDebug(eq(expected));

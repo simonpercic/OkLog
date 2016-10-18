@@ -95,9 +95,7 @@ public abstract class BaseLogDataInterceptor<Chain, Request, Response, Headers, 
             }
 
             long contentLength = requestContentLength(request);
-            if (contentLength != -1) {
-                logDataBuilder.requestContentLength(contentLength);
-            }
+            logDataBuilder.requestContentLength(contentLength);
         }
 
         Headers headers = requestHeaders(request);

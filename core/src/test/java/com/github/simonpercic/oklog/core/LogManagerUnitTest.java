@@ -34,6 +34,9 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 @PrepareForTest({CompressionUtils.class, TimberUtils.class})
 public class LogManagerUnitTest {
 
+    private static final LogDataConfig LOG_DATA_CONFIG_NONE = new LogDataConfig(false, false, false, false, false,
+            false, false, false, false, false, false, false, false, false, false);
+
     private static final LogDataConfig LOG_DATA_CONFIG_ALL = new LogDataConfig(true, true, true, true, true, true, true,
             true, true, true, true, true, true, true, true);
 
@@ -47,7 +50,7 @@ public class LogManagerUnitTest {
         when(CompressionUtils.gzipBase64(anyString())).thenThrow(new IOException());
 
         String baseUrl = "http://example.com";
-        LogManager logManager = new LogManager(baseUrl, null, false, true, LOG_DATA_CONFIG_ALL);
+        LogManager logManager = new LogManager(baseUrl, null, false, false, LOG_DATA_CONFIG_NONE);
 
         String logUrl = logManager.getLogUrl("", "", null);
         String expected = String.format("%s%s0", baseUrl, "/v1/re/");
@@ -60,10 +63,10 @@ public class LogManagerUnitTest {
         when(CompressionUtils.gzipBase64(anyString())).thenReturn("");
 
         String baseUrl = "http://example.com";
-        LogManager logManager = new LogManager(baseUrl, null, false, true, LOG_DATA_CONFIG_ALL);
+        LogManager logManager = new LogManager(baseUrl, null, false, false, LOG_DATA_CONFIG_ALL);
 
         String logUrl = logManager.getLogUrl("", "", null);
-        String expected = String.format("%s%s0", baseUrl, "/v1/re/");
+        String expected = String.format("%s%s0", baseUrl, "/v1/r/");
 
         assertEquals(expected, logUrl);
     }

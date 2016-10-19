@@ -84,7 +84,10 @@ public class LogManager {
 
         queryParams = getLogDataQuery(queryParams, logData);
 
-        String urlPath = queryParams.length() > 0 ? Constants.LOG_URL_INFO_PATH : Constants.LOG_URL_ECHO_PATH;
+        String urlPath = withRequestBody || logDataConfig.any()
+                ? Constants.LOG_URL_INFO_PATH
+                : Constants.LOG_URL_ECHO_PATH;
+
         String url = String.format("%s%s%s%s", logUrlBase, Constants.LOG_URL_BASE_PATH, urlPath, responseBodyString);
 
         return url.concat(queryParams.toString());

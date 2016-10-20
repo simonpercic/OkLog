@@ -50,7 +50,7 @@ public class LogManagerUnitTest {
         when(CompressionUtils.gzipBase64(anyString())).thenThrow(new IOException());
 
         String baseUrl = "http://example.com";
-        LogManager logManager = new LogManager(baseUrl, null, false, false, LOG_DATA_CONFIG_NONE);
+        LogManager logManager = new LogManager(baseUrl, null, false, false, false, LOG_DATA_CONFIG_NONE);
 
         String logUrl = logManager.getLogUrl("", "", null);
         String expected = String.format("%s%s0", baseUrl, "/v1/re/");
@@ -63,7 +63,7 @@ public class LogManagerUnitTest {
         when(CompressionUtils.gzipBase64(anyString())).thenReturn("");
 
         String baseUrl = "http://example.com";
-        LogManager logManager = new LogManager(baseUrl, null, false, false, LOG_DATA_CONFIG_ALL);
+        LogManager logManager = new LogManager(baseUrl, null, false, false, false, LOG_DATA_CONFIG_ALL);
 
         String logUrl = logManager.getLogUrl("", "", null);
         String expected = String.format("%s%s0", baseUrl, "/v1/r/");
@@ -87,7 +87,7 @@ public class LogManagerUnitTest {
         when(CompressionUtils.gzipBase64UrlSafe(eq("request_body"))).thenReturn("compressed_request_body");
 
         String baseUrl = "http://example.com";
-        LogManager logManager = new LogManager(baseUrl, null, false, true, LOG_DATA_CONFIG_ALL);
+        LogManager logManager = new LogManager(baseUrl, null, false, true, false, LOG_DATA_CONFIG_ALL);
 
         String logUrl = logManager.getLogUrl("response_body", "request_body", null);
 
@@ -113,7 +113,7 @@ public class LogManagerUnitTest {
         when(CompressionUtils.gzipBase64UrlSafe(eq("request_body"))).thenReturn("compressed_request_body");
 
         String baseUrl = "http://example.com";
-        LogManager logManager = new LogManager(baseUrl, null, false, true, LOG_DATA_CONFIG_ALL);
+        LogManager logManager = new LogManager(baseUrl, null, false, true, false, LOG_DATA_CONFIG_ALL);
 
         List<HeaderData> requestHeaders = Arrays.asList(new HeaderData("q_n_1", "q_v_1"),
                 new HeaderData("q_n_2", "q_v_2"));
@@ -153,12 +153,27 @@ public class LogManagerUnitTest {
     }
 
     @Test
+    public void testGetLogUrlShorten() throws Exception {
+        when(CompressionUtils.gzipBase64UrlSafe(eq("response_body"))).thenReturn("compressed_response_body");
+        when(CompressionUtils.gzipBase64UrlSafe(eq("request_body"))).thenReturn("compressed_request_body");
+
+        String baseUrl = "http://example.com";
+        LogManager logManager = new LogManager(baseUrl, null, false, true, true, LOG_DATA_CONFIG_ALL);
+
+        String logUrl = logManager.getLogUrl("response_body", "request_body", null);
+
+        String expected = String.format("%s%s%s?qb=%s&s=1", baseUrl, "/v1/r/", "compressed_response_body",
+                "compressed_request_body");
+        assertEquals(expected, logUrl);
+    }
+
+    @Test
     public void testLogDebugCalled() throws Exception {
         when(CompressionUtils.gzipBase64UrlSafe(eq("response_body"))).thenReturn("compressed_string");
         when(CompressionUtils.gzipBase64UrlSafe((byte[]) anyObject())).thenReturn("compressed_data_string");
 
         String baseUrl = "http://example.com";
-        LogManager logManager = spy(new LogManager(baseUrl, null, false, true, LOG_DATA_CONFIG_ALL));
+        LogManager logManager = spy(new LogManager(baseUrl, null, false, true, false, LOG_DATA_CONFIG_ALL));
 
         logManager.log(new LogDataBuilder().responseBody("response_body"));
 
@@ -176,7 +191,7 @@ public class LogManagerUnitTest {
         LogInterceptor logInterceptor = mock(LogInterceptor.class);
 
         String baseUrl = "http://example.com";
-        LogManager logManager = new LogManager(baseUrl, logInterceptor, false, true, LOG_DATA_CONFIG_ALL);
+        LogManager logManager = new LogManager(baseUrl, logInterceptor, false, true, false, LOG_DATA_CONFIG_ALL);
 
         logManager.log(new LogDataBuilder().responseBody("response_body"));
 
@@ -194,7 +209,8 @@ public class LogManagerUnitTest {
         LogInterceptor logInterceptor = mock(LogInterceptor.class);
         when(logInterceptor.onLog(anyString())).thenReturn(true);
 
-        LogManager logManager = spy(new LogManager(null, logInterceptor, false, true, LOG_DATA_CONFIG_ALL));
+        LogManager logManager = spy(new LogManager(null, logInterceptor, false, true, false,
+                LOG_DATA_CONFIG_ALL));
 
         logManager.log(new LogDataBuilder().responseBody("response_body"));
 
@@ -210,7 +226,8 @@ public class LogManagerUnitTest {
         when(logInterceptor.onLog(anyString())).thenReturn(false);
 
         String baseUrl = "http://example.com";
-        LogManager logManager = spy(new LogManager(baseUrl, logInterceptor, false, true, LOG_DATA_CONFIG_ALL));
+        LogManager logManager = spy(new LogManager(baseUrl, logInterceptor, false, true, false,
+                LOG_DATA_CONFIG_ALL));
 
         logManager.log(new LogDataBuilder().responseBody("response_body"));
 
@@ -222,7 +239,7 @@ public class LogManagerUnitTest {
 
     @Test
     public void testUseAndroidLog() throws Exception {
-        LogManager logManager = new LogManager(null, null, true, true, LOG_DATA_CONFIG_ALL);
+        LogManager logManager = new LogManager(null, null, true, true, false, LOG_DATA_CONFIG_ALL);
         assertEquals(true, logManager.useAndroidLog);
     }
 
@@ -232,7 +249,7 @@ public class LogManagerUnitTest {
 
         when(TimberUtils.hasTimber()).thenReturn(false);
 
-        LogManager logManager = new LogManager(null, null, false, true, LOG_DATA_CONFIG_ALL);
+        LogManager logManager = new LogManager(null, null, false, true, false, LOG_DATA_CONFIG_ALL);
         assertEquals(true, logManager.useAndroidLog);
     }
 
@@ -242,7 +259,7 @@ public class LogManagerUnitTest {
 
         when(TimberUtils.hasTimber()).thenReturn(true);
 
-        LogManager logManager = new LogManager(null, null, false, true, LOG_DATA_CONFIG_ALL);
+        LogManager logManager = new LogManager(null, null, false, true, false, LOG_DATA_CONFIG_ALL);
         assertEquals(false, logManager.useAndroidLog);
     }
 }

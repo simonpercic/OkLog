@@ -29,8 +29,8 @@ public final class OkLogInterceptor implements Interceptor {
     private final LogDataInterceptor logDataInterceptor;
 
     private OkLogInterceptor(String logUrlBase, LogInterceptor logInterceptor, boolean useAndroidLog,
-            boolean withRequestBody, @NonNull LogDataConfig logDataConfig) {
-        this(new LogManager(logUrlBase, logInterceptor, useAndroidLog, withRequestBody, logDataConfig));
+            boolean withRequestBody, boolean shortenInfoUrl, @NonNull LogDataConfig logDataConfig) {
+        this(new LogManager(logUrlBase, logInterceptor, useAndroidLog, withRequestBody, shortenInfoUrl, logDataConfig));
     }
 
     @VisibleForTesting OkLogInterceptor(LogManager logManager) {
@@ -117,6 +117,17 @@ public final class OkLogInterceptor implements Interceptor {
          */
         public Builder withRequestBody(boolean requestBody) {
             baseWithRequestBody(requestBody);
+            return this;
+        }
+
+        /**
+         * Shorten info url on the server-side.
+         *
+         * @param shortenInfoUrl true to shorten url, false otherwise
+         * @return Builder instance, to chain calls
+         */
+        public Builder shortenInfoUrl(boolean shortenInfoUrl) {
+            this.shortenInfoUrl = shortenInfoUrl;
             return this;
         }
 
@@ -311,7 +322,8 @@ public final class OkLogInterceptor implements Interceptor {
          * @return instance of OkLogInterceptor
          */
         public OkLogInterceptor build() {
-            return new OkLogInterceptor(logUrlBase, logInterceptor, useAndroidLog, requestBody, buildLogDataConfig());
+            return new OkLogInterceptor(logUrlBase, logInterceptor, useAndroidLog, requestBody, shortenInfoUrl,
+                    buildLogDataConfig());
         }
     }
 

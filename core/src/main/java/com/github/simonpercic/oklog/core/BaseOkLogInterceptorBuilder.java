@@ -11,6 +11,7 @@ public class BaseOkLogInterceptorBuilder {
     protected LogInterceptor logInterceptor;
     protected boolean useAndroidLog;
     protected boolean requestBody;
+    protected boolean shortenInfoUrl;
 
     private boolean requestMethod;
     private boolean requestUrl;
@@ -59,6 +60,10 @@ public class BaseOkLogInterceptorBuilder {
 
     protected void baseWithRequestBody(boolean requestBody) {
         this.requestBody = requestBody;
+    }
+
+    protected void baseShortenInfoUrl(boolean shortenInfoUrl) {
+        this.shortenInfoUrl = shortenInfoUrl;
     }
 
     protected void baseWithRequestMethod(boolean requestMethod) {

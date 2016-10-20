@@ -27,6 +27,7 @@ public class LogManager {
     private final LogInterceptor logInterceptor;
     final boolean useAndroidLog;
     private final boolean withRequestBody;
+    private final boolean shortenInfoUrl;
     @NonNull private final LogDataConfig logDataConfig;
 
     /**
@@ -36,14 +37,16 @@ public class LogManager {
      * @param logInterceptor optional log interceptor
      * @param useAndroidLog true to use Android's Log methods, false to use Timber
      * @param withRequestBody true to include request body
+     * @param shortenInfoUrl true to shorten info url on the server-side
      * @param logDataConfig log data config
      */
     public LogManager(String urlBase, LogInterceptor logInterceptor, boolean useAndroidLog, boolean withRequestBody,
-            @NonNull LogDataConfig logDataConfig) {
+            boolean shortenInfoUrl, @NonNull LogDataConfig logDataConfig) {
         this.logUrlBase = urlBase;
         this.logInterceptor = logInterceptor;
         this.useAndroidLog = useAndroidLog || !TimberUtils.hasTimber();
         this.withRequestBody = withRequestBody;
+        this.shortenInfoUrl = shortenInfoUrl;
         this.logDataConfig = logDataConfig;
     }
 
@@ -84,9 +87,13 @@ public class LogManager {
 
         queryParams = getLogDataQuery(queryParams, logData);
 
-        String urlPath = withRequestBody || logDataConfig.any()
-                ? Constants.LOG_URL_INFO_PATH
-                : Constants.LOG_URL_ECHO_PATH;
+        boolean infoUrl = withRequestBody || shortenInfoUrl || logDataConfig.any();
+
+        if (shortenInfoUrl) {
+            queryParams = appendQuerySymbol(queryParams, SharedConstants.QUERY_SHORTEN_URL, "1");
+        }
+
+        String urlPath = infoUrl ? Constants.LOG_URL_INFO_PATH : Constants.LOG_URL_ECHO_PATH;
 
         String url = String.format("%s%s%s%s", logUrlBase, Constants.LOG_URL_BASE_PATH, urlPath, responseBodyString);
 

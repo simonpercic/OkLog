@@ -12,8 +12,7 @@ public class App extends Application {
     @Override public void onCreate() {
         super.onCreate();
 
-        for (Timber.Tree tree : BuildConstants.getTrees()) {
-            Timber.plant(tree);
-        }
+        // remember to never log in production in your apps!
+        Timber.plant(new Timber.DebugTree());
     }
 }

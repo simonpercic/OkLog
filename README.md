@@ -100,6 +100,36 @@ new Retrofit.Builder()
     Pass 'true' to use Android's Log methods for logging, instead of Timber. 
     Since Timber is an optional dependency, OkLog will use it only if it's included it in your app's dependencies. If not, it will fallback to using Android's built-in Log methods.
 
+#### Additional log data options
+
+ method                           | description                   | default value
+----------------------------------|-------------------------------|------------------------------
+withRequestBody(boolean)          |Include request body           |true
+withRequestMethod(boolean)        |Include request method         |true 
+withRequestUrl(boolean)           |Include request url            |true 
+withProtocol(boolean)             |Include protocol               |false
+withRequestContentType(boolean)   |Include request content type   |false
+withRequestContentLength(boolean) |Include request content length |true
+withRequestBodyState(boolean)     |Include request body state     |true
+withRequestHeaders(boolean)       |Include request headers        |false
+withRequestFailedState(boolean)   |Include request failed state   |true
+withResponseCode(boolean)         |Include response code          |true
+withResponseMessage(boolean)      |Include response message       |true
+withResponseUrl(boolean)          |Include response url           |false
+withResponseDuration(boolean)     |Include response duration      |true
+withResponseSize(boolean)         |Include response size          |true
+withResponseBodyState(boolean)    |Include response body state    |true
+withResponseHeaders(boolean)      |Include response headers       |false
+
+- `withNoLogData() `
+    Don't include any additional log data from the options.
+    
+- `withAllLogData() `
+    Include all additional log data from the options.
+
+- `shortenInfoUrl(boolean) `
+    Shorten info url on the server-side, defaults to false.
+
 
 ## Known limitations
 OkLog writes logs to Android's logging system, which has [a limited line length (~4000 chars)](http://stackoverflow.com/a/8899735). 

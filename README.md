@@ -15,7 +15,7 @@ Debugging Android responses should be easier. Even with Retrofit logging enabled
 
 OkLog writes a clickable link to the Android log with the OkHttp's response info as params. Clicking on the link in logcat opens your browser with the [detailed response info](#additional-log-data-options).
 
-![Example](https://raw.githubusercontent.com/simonpercic/OkLog/master/art/oklog.gif)
+![Example](https://raw.githubusercontent.com/simonpercic/OkLog/develop/art/oklog.gif)
 
 #### Example response info
 [![Example response info](https://raw.githubusercontent.com/simonpercic/OkLog/develop/art/oklog-response-thumb.png)](https://raw.githubusercontent.com/simonpercic/OkLog/develop/art/oklog-response.png)

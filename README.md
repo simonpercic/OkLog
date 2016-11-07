@@ -107,19 +107,19 @@ new Retrofit.Builder()
 withRequestBody(boolean)          |Include request body           |true &#10003;
 withRequestMethod(boolean)        |Include request method         |true &#10003;
 withRequestUrl(boolean)           |Include request url            |true &#10003;
-withProtocol(boolean)             |Include protocol               |false &#10799;
-withRequestContentType(boolean)   |Include request content type   |false &#10799;
+withProtocol(boolean)             |Include protocol               |false &#10007;
+withRequestContentType(boolean)   |Include request content type   |false &#10007;
 withRequestContentLength(boolean) |Include request content length |true &#10003;
 withRequestBodyState(boolean)     |Include request body state     |true &#10003;
-withRequestHeaders(boolean)       |Include request headers        |false &#10799;
+withRequestHeaders(boolean)       |Include request headers        |false &#10007;
 withRequestFailedState(boolean)   |Include request failed state   |true &#10003;
 withResponseCode(boolean)         |Include response code          |true &#10003;
 withResponseMessage(boolean)      |Include response message       |true &#10003;
-withResponseUrl(boolean)          |Include response url           |false &#10799;
+withResponseUrl(boolean)          |Include response url           |false &#10007;
 withResponseDuration(boolean)     |Include response duration      |true &#10003;
 withResponseSize(boolean)         |Include response size          |true &#10003;
 withResponseBodyState(boolean)    |Include response body state    |true &#10003;
-withResponseHeaders(boolean)      |Include response headers       |false &#10799;
+withResponseHeaders(boolean)      |Include response headers       |false &#10007;
 
 - `withNoLogData() `
     Don't include any additional log data from the options.

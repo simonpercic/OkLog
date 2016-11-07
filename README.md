@@ -17,7 +17,7 @@ OkLog writes a clickable link to the Android log with the OkHttp's response info
 
 ![Example](https://raw.githubusercontent.com/simonpercic/OkLog/master/art/oklog.gif)
 
-### Example response info
+#### Example response info
 [![Example response info](https://raw.githubusercontent.com/simonpercic/OkLog/develop/art/oklog-response-thumb.png)](https://raw.githubusercontent.com/simonpercic/OkLog/develop/art/oklog-response.png)
 
 ## How does it work?

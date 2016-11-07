@@ -104,22 +104,22 @@ new Retrofit.Builder()
 
  method                           | description                   | included by default
 ----------------------------------|-------------------------------|------------------------------
-withRequestBody(boolean)          |Include request body           |true &#10003;
-withRequestMethod(boolean)        |Include request method         |true &#10003;
-withRequestUrl(boolean)           |Include request url            |true &#10003;
-withProtocol(boolean)             |Include protocol               |false &#10007;
-withRequestContentType(boolean)   |Include request content type   |false &#10007;
-withRequestContentLength(boolean) |Include request content length |true &#10003;
-withRequestBodyState(boolean)     |Include request body state     |true &#10003;
-withRequestHeaders(boolean)       |Include request headers        |false &#10007;
-withRequestFailedState(boolean)   |Include request failed state   |true &#10003;
-withResponseCode(boolean)         |Include response code          |true &#10003;
-withResponseMessage(boolean)      |Include response message       |true &#10003;
-withResponseUrl(boolean)          |Include response url           |false &#10007;
-withResponseDuration(boolean)     |Include response duration      |true &#10003;
-withResponseSize(boolean)         |Include response size          |true &#10003;
-withResponseBodyState(boolean)    |Include response body state    |true &#10003;
-withResponseHeaders(boolean)      |Include response headers       |false &#10007;
+withRequestBody(boolean)          |Include request body           |&#10003; true
+withRequestMethod(boolean)        |Include request method         |&#10003; true
+withRequestUrl(boolean)           |Include request url            |&#10003; true
+withProtocol(boolean)             |Include protocol               |&#10007; false
+withRequestContentType(boolean)   |Include request content type   |&#10007; false
+withRequestContentLength(boolean) |Include request content length |&#10003; true
+withRequestBodyState(boolean)     |Include request body state     |&#10003; true
+withRequestHeaders(boolean)       |Include request headers        |&#10007; false
+withRequestFailedState(boolean)   |Include request failed state   |&#10003; true
+withResponseCode(boolean)         |Include response code          |&#10003; true
+withResponseMessage(boolean)      |Include response message       |&#10003; true
+withResponseUrl(boolean)          |Include response url           |&#10007; false
+withResponseDuration(boolean)     |Include response duration      |&#10003; true
+withResponseSize(boolean)         |Include response size          |&#10003; true
+withResponseBodyState(boolean)    |Include response body state    |&#10003; true
+withResponseHeaders(boolean)      |Include response headers       |&#10007; false
 
 - `withNoLogData() `
     Don't include any additional log data from the options.

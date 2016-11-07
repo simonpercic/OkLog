@@ -18,7 +18,10 @@ OkLog writes a clickable link to the Android log with the OkHttp's response info
 ![Example](https://raw.githubusercontent.com/simonpercic/OkLog/develop/art/oklog.gif)
 
 #### Example response info
+See an example [for yourself](http://responseecho-simonpercic.rhcloud.com/v1/r/H4sIAAAAAAAAAKtWykxRsjLVUcpLzE1VslIKKSpNVXBJLUlNLsksS1XSUSoqzSvJBEmZGQAVpZaU5xdlK1lVg7VZwLV5OPkr1dYCAB5WJYFNAAAA?qb=H4sIAAAAAAAAAKtWykvMTVWyUgopKk1VcEktSU0uySxLVdJRykstKc8vylayqlbKTFGysqjVUSoqzSvJBKk2M6gFAPS5LSY5AAAA&d=H4sIAAAAAAAAAJ2SQW_TMBiGyYoGWBwmH6CCokUgJITiNi7p1hQhEaVhm7QkVeuhHXESq7WX2pET0vXKv-In8K9wQOIw7cTB38WP3-_1-32gt7gi0Ns0TTUbjSrNW9owlJ1muYeatt6oXU0rPjSH6j3aqvxmmKvtqLt48bh7NcJD_PqYVlXJc9pwJUeiVvKjnW-orlnz6Yp8QdN3_tT6_OD8l7V8FGpmOhTXPw--xeIIHK6YbpmGh6HaZWov-gCESkqWd1IQ3DBWIVrylolj0L9GwV8fSyNR8i1v0GVXYQ-PXfEGDO4BlmxLueRybSDsCxs8NfoNkw0i-4rBo7vODfEyyHNW16gDtSpRUJZqh1LN11xC671IwOBeImbNRhU1HKYLcpEmK-csIs55FMydRboijgnamUeXEYkcsgzCyAnTJIlCIgbg2R29mN6iYM3gAXbFB_D837eIprKmf7JBFwXsT6Zjt_DZZIIz38vczHVxkbknY_EWPJybCOCrWEnHdk_tRLX22MUnNvZn3mTmYfssJib_3ldO4RMzQ7tl6--6sm7jH9Z_rcNvtxQDp0oCAAA=)
+
 [![Example response info](https://raw.githubusercontent.com/simonpercic/OkLog/develop/art/oklog-response-thumb.png)](https://raw.githubusercontent.com/simonpercic/OkLog/develop/art/oklog-response.png)
+
 
 ## How does it work?
 

@@ -1,7 +1,7 @@
 # OkLog 
 
 Response logging interceptor for OkHttp. 
-Logs a url link with url-encoded response for every OkHttp call.
+Logs a url link with url-encoded network response info for every OkHttp call.
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-OkLog-green.svg?style=true)](https://android-arsenal.com/details/1/3513)
 [![Build Status](https://api.travis-ci.org/simonpercic/OkLog.svg?branch=master)](https://travis-ci.org/simonpercic/OkLog)
@@ -13,16 +13,16 @@ Logs a url link with url-encoded response for every OkHttp call.
 
 Debugging Android responses should be easier. Even with Retrofit logging enabled, copying multi-line responses from logcat is cumbersome and annoying.
 
-OkLog writes a clickable link to the Android log with the OkHttp's response as a param. Clicking on the link in logcat opens your browser with the response string.
+OkLog writes a clickable link to the Android log with the OkHttp's response info as params. Clicking on the link in logcat opens your browser with the [detailed response info](#additional-log-data-options).
 
 ![Example](https://raw.githubusercontent.com/simonpercic/OkLog/master/art/oklog.gif)
 
 
 ## How does it work?
 
-OkLog intercepts responses from OkHttp, it then gzips and Base64 encodes every response string and generates an url link with the encoded string as a param. It then logs the url using [Timber](https://github.com/JakeWharton/timber) (if you have it, or Android's built-in Log methods if you don't).
+OkLog intercepts responses from OkHttp, it then gzips and Base64 encodes the network response & the detailed response info and generates an url link with the encoded data as params. It then logs the url using [Timber](https://github.com/JakeWharton/timber) (if you have it, or Android's built-in Log methods if you don't).
 
-That url points to a hosted instance of the [ResponseEcho](https://github.com/simonpercic/ResponseEcho) web app that does the exact opposite, i.e. Base64 decodes and unpacks the url param and returns the response as a string for easier debugging. 
+That url points to a hosted instance of the [ResponseEcho](https://github.com/simonpercic/ResponseEcho) web app that does the exact opposite, i.e. Base64 decodes and unpacks the url params and displays the response info for easier debugging. 
 
 
 ## Usage
@@ -102,24 +102,24 @@ new Retrofit.Builder()
 
 #### Additional log data options
 
- method                           | description                   | default value
+ method                           | description                   | included by default
 ----------------------------------|-------------------------------|------------------------------
-withRequestBody(boolean)          |Include request body           |true
-withRequestMethod(boolean)        |Include request method         |true 
-withRequestUrl(boolean)           |Include request url            |true 
-withProtocol(boolean)             |Include protocol               |false
-withRequestContentType(boolean)   |Include request content type   |false
-withRequestContentLength(boolean) |Include request content length |true
-withRequestBodyState(boolean)     |Include request body state     |true
-withRequestHeaders(boolean)       |Include request headers        |false
-withRequestFailedState(boolean)   |Include request failed state   |true
-withResponseCode(boolean)         |Include response code          |true
-withResponseMessage(boolean)      |Include response message       |true
-withResponseUrl(boolean)          |Include response url           |false
-withResponseDuration(boolean)     |Include response duration      |true
-withResponseSize(boolean)         |Include response size          |true
-withResponseBodyState(boolean)    |Include response body state    |true
-withResponseHeaders(boolean)      |Include response headers       |false
+withRequestBody(boolean)          |Include request body           |true &#10003;
+withRequestMethod(boolean)        |Include request method         |true &#10003;
+withRequestUrl(boolean)           |Include request url            |true &#10003;
+withProtocol(boolean)             |Include protocol               |false &#10060;
+withRequestContentType(boolean)   |Include request content type   |false &#10060;
+withRequestContentLength(boolean) |Include request content length |true &#10003;
+withRequestBodyState(boolean)     |Include request body state     |true &#10003;
+withRequestHeaders(boolean)       |Include request headers        |false &#10060;
+withRequestFailedState(boolean)   |Include request failed state   |true &#10003;
+withResponseCode(boolean)         |Include response code          |true &#10003;
+withResponseMessage(boolean)      |Include response message       |true &#10003;
+withResponseUrl(boolean)          |Include response url           |false &#10060;
+withResponseDuration(boolean)     |Include response duration      |true &#10003;
+withResponseSize(boolean)         |Include response size          |true &#10003;
+withResponseBodyState(boolean)    |Include response body state    |true &#10003;
+withResponseHeaders(boolean)      |Include response headers       |false &#10060;
 
 - `withNoLogData() `
     Don't include any additional log data from the options.

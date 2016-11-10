@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 2.0.0 *(2016-11-10)*
+----------------------------
+
+ * New: Collecting and packing detailed response info to show it on the ResponseEcho info page (incl. request body, url, method, content length, headers, response code, message, duration, size). 
+ * New: Option to shorten info url with the goo.gl url shortening service.
+ 
+
 Version 1.0.1 *(2016-08-17)*
 ----------------------------
 

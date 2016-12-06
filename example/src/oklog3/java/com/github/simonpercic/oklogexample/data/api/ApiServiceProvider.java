@@ -1,7 +1,9 @@
 package com.github.simonpercic.oklogexample.data.api;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.github.simonpercic.oklog3.APIMetrics;
 import com.github.simonpercic.oklog3.OkLogInterceptor;
 import com.github.simonpercic.oklogexample.Constants;
 
@@ -30,7 +32,19 @@ public final class ApiServiceProvider {
      * @return ApiService
      */
     @NonNull public static ApiService createApiService() {
-        OkLogInterceptor okLogInterceptor = OkLogInterceptor.builder().build();
+
+        APIMetrics metrics =  new APIMetrics() {
+            @Override
+            public void onCaptureResponseTime(long responseTime) {
+                //Do Anything with the response time.
+                //Push to Google Analytics/Fabric
+                Log.d("Response Time", String.valueOf(responseTime));
+            }
+        };
+
+        OkLogInterceptor okLogInterceptor = OkLogInterceptor.builder()
+                .withAPIMetrics(metrics)
+                .build();
 
         HttpLoggingInterceptor httpLoggingInterceptor = createHttpLoggingInterceptor();
 

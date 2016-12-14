@@ -63,6 +63,10 @@ public class LogDataInterceptorUnitTest extends BaseLogDataInterceptorUnitTest<M
         return url.toString();
     }
 
+    @Override protected String getUrlPath() {
+        return url.encodedPath();
+    }
+
     @Override protected MockResponse createMockResponse() {
         return new MockResponse();
     }

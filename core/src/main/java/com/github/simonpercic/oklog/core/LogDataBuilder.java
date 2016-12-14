@@ -30,6 +30,7 @@ public class LogDataBuilder {
 
     private String requestMethod;
     private String requestUrl;
+    private String requestUrlPath;
     private String protocol;
     private String requestContentType;
     private long requestContentLength;
@@ -60,6 +61,11 @@ public class LogDataBuilder {
 
     LogDataBuilder requestUrl(String requestUrl) {
         this.requestUrl = requestUrl;
+        return this;
+    }
+
+    LogDataBuilder requestUrlPath(String requestUrlPath) {
+        this.requestUrlPath = requestUrlPath;
         return this;
     }
 
@@ -161,6 +167,10 @@ public class LogDataBuilder {
         return requestUrl;
     }
 
+    String getRequestUrlPath() {
+        return requestUrlPath;
+    }
+
     String getProtocol() {
         return protocol;
     }
@@ -245,6 +255,7 @@ public class LogDataBuilder {
         return "LogDataBuilder{"
                 + "\n" + "requestMethod='" + requestMethod + '\''
                 + "\n" + ", requestUrl='" + requestUrl + '\''
+                + "\n" + ", requestUrlPath='" + requestUrlPath + '\''
                 + "\n" + ", protocol='" + protocol + '\''
                 + "\n" + ", requestContentType='" + requestContentType + '\''
                 + "\n" + ", requestContentLength=" + requestContentLength

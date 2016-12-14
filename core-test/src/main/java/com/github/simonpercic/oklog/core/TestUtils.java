@@ -21,9 +21,10 @@ public final class TestUtils {
         return dataCaptor.getValue();
     }
 
-    public static void assertData(LogDataBuilder expected, LogDataBuilder value) {
+    static void assertData(LogDataBuilder expected, LogDataBuilder value) {
         assertEquals(expected.getRequestMethod(), value.getRequestMethod());
         assertEquals(expected.getRequestUrl(), value.getRequestUrl());
+        assertEquals(expected.getRequestUrlPath(), value.getRequestUrlPath());
         assertEquals(expected.getRequestContentType(), value.getRequestContentType());
         assertEquals(expected.getRequestContentLength(), value.getRequestContentLength());
         assertEquals(expected.getRequestBody(), value.getRequestBody());
@@ -38,12 +39,13 @@ public final class TestUtils {
         assertEquals(expected.getResponseBody(), value.getResponseBody());
     }
 
-    public static void assertData(String requestMethod, String requestUrl,
+    public static void assertData(String requestMethod, String requestUrl, String requestUrlPath,
             int requestBodyState, boolean failed, LogDataBuilder value) {
 
         LogDataBuilder expectedValue = new LogDataBuilder()
                 .requestMethod(requestMethod)
                 .requestUrl(requestUrl)
+                .requestUrlPath(requestUrlPath)
                 .requestBodyState(requestBodyState);
 
         if (failed) {

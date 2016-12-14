@@ -26,7 +26,7 @@ class LogDataInterceptor extends BaseLogDataInterceptor<Chain, Request, Response
 
     @NonNull private final HasResponseBodyManager hasResponseBodyManager;
 
-    public LogDataInterceptor() {
+    LogDataInterceptor() {
         hasResponseBodyManager = HasResponseBodyManager.create();
     }
 
@@ -46,6 +46,10 @@ class LogDataInterceptor extends BaseLogDataInterceptor<Chain, Request, Response
 
     @Override protected String requestUrl(Request request) {
         return request.url().toString();
+    }
+
+    @Override protected String requestUrlPath(Request request) {
+        return request.url().encodedPath();
     }
 
     @Override protected String responseUrl(Response response) {

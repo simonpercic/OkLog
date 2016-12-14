@@ -175,12 +175,18 @@ public class LogManagerUnitTest {
         String baseUrl = "http://example.com";
         LogManager logManager = spy(new LogManager(baseUrl, null, false, true, false, LOG_DATA_CONFIG_ALL));
 
-        logManager.log(new LogDataBuilder().responseBody("response_body"));
+        String requestMethod = "request_method";
+        String requestUrlPath = "request_url_path";
+
+        logManager.log(new LogDataBuilder()
+                .responseBody("response_body")
+                .requestMethod(requestMethod)
+                .requestUrlPath(requestUrlPath));
 
         String expected = String.format("%s%s%s?d=%s", baseUrl, "/v1/r/",
                 "compressed_string", "compressed_data_string");
 
-        verify(logManager).logDebug(eq(expected));
+        verify(logManager).logDebug(eq(expected), eq(requestMethod), eq(requestUrlPath));
     }
 
     @Test
@@ -212,9 +218,12 @@ public class LogManagerUnitTest {
         LogManager logManager = spy(new LogManager(null, logInterceptor, false, true, false,
                 LOG_DATA_CONFIG_ALL));
 
-        logManager.log(new LogDataBuilder().responseBody("response_body"));
+        logManager.log(new LogDataBuilder()
+                .responseBody("response_body")
+                .requestMethod("request_method")
+                .requestUrlPath("request_url_path"));
 
-        verify(logManager, never()).logDebug(anyString());
+        verify(logManager, never()).logDebug(anyString(), anyString(), anyString());
     }
 
     @Test
@@ -229,12 +238,18 @@ public class LogManagerUnitTest {
         LogManager logManager = spy(new LogManager(baseUrl, logInterceptor, false, true, false,
                 LOG_DATA_CONFIG_ALL));
 
-        logManager.log(new LogDataBuilder().responseBody("response_body"));
+        String requestMethod = "request_method";
+        String requestUrlPath = "request_url_path";
+
+        logManager.log(new LogDataBuilder()
+                .responseBody("response_body")
+                .requestMethod(requestMethod)
+                .requestUrlPath(requestUrlPath));
 
         String expected = String.format("%s%s%s?d=%s", baseUrl, "/v1/r/",
                 "compressed_string", "compressed_data_string");
 
-        verify(logManager).logDebug(eq(expected));
+        verify(logManager).logDebug(eq(expected), eq(requestMethod), eq(requestUrlPath));
     }
 
     @Test

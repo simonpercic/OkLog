@@ -33,6 +33,8 @@ public abstract class BaseLogDataInterceptor<Chain, Request, Response, Headers, 
 
     protected abstract String requestUrl(Request request);
 
+    protected abstract String requestUrlPath(Request request);
+
     protected abstract String responseUrl(Response response);
 
     protected abstract Headers requestHeaders(Request request);
@@ -84,6 +86,7 @@ public abstract class BaseLogDataInterceptor<Chain, Request, Response, Headers, 
         logDataBuilder
                 .requestMethod(requestMethod(request))
                 .requestUrl(requestUrl(request))
+                .requestUrlPath(requestUrlPath(request))
                 .protocol(protocol(chain));
 
         if (hasRequestBody) {

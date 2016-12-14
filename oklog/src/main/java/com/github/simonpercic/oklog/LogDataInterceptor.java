@@ -41,6 +41,10 @@ class LogDataInterceptor extends BaseLogDataInterceptor<Chain, Request, Response
         return request.httpUrl().toString();
     }
 
+    @Override protected String requestUrlPath(Request request) {
+        return request.httpUrl().encodedPath();
+    }
+
     @Override protected String responseUrl(Response response) {
         return response.request().httpUrl().toString();
     }

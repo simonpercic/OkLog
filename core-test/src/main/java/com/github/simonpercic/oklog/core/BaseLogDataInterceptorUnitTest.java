@@ -48,6 +48,8 @@ public abstract class BaseLogDataInterceptorUnitTest<MockResponse, Request> {
 
     protected abstract String getUrlString();
 
+    protected abstract String getUrlPath();
+
     protected abstract MockResponse createMockResponse();
 
     protected abstract MockResponse setMockResponseStatus(MockResponse mockResponse, String status);
@@ -312,6 +314,7 @@ public abstract class BaseLogDataInterceptorUnitTest<MockResponse, Request> {
     private LogDataBuilder expectedLogData() {
         return new LogDataBuilder()
                 .requestUrl(getUrlString())
+                .requestUrlPath(getUrlPath())
                 .responseUrl(getUrlString());
     }
 

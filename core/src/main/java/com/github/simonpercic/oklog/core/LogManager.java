@@ -60,7 +60,7 @@ public class LogManager {
         String logUrl = getLogUrl(data.getResponseBody(), data.getRequestBody(), logData);
 
         if (logInterceptor == null || !logInterceptor.onLog(logUrl)) {
-            logDebug(logUrl);
+            logDebug(logUrl, data.getRequestMethod(), data.getRequestUrlPath());
         }
     }
 
@@ -142,11 +142,13 @@ public class LogManager {
         return appendQuerySymbol(queryParams, SharedConstants.QUERY_PARAM_DATA, logDataString);
     }
 
-    @VisibleForTesting void logDebug(String logUrl) {
+    @VisibleForTesting void logDebug(String logUrl, String requestMethod, String requestUrlPath) {
+        String format = "%s - %s %s - %s";
+
         if (useAndroidLog) {
-            Log.d(Constants.LOG_TAG, String.format("%s - %s", Constants.LOG_TAG, logUrl));
+            Log.d(Constants.LOG_TAG, String.format(format, Constants.LOG_TAG, requestMethod, requestUrlPath, logUrl));
         } else {
-            Timber.d("%s - %s", Constants.LOG_TAG, logUrl);
+            Timber.d(format, Constants.LOG_TAG, requestMethod, requestUrlPath, logUrl);
         }
     }
 

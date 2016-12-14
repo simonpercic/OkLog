@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 2.1.0 *(2016-12-14)*
+----------------------------
+
+ * New: Request method and url path in log (e.g. `OKLOG - GET /shows - http://responseecho...`).
+ 
+
 Version 2.0.0 *(2016-11-10)*
 ----------------------------
 

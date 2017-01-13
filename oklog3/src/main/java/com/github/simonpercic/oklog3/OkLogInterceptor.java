@@ -28,10 +28,12 @@ public final class OkLogInterceptor implements Interceptor {
 
     private final LogManager logManager;
     private final LogDataInterceptor logDataInterceptor;
+    private APIMetrics apiMetrics;
 
     private OkLogInterceptor(String logUrlBase, LogInterceptor logInterceptor, boolean useAndroidLog,
-            boolean withRequestBody, boolean shortenInfoUrl, @NonNull LogDataConfig logDataConfig) {
+            boolean withRequestBody, boolean shortenInfoUrl, @NonNull LogDataConfig logDataConfig, APIMetrics apiMetrics) {
         this(new LogManager(logUrlBase, logInterceptor, useAndroidLog, withRequestBody, shortenInfoUrl, logDataConfig));
+        this.apiMetrics = apiMetrics;
     }
 
     @VisibleForTesting OkLogInterceptor(LogManager logManager) {
@@ -55,6 +57,11 @@ public final class OkLogInterceptor implements Interceptor {
         long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
         logDataBuilder.responseDurationMs(tookMs);
 
+        //Push the time taken to api metrics
+        if(apiMetrics != null){
+            apiMetrics.onCaptureResponseTime(tookMs);
+        }
+
         ResponseLogData<Response> responseLogData = logDataInterceptor.processResponse(logDataBuilder, response);
         logManager.log(responseLogData.getLogData());
 
@@ -73,6 +80,8 @@ public final class OkLogInterceptor implements Interceptor {
     // region Builder
 
     public static final class Builder extends BaseOkLogInterceptorBuilder {
+
+        private APIMetrics apiMetrics;
 
         /**
          * Set the base url.
@@ -317,6 +326,11 @@ public final class OkLogInterceptor implements Interceptor {
             return this;
         }
 
+        public Builder withAPIMetrics(APIMetrics apiMetrics){
+            this.apiMetrics = apiMetrics;
+            return this;
+        }
+
         /**
          * Build an instance of OkLogInterceptor.
          *
@@ -324,7 +338,7 @@ public final class OkLogInterceptor implements Interceptor {
          */
         public OkLogInterceptor build() {
             return new OkLogInterceptor(logUrlBase, logInterceptor, useAndroidLog, requestBody, shortenInfoUrl,
-                    buildLogDataConfig());
+                    buildLogDataConfig(), apiMetrics);
         }
     }
 

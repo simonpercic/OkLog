@@ -9,7 +9,7 @@ buildscript {
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'si.dlabs.soter'
+apply plugin: 'si.kamino.soter'
 
 android {
     compileSdkVersion project.ext.compileSdkVersion

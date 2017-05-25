@@ -10,7 +10,7 @@ buildscript {
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'si.dlabs.soter'
+apply plugin: 'si.kamino.soter'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 

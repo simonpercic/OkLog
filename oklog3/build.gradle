@@ -9,7 +9,7 @@ buildscript {
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'si.dlabs.soter'
+apply plugin: 'si.kamino.soter'
 
 android {
     compileSdkVersion project.ext.compileSdkVersion
@@ -38,7 +38,7 @@ android {
     }
 }
 
-ext.okhttpVersion = '3.4.1'
+ext.okhttpVersion = '3.8.0'
 
 dependencies {
     compile project(':oklog-core')

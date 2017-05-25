@@ -6,8 +6,8 @@ buildscript {
         maven { url 'https://plugins.gradle.org/m2/' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
-        classpath 'gradle.plugin.si.dlabs.gradle:soter:1.0.8'
+        classpath 'com.android.tools.build:gradle:2.3.2'
+        classpath 'gradle.plugin.si.kamino.gradle:soter:2.1.1'
     }
 }
 
@@ -29,11 +29,11 @@ subprojects {
     }
 
     project.ext {
-        compileSdkVersion = 24
-        buildToolsVersion = '24.0.2'
+        compileSdkVersion = 25
+        buildToolsVersion = '25.0.2'
         minSdkVersion = 15
-        targetSdkVersion = 24
-        supportVersion = '24.2.1'
+        targetSdkVersion = 25
+        supportVersion = '25.3.1'
         okioVersion = '1.9.0'
         powermockVersion = '1.6.4'
         testSupportVersion = '0.5'

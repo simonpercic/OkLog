@@ -39,7 +39,7 @@ android {
 }
 
 dependencies {
-    provided 'com.jakewharton.timber:timber:4.2.0'
+    provided 'com.jakewharton.timber:timber:4.5.1'
     provided "com.squareup.okio:okio:$okioVersion"
 
     compile project(':oklog-shared')

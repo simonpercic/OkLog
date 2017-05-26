@@ -5,7 +5,7 @@ env:
   global:
   - ADB_INSTALL_TIMEOUT=10
   matrix:
-  - ANDROID_TARGET=android-24  ANDROID_ABI=armeabi-v7a  TEST_SUITE=static
+  - ANDROID_TARGET=android-25  ANDROID_ABI=armeabi-v7a  TEST_SUITE=static
   - ANDROID_TARGET=android-19  ANDROID_ABI=armeabi-v7a  TEST_SUITE=integration
 
 android:
@@ -14,9 +14,9 @@ android:
   - extra-android-m2repository
   - tools
   - platform-tools
-  - build-tools-24.0.2
+  - build-tools-25.0.2
   - android-19
-  - android-24
+  - android-25
   - sys-img-armeabi-v7a-android-19
 
 before_install:

@@ -1,6 +1,7 @@
 package com.github.simonpercic.oklog3;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.github.simonpercic.oklog.core.BaseLogDataInterceptor;
 
@@ -97,18 +98,22 @@ class LogDataInterceptor extends BaseLogDataInterceptor<Chain, Request, Response
     }
 
     @Override protected long requestContentLength(Request request) throws IOException {
+        //noinspection ConstantConditions
         return request.body().contentLength();
     }
 
     @Override protected long responseContentLength(Response response) throws IOException {
+        //noinspection ConstantConditions
         return response.body().contentLength();
     }
 
     @Override protected MediaType requestContentType(Request request) {
+        //noinspection ConstantConditions
         return request.body().contentType();
     }
 
     @Override protected MediaType responseContentType(Response response) {
+        //noinspection ConstantConditions
         return response.body().contentType();
     }
 
@@ -120,11 +125,17 @@ class LogDataInterceptor extends BaseLogDataInterceptor<Chain, Request, Response
         return mediaType.charset(charset);
     }
 
+    @Nullable @Override protected Charset responseContentTypeCharset(MediaType contentType, Charset charset) {
+        return contentTypeCharset(contentType, charset);
+    }
+
     @Override protected void writeRequestBody(Request request, Buffer buffer) throws IOException {
+        //noinspection ConstantConditions
         request.body().writeTo(buffer);
     }
 
     @Override protected BufferedSource responseBodySource(Response response) throws IOException {
+        //noinspection ConstantConditions
         return response.body().source();
     }
 }

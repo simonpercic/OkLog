@@ -127,7 +127,7 @@ public final class OkLogInterceptor implements Interceptor {
          * @return Builder instance, to chain calls
          */
         public Builder shortenInfoUrl(boolean shortenInfoUrl) {
-            this.shortenInfoUrl = shortenInfoUrl;
+            baseShortenInfoUrl(shortenInfoUrl);
             return this;
         }
 

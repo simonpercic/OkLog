@@ -1,12 +1,11 @@
 package com.github.simonpercic.oklog.core;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
+import android.support.annotation.Nullable;
 
 import java.io.EOFException;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.charset.UnsupportedCharsetException;
 
 import okio.Buffer;
 import okio.BufferedSource;
@@ -68,6 +67,8 @@ public abstract class BaseLogDataInterceptor<Chain, Request, Response, Headers, 
     protected abstract String contentTypeString(MediaType mediaType);
 
     protected abstract Charset contentTypeCharset(MediaType mediaType, Charset charset);
+
+    @Nullable protected abstract Charset responseContentTypeCharset(MediaType contentType, Charset charset);
 
     protected abstract void writeRequestBody(Request request, Buffer buffer) throws IOException;
 
@@ -166,9 +167,9 @@ public abstract class BaseLogDataInterceptor<Chain, Request, Response, Headers, 
             Charset charset = Constants.CHARSET_UTF8;
             MediaType contentType = responseContentType(response);
             if (contentType != null) {
-                try {
-                    charset = contentTypeCharset(contentType, Constants.CHARSET_UTF8);
-                } catch (UnsupportedCharsetException e) {
+                charset = responseContentTypeCharset(contentType, Constants.CHARSET_UTF8);
+
+                if (charset == null) {
                     logDataBuilder.responseBodyState(LogDataBuilder.CHARSET_MALFORMED);
                     return new ResponseLogData<>(response, logDataBuilder);
                 }
@@ -194,7 +195,7 @@ public abstract class BaseLogDataInterceptor<Chain, Request, Response, Headers, 
      * Returns true if the body in question probably contains human readable text. Uses a small sample
      * of code points to detect unicode control characters commonly used in binary file signatures.
      */
-    @VisibleForTesting public static boolean isPlaintext(Buffer buffer) throws EOFException {
+    static boolean isPlaintext(Buffer buffer) throws EOFException {
         try {
             Buffer prefix = new Buffer();
             long byteCount = buffer.size() < 64 ? buffer.size() : 64;

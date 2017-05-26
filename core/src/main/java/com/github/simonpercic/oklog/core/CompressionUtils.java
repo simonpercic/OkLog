@@ -39,7 +39,7 @@ final class CompressionUtils {
      * @return gzipped and Base64 encoded input string
      * @throws IOException IO Exception
      */
-    static String gzipBase64(byte[] bytes) throws IOException {
+    private static String gzipBase64(byte[] bytes) throws IOException {
         if (bytes == null || bytes.length == 0) {
             return null;
         }

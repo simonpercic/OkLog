@@ -233,35 +233,6 @@ public abstract class BaseLogDataInterceptorUnitTest<MockResponse, Request> {
         assertHeaderData(networkValue.getResponseHeaders(), "Content-Encoding", new PredicateEquals<>("gzip"));
     }
 
-    @Test public void bodyGetMalformedCharset() throws IOException {
-        String contentType = "text/html; charset=0";
-
-        MockResponse mockResponse = createMockResponse();
-        mockResponse = setMockResponseHeader(mockResponse, CONTENT_TYPE, contentType);
-        mockResponse = setMockResponseBody(mockResponse, "Ignore This");
-
-        newCall(mockResponse);
-
-        LogDataBuilder expectedValue = expectedLogData()
-                .requestMethod(GET)
-                .requestBodyState(LogDataBuilder.NO_BODY)
-                .responseCode(RESPONSE_CODE_OK)
-                .responseMessage(MESSAGE_OK)
-                .responseBodySize(0)
-                .responseContentLength(11)
-                .responseBodyState(LogDataBuilder.CHARSET_MALFORMED);
-
-        LogDataBuilder appValue = TestUtils.getLogData(applicationLogManager);
-        TestUtils.assertData(expectedValue, appValue);
-        assertNull(appValue.getRequestHeaders());
-        assertHeaderData(appValue.getResponseHeaders(), CONTENT_TYPE, new PredicateEquals<>(contentType));
-
-        LogDataBuilder networkValue = TestUtils.getLogData(networkLogManager);
-        TestUtils.assertData(expectedValue, networkValue);
-        assertRequestHeaders(networkValue.getRequestHeaders());
-        assertHeaderData(networkValue.getResponseHeaders(), CONTENT_TYPE, new PredicateEquals<>(contentType));
-    }
-
     @Test public void responseBodyIsBinary() throws IOException {
         Buffer buffer = new Buffer();
         buffer.writeUtf8CodePoint(0x89);
@@ -309,6 +280,38 @@ public abstract class BaseLogDataInterceptorUnitTest<MockResponse, Request> {
         assertTrue(BaseLogDataInterceptor.isPlaintext(new Buffer().writeByte(0x80)));
         assertFalse(BaseLogDataInterceptor.isPlaintext(new Buffer().writeByte(0x00)));
         assertFalse(BaseLogDataInterceptor.isPlaintext(new Buffer().writeByte(0xc0)));
+    }
+
+    protected void bodyGetMalformedCharset(boolean isResponsePlainBody, boolean isResponseBodySizeZero, boolean isResponseBodyNull) throws IOException {
+        String contentType = "text/html; charset=0";
+
+        MockResponse mockResponse = createMockResponse();
+        mockResponse = setMockResponseHeader(mockResponse, CONTENT_TYPE, contentType);
+
+        String body = "Body with unknown charset";
+        mockResponse = setMockResponseBody(mockResponse, body);
+
+        newCall(mockResponse);
+
+        LogDataBuilder expectedValue = expectedLogData()
+                .requestMethod(GET)
+                .requestBodyState(LogDataBuilder.NO_BODY)
+                .responseCode(RESPONSE_CODE_OK)
+                .responseMessage(MESSAGE_OK)
+                .responseBody(isResponseBodyNull ? null : body)
+                .responseBodySize(isResponseBodySizeZero ? 0 : body.length())
+                .responseContentLength(body.length())
+                .responseBodyState(isResponsePlainBody ? LogDataBuilder.PLAIN_BODY : LogDataBuilder.CHARSET_MALFORMED);
+
+        LogDataBuilder appValue = TestUtils.getLogData(applicationLogManager);
+        TestUtils.assertData(expectedValue, appValue);
+        assertNull(appValue.getRequestHeaders());
+        assertHeaderData(appValue.getResponseHeaders(), CONTENT_TYPE, new PredicateEquals<>(contentType));
+
+        LogDataBuilder networkValue = TestUtils.getLogData(networkLogManager);
+        TestUtils.assertData(expectedValue, networkValue);
+        assertRequestHeaders(networkValue.getRequestHeaders());
+        assertHeaderData(networkValue.getResponseHeaders(), CONTENT_TYPE, new PredicateEquals<>(contentType));
     }
 
     private LogDataBuilder expectedLogData() {

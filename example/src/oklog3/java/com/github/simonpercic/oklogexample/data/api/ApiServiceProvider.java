@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import com.github.simonpercic.oklog3.OkLogInterceptor;
 import com.github.simonpercic.oklogexample.Constants;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -60,6 +62,11 @@ public final class ApiServiceProvider {
                 okHttpBuilder.addInterceptor(interceptor);
             }
         }
+
+        okHttpBuilder = okHttpBuilder
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .writeTimeout(1, TimeUnit.MINUTES);
 
         return okHttpBuilder.build();
     }

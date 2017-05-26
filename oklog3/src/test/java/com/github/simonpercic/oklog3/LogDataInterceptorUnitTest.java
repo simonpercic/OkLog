@@ -1,9 +1,10 @@
 package com.github.simonpercic.oklog3;
 
-import com.github.simonpercic.oklog.core.LogManager;
 import com.github.simonpercic.oklog.core.BaseLogDataInterceptorUnitTest;
+import com.github.simonpercic.oklog.core.LogManager;
 
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -101,5 +102,9 @@ public class LogDataInterceptorUnitTest extends BaseLogDataInterceptorUnitTest<M
 
     private Request.Builder request() {
         return new Request.Builder().url(url);
+    }
+
+    @Test public void bodyGetMalformedCharset() throws IOException {
+        bodyGetMalformedCharset(true, false, false);
     }
 }

@@ -1,5 +1,7 @@
 package com.github.simonpercic.oklog;
 
+import android.support.annotation.Nullable;
+
 import com.github.simonpercic.oklog.core.BaseLogDataInterceptor;
 import com.squareup.okhttp.Connection;
 import com.squareup.okhttp.Headers;
@@ -12,6 +14,7 @@ import com.squareup.okhttp.internal.http.HttpEngine;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
 
 import okio.Buffer;
 import okio.BufferedSource;
@@ -111,6 +114,14 @@ class LogDataInterceptor extends BaseLogDataInterceptor<Chain, Request, Response
 
     @Override protected Charset contentTypeCharset(MediaType mediaType, Charset charset) {
         return mediaType.charset(charset);
+    }
+
+    @Nullable @Override protected Charset responseContentTypeCharset(MediaType contentType, Charset charset) {
+        try {
+            return contentTypeCharset(contentType, charset);
+        } catch (UnsupportedCharsetException e) {
+            return null;
+        }
     }
 
     @Override protected void writeRequestBody(Request request, Buffer buffer) throws IOException {

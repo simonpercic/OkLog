@@ -9,7 +9,7 @@ buildscript {
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'si.dlabs.soter'
+apply plugin: 'si.kamino.soter'
 
 android {
     compileSdkVersion project.ext.compileSdkVersion
@@ -39,7 +39,7 @@ android {
 }
 
 dependencies {
-    provided 'com.jakewharton.timber:timber:4.2.0'
+    provided 'com.jakewharton.timber:timber:4.5.1'
     provided "com.squareup.okio:okio:$okioVersion"
 
     compile project(':oklog-shared')

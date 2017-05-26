@@ -14,20 +14,21 @@ import retrofit2.http.HEAD;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
-import rx.Observable;
+import rx.Completable;
+import rx.Single;
 
 /**
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
-public interface ApiService {
+public interface RestApi {
 
-    @GET("shows") Observable<List<ShowResponse>> getShows();
+    @GET("shows") Single<List<ShowResponse>> getShows();
 
-    @POST("watched") Observable<WatchedShowResponse> watched(@Body WatchedRequest request);
+    @POST("watched") Single<WatchedShowResponse> watched(@Body WatchedRequest request);
 
-    @PUT("show") Observable<ShowResponse> createShow(@Body CreateShowRequest request);
+    @PUT("show") Single<ShowResponse> createShow(@Body CreateShowRequest request);
 
-    @DELETE("show/{show}") Observable<ShowResponse> deleteShow(@Path("show") long showId);
+    @DELETE("show/{show}") Single<ShowResponse> deleteShow(@Path("show") long showId);
 
-    @HEAD("shows") Observable<Void> getShowsHeader();
+    @HEAD("shows") Completable getShowsHeader();
 }

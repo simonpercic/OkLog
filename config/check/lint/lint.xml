@@ -8,4 +8,9 @@
     <issue id="UnusedIds" severity="ignore" />
     <issue id="UnusedResources" severity="ignore" />
     <issue id="LogNotTimber" severity="ignore" />
+
+    <issue id="ResourceType">
+        <!-- Remove this when this is fixed: https://github.com/JakeWharton/butterknife/issues/338 -->
+        <ignore path="**/*_ViewBinding.java" />
+    </issue>
 </lint>

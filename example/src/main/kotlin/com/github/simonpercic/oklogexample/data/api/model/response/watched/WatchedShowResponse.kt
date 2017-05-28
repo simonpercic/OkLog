@@ -6,10 +6,4 @@ import com.google.gson.annotations.SerializedName
 /**
  * @author Simon Percic [https://github.com/simonpercic](https://github.com/simonpercic)
  */
-class WatchedShowResponse {
-
-    val show: ShowResponse? = null
-
-    @SerializedName("watched_count")
-    val watchedCount: Int = 0
-}
+data class WatchedShowResponse(val show: ShowResponse? = null, @SerializedName("watched_count") val watchedCount: Int = 0)

@@ -13,6 +13,7 @@ buildscript {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion project.ext.compileSdkVersion
@@ -81,7 +82,6 @@ configurations {
 }
 
 ext.daggerVersion = '2.10'
-ext.butterknifeVersion = '8.6.0'
 ext.retrofit2Version = '2.3.0'
 ext.okHttp3Version = '3.8.0'
 
@@ -92,9 +92,6 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.jakewharton.timber:timber:4.5.1'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
-
-    compile "com.jakewharton:butterknife:$butterknifeVersion"
-    kapt "com.jakewharton:butterknife-compiler:$butterknifeVersion"
 
     compile "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"

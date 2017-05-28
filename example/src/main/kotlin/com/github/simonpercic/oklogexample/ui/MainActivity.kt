@@ -1,29 +1,16 @@
 package com.github.simonpercic.oklogexample.ui
 
 import android.os.Bundle
-import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.Snackbar
-import android.view.View
-import butterknife.BindView
-import butterknife.BindViews
-import butterknife.ButterKnife
-import butterknife.OnClick
 import com.github.simonpercic.oklogexample.R
 import com.github.simonpercic.oklogexample.ui.base.DaggerActivity
+import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 /**
  * @author Simon Percic [https://github.com/simonpercic](https://github.com/simonpercic)
  */
 class MainActivity : DaggerActivity<MainComponent>(), MainMvp.View {
-
-    companion object {
-
-        private val ENABLE_VIEW: ButterKnife.Setter<View, Boolean> = ButterKnife.Setter { view, value, _ -> view.isEnabled = value }
-    }
-
-    @BindView(R.id.activity_root_coordinator_layout) internal lateinit var coordinatorLayout: CoordinatorLayout
-    @BindViews(R.id.btn_get, R.id.btn_post, R.id.btn_put, R.id.btn_delete, R.id.btn_header) internal lateinit var buttonViews: List<@JvmSuppressWildcards View>
 
     @Inject internal lateinit var presenter: MainMvp.Presenter
 
@@ -32,7 +19,12 @@ class MainActivity : DaggerActivity<MainComponent>(), MainMvp.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        ButterKnife.bind(this)
+
+        btnGet.setOnClickListener { presenter.onBtnGetClicked() }
+        btnPost.setOnClickListener { presenter.onBtnPostClicked() }
+        btnPut.setOnClickListener { presenter.onBtnPutClicked() }
+        btnDelete.setOnClickListener { presenter.onBtnDeleteClicked() }
+        btnHeader.setOnClickListener { presenter.onBtnHeaderClicked() }
     }
 
     override fun onDestroy() {
@@ -46,9 +38,9 @@ class MainActivity : DaggerActivity<MainComponent>(), MainMvp.View {
 
     override fun inject(): MainComponent {
         val component = DaggerMainComponent.builder()
-                .appComponent(appComponent)
-                .mainModule(MainModule(this))
-                .build()
+            .appComponent(appComponent)
+            .mainModule(MainModule(this))
+            .build()
 
         component.inject(this)
 
@@ -57,47 +49,30 @@ class MainActivity : DaggerActivity<MainComponent>(), MainMvp.View {
 
     // endregion Abstract impl
 
-    // region Click listeners
-
-    @OnClick(R.id.btn_get)
-    fun onBtnGetClicked() {
-        presenter.onBtnGetClicked()
-    }
-
-    @OnClick(R.id.btn_post)
-    fun onBtnPostClicked() {
-        presenter.onBtnPostClicked()
-    }
-
-    @OnClick(R.id.btn_put)
-    fun onBtnPutClicked() {
-        presenter.onBtnPutClicked()
-    }
-
-    @OnClick(R.id.btn_delete)
-    fun onBtnDeleteClicked() {
-        presenter.onBtnDeleteClicked()
-    }
-
-    @OnClick(R.id.btn_header)
-    fun onBtnHeaderClicked() {
-        presenter.onBtnHeaderClicked()
-    }
-
-    // endregion Click listeners
-
-    // region Helper methods
+    // region View impl
 
     override fun disableButtons() {
-        ButterKnife.apply(buttonViews, ENABLE_VIEW, false)
+        setButtonsEnabled(false)
     }
 
     override fun enableButtons() {
-        ButterKnife.apply(buttonViews, ENABLE_VIEW, true)
+        setButtonsEnabled(true)
     }
 
     override fun showMessage(message: String) {
-        Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(rootCoordinatorLayout, message, Snackbar.LENGTH_SHORT).show()
+    }
+
+    // endregion View impl
+
+    // region Helper methods
+
+    private fun setButtonsEnabled(enabled: Boolean) {
+        btnGet.isEnabled = enabled
+        btnPost.isEnabled = enabled
+        btnPut.isEnabled = enabled
+        btnDelete.isEnabled = enabled
+        btnHeader.isEnabled = enabled
     }
 
     // endregion Helper methods

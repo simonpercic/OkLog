@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
-    android:id="@+id/activity_root_coordinator_layout"
+    android:id="@+id/rootCoordinatorLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,27 +14,27 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/btn_get"
+            android:id="@+id/btnGet"
             style="@style/Button"
             android:text="@string/button_get" />
 
         <Button
-            android:id="@+id/btn_post"
+            android:id="@+id/btnPost"
             style="@style/Button"
             android:text="@string/button_post" />
 
         <Button
-            android:id="@+id/btn_put"
+            android:id="@+id/btnPut"
             style="@style/Button"
             android:text="@string/button_put" />
 
         <Button
-            android:id="@+id/btn_delete"
+            android:id="@+id/btnDelete"
             style="@style/Button"
             android:text="@string/button_delete" />
 
         <Button
-            android:id="@+id/btn_header"
+            android:id="@+id/btnHeader"
             style="@style/Button"
             android:text="@string/button_header" />
     </LinearLayout>

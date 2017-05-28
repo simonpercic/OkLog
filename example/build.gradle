@@ -1,16 +1,19 @@
 buildscript {
+    ext.kotlinVersion = '1.1.2-3'
+
     repositories {
         maven { url 'https://plugins.gradle.org/m2/' }
     }
 
     dependencies {
-        classpath 'me.tatarka:gradle-retrolambda:3.6.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'si.kamino.soter'
-apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion project.ext.compileSdkVersion
@@ -46,11 +49,6 @@ android {
         lintConfig file('../config/check/lint/lint.xml')
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
     productFlavors {
         oklog {
             applicationIdSuffix ".oklog"
@@ -67,10 +65,23 @@ android {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
     }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        oklog.java.srcDirs += 'src/oklog/kotlin'
+        oklog3.java.srcDirs += 'src/oklog3/kotlin'
+    }
+}
+
+kapt {
+    generateStubs = true
+}
+
+configurations {
+    ktlint
 }
 
 ext.daggerVersion = '2.10'
-ext.butterknifeVersion = '8.6.0'
 ext.retrofit2Version = '2.3.0'
 ext.okHttp3Version = '3.8.0'
 
@@ -80,12 +91,10 @@ dependencies {
     compile 'io.reactivex:rxjava:1.3.0'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.jakewharton.timber:timber:4.5.1'
-
-    compile "com.jakewharton:butterknife:$butterknifeVersion"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
 
     compile "com.google.dagger:dagger:$daggerVersion"
-    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 
     oklog3Compile project(':oklog3')
     oklog3Compile "com.squareup.retrofit2:retrofit:$retrofit2Version"
@@ -98,23 +107,24 @@ dependencies {
     oklogCompile 'com.squareup.retrofit:retrofit:1.9.0'
     oklogCompile 'com.squareup.okhttp:okhttp:2.7.5'
 
-    // Static code rules
-    checkstyleRules files('../config/soter/checkstyle-0.3.xml')
-    findbugsRules files('../config/soter/findbugs-0.1.xml')
-    pmdRules files('../config/soter/pmd-0.1.xml')
+    ktlint 'com.github.shyiko:ktlint:0.6.2'
 }
 
-soter {
-    checkstyle {
-        enabled true
-    }
+task ktlint(type: JavaExec) {
+    main = "com.github.shyiko.ktlint.Main"
+    classpath = configurations.ktlint
+    args "src/**/*.kt"
+}
 
-    findbugs {
-        enabled true
-        reportLevel 'high'
-    }
+check.dependsOn ktlint
 
-    pmd {
-        enabled true
-    }
+task ktlintFormat(type: JavaExec) {
+    main = "com.github.shyiko.ktlint.Main"
+    classpath = configurations.ktlint
+    args "-F", "src/**/*.kt"
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
 }

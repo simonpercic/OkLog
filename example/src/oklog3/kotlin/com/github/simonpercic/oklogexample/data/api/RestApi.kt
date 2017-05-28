@@ -4,7 +4,13 @@ import com.github.simonpercic.oklogexample.data.api.model.request.show.CreateSho
 import com.github.simonpercic.oklogexample.data.api.model.request.watched.WatchedRequest
 import com.github.simonpercic.oklogexample.data.api.model.response.show.ShowResponse
 import com.github.simonpercic.oklogexample.data.api.model.response.watched.WatchedShowResponse
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.HEAD
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
 import rx.Completable
 import rx.Single
 

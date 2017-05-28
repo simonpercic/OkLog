@@ -76,6 +76,10 @@ kapt {
     generateStubs = true
 }
 
+configurations {
+    ktlint
+}
+
 ext.daggerVersion = '2.10'
 ext.butterknifeVersion = '8.6.0'
 ext.retrofit2Version = '2.3.0'
@@ -105,6 +109,22 @@ dependencies {
     oklogCompile project(':oklog')
     oklogCompile 'com.squareup.retrofit:retrofit:1.9.0'
     oklogCompile 'com.squareup.okhttp:okhttp:2.7.5'
+
+    ktlint 'com.github.shyiko:ktlint:0.6.2'
+}
+
+task ktlint(type: JavaExec) {
+    main = "com.github.shyiko.ktlint.Main"
+    classpath = configurations.ktlint
+    args "src/**/*.kt"
+}
+
+check.dependsOn ktlint
+
+task ktlintFormat(type: JavaExec) {
+    main = "com.github.shyiko.ktlint.Main"
+    classpath = configurations.ktlint
+    args "-F", "src/**/*.kt"
 }
 
 repositories {

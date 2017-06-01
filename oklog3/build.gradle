@@ -22,6 +22,8 @@ android {
         versionName VERSION_NAME
 
         consumerProguardFiles 'proguard-rules.pro'
+
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
 
     lintOptions {
@@ -48,6 +50,15 @@ dependencies {
     // Unit test dependencies
     testCompile project(':oklog-core-test')
     testCompile "com.squareup.okhttp3:mockwebserver:$okhttpVersion"
+
+    androidTestCompile "com.squareup.okhttp3:mockwebserver:$okhttpVersion"
+    androidTestCompile "junit:junit:$junitVersion"
+    androidTestCompile "org.mockito:mockito-core:$mockitoVersion"
+    androidTestCompile "com.crittercism.dexmaker:dexmaker:$dexmakerVersion"
+    androidTestCompile "com.crittercism.dexmaker:dexmaker-dx:$dexmakerVersion"
+    androidTestCompile "com.crittercism.dexmaker:dexmaker-mockito:$dexmakerVersion"
+    androidTestCompile "com.android.support.test:runner:$testSupportVersion"
+    androidTestCompile "com.android.support.test:rules:$testSupportVersion"
 
     // Static code rules
     checkstyleRules files('../config/soter/checkstyle-0.3.xml')

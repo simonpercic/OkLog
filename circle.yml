@@ -2,10 +2,12 @@ machine:
   java:
     version: oraclejdk8
   environment:
+      _JAVA_OPTIONS: "-Xms512m -Xmx2048m"
       GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
 
 dependencies:
   pre:
+    - echo "disablePreDex" >> gradle.properties
     - if ! $(grep -q "Revision=47.0.0" $ANDROID_HOME/extras/android/m2repository/source.properties); then echo y | android update sdk --no-ui --all --filter "extra-android-m2repository"; fi
     - if ! $(grep -q "Revision=26.0.2" $ANDROID_HOME/tools/source.properties); then echo y | android update sdk --no-ui --all --filter "tools"; fi
     - if ! $(grep -q "Revision=25.0.6" $ANDROID_HOME/platform-tools/source.properties); then echo y | android update sdk --no-ui --all --filter "platform-tools"; fi

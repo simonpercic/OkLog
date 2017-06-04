@@ -79,17 +79,39 @@ class OkLogInterceptorTest {
     fun testPostDefault() {
         val url = server.url("/watched")
 
+        val requestBody = createRequestBody("{\"show\":5}")
+
         val mockResponse = MockResponse()
             .setBody("{\"show\":{\"id\":5,\"name\":\"True Detective\",\"runtime\":60,\"network\":{\"id\":8,\"name\"" +
                 ":\"HBO\"}},\"watched_count\":107}")
 
-        newCall(request(url).post(createRequestBody("{\"show\":5}")).build(), mockResponse)
+        newCall(request(url).post(requestBody).build(), mockResponse)
 
         assertEquals(
             "http://responseecho-simonpercic.rhcloud.com/v1/r/H4sIAAAAAAAAAKtWKs7IL1eyqlbKTFGyMtVRykvMTVWyUgopKk1VcE" +
                 "ktSU0uySxLVdJRKirNK8kESZkZABWllpTnF2XDtFnAtXk4-SvV1uoolSeWJGekpsQn5wO1KVkZGpjXAgANYYQRagAAAA==?qb=H" +
                 "4sIAAAAAAAAAKtWKs7IL1eyMq0FAFlhsMYKAAAA&d=H4sIAAAAAAAAAONiCfAPDhGSzSgpKbDS18_JT07MycgvLrEyNTAw0C9PL" +
                 "EnOSE3R4LJgdGDwOMEYxOTvnZBVwFiRBQDstqnDOAAAAA==",
+            urlCaptor.value)
+    }
+
+    @Test
+    fun testPutDefault() {
+        val url = server.url("/show")
+
+        val requestBody = createRequestBody("{\"name\":\"True Detective\",\"network\":{\"id\":8},\"runtime\":60}")
+
+        val mockResponse = MockResponse()
+            .setBody("{\"id\":5,\"name\":\"True Detective\",\"runtime\":60,\"network\":{\"id\":8,\"name\":\"HBO\"}}")
+            .setStatus("HTTP/1.1 %d %s".format(201, "Created"))
+
+        newCall(request(url).put(requestBody).build(), mockResponse)
+
+        assertEquals(
+            "http://responseecho-simonpercic.rhcloud.com/v1/r/H4sIAAAAAAAAAKtWykxRsjLVUcpLzE1VslIKKSpNVXBJLUlNLsksS1" +
+                "XSUSoqzSvJBEmZGQAVpZaU5xdlK1lVg7VZwLV5OPkr1dYCAB5WJYFNAAAA?qb=H4sIAAAAAAAAAKtWykvMTVWyUgopKk1VcEktS" +
+                "U0uySxLVdJRykstKc8vylayqlbKTFGysqjVUSoqzSvJBKk2M6gFAPS5LSY5AAAA&d=H4sIAAAAAAAAAONiDggNEZLKKCkpsNLXz" +
+                "8lPTszJyC8usTI1MDDQL87IL9ewtGB0YPA4yRjE7lyUmliSmpLgW8BY4QsAVHkRTzkAAAA=",
             urlCaptor.value)
     }
 

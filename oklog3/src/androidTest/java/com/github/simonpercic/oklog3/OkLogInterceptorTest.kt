@@ -131,6 +131,27 @@ class OkLogInterceptorTest {
             urlCaptor.value)
     }
 
+    @Test
+    fun testHeaderDefault() {
+        val url = server.url("/shows")
+
+        val mockResponse = MockResponse()
+            .setBody("[{\"id\":1,\"name\":\"Under the Dome\",\"runtime\":60,\"network\":{\"id\":2,\"name\":\"CBS\"" +
+                "}},{\"id\":2,\"name\":\"Person of Interest\",\"runtime\":60,\"network\":{\"id\":2,\"name\":\"CBS\"" +
+                "}},{\"id\":4,\"name\":\"Arrow\",\"runtime\":60,\"network\":{\"id\":5,\"name\":\"The CW\"}},{\"id\"" +
+                ":5,\"name\":\"True Detective\",\"runtime\":60,\"network\":{\"id\":8,\"name\":\"HBO\"}},{\"id\"" +
+                ":6,\"name\":\"The 100\",\"runtime\":60,\"network\":{\"id\":5,\"name\":\"The CW\"}},{\"id\"" +
+                ":7,\"name\":\"Homeland\",\"runtime\":60,\"network\":{\"id\":9,\"name\":\"Showtime\"}}]")
+            .setStatus("HTTP/1.1 %d %s".format(404, "Not Found"))
+
+        newCall(request(url).head().build(), mockResponse)
+
+        assertEquals(
+            "http://responseecho-simonpercic.rhcloud.com/v1/r/0?d=H4sIAAAAAAAAAONi8XB1dBGSzigpKbDS18_JT07MycgvLrEyNT" +
+                "Aw0C_OyC8v1mCwYHJg8JjCHMTpl1-i4JZfmpeScI65gKmCAQAvsqwcPgAAAA==",
+            urlCaptor.value)
+    }
+
     private fun request(url: HttpUrl): Request.Builder {
         return Request.Builder().url(url)
     }

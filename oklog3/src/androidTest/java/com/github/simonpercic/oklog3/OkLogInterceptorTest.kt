@@ -10,7 +10,6 @@ import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExternalResource
@@ -33,28 +32,10 @@ class OkLogInterceptorTest {
     private val server = MockWebServer()
     @Rule @JvmField val serverPort = MockWebServerPort(server)
 
-    private lateinit var urlCaptor: ArgumentCaptor<String>
-    private lateinit var client: OkHttpClient
-
-    @Before
-    fun setUp() {
-        urlCaptor = ArgumentCaptor.forClass(String::class.java)
-
-        val logInterceptor = mock(LogInterceptor::class.java)
-        `when`(logInterceptor.onLog(urlCaptor.capture())).thenReturn(true)
-
-        val interceptor = OkLogInterceptor.builder()
-            .setLogInterceptor(logInterceptor)
-            .withResponseDuration(false)
-            .build()
-
-        client = OkHttpClient.Builder()
-            .addInterceptor(interceptor)
-            .build()
-    }
-
     @Test
     fun testGetDefault() {
+        val (client, urlCaptor) = createClientArgCaptor()
+
         val url = server.url("/shows")
 
         val mockResponse = MockResponse()
@@ -65,7 +46,7 @@ class OkLogInterceptorTest {
                 ":6,\"name\":\"The 100\",\"runtime\":60,\"network\":{\"id\":5,\"name\":\"The CW\"}},{\"id\"" +
                 ":7,\"name\":\"Homeland\",\"runtime\":60,\"network\":{\"id\":9,\"name\":\"Showtime\"}}]")
 
-        newCall(request(url).build(), mockResponse)
+        newCall(client, request(url).build(), mockResponse)
 
         assertEquals(
             "http://responseecho-simonpercic.rhcloud.com/v1/r/H4sIAAAAAAAAAIuuVspMUbIy1FHKS8xNVbJSCs1LSS1SKMlIVXDJBw" +
@@ -77,6 +58,8 @@ class OkLogInterceptorTest {
 
     @Test
     fun testPostDefault() {
+        val (client, urlCaptor) = createClientArgCaptor()
+
         val url = server.url("/watched")
 
         val requestBody = createRequestBody("{\"show\":5}")
@@ -85,7 +68,7 @@ class OkLogInterceptorTest {
             .setBody("{\"show\":{\"id\":5,\"name\":\"True Detective\",\"runtime\":60,\"network\":{\"id\":8,\"name\"" +
                 ":\"HBO\"}},\"watched_count\":107}")
 
-        newCall(request(url).post(requestBody).build(), mockResponse)
+        newCall(client, request(url).post(requestBody).build(), mockResponse)
 
         assertEquals(
             "http://responseecho-simonpercic.rhcloud.com/v1/r/H4sIAAAAAAAAAKtWKs7IL1eyqlbKTFGyMtVRykvMTVWyUgopKk1VcE" +
@@ -97,6 +80,8 @@ class OkLogInterceptorTest {
 
     @Test
     fun testPutDefault() {
+        val (client, urlCaptor) = createClientArgCaptor()
+
         val url = server.url("/show")
 
         val requestBody = createRequestBody("{\"name\":\"True Detective\",\"network\":{\"id\":8},\"runtime\":60}")
@@ -105,7 +90,7 @@ class OkLogInterceptorTest {
             .setBody("{\"id\":5,\"name\":\"True Detective\",\"runtime\":60,\"network\":{\"id\":8,\"name\":\"HBO\"}}")
             .setStatus("HTTP/1.1 %d %s".format(201, "Created"))
 
-        newCall(request(url).put(requestBody).build(), mockResponse)
+        newCall(client, request(url).put(requestBody).build(), mockResponse)
 
         assertEquals(
             "http://responseecho-simonpercic.rhcloud.com/v1/r/H4sIAAAAAAAAAKtWykxRsjLVUcpLzE1VslIKKSpNVXBJLUlNLsksS1" +
@@ -117,12 +102,14 @@ class OkLogInterceptorTest {
 
     @Test
     fun testDeleteDefault() {
+        val (client, urlCaptor) = createClientArgCaptor()
+
         val url = server.url("/show/5")
 
         val mockResponse = MockResponse()
             .setBody("{\"id\":5,\"name\":\"True Detective\",\"runtime\":60,\"network\":{\"id\":8,\"name\":\"HBO\"}}")
 
-        newCall(request(url).delete(null).build(), mockResponse)
+        newCall(client, request(url).delete(null).build(), mockResponse)
 
         assertEquals(
             "http://responseecho-simonpercic.rhcloud.com/v1/r/H4sIAAAAAAAAAKtWykxRsjLVUcpLzE1VslIKKSpNVXBJLUlNLsksS1" +
@@ -133,6 +120,8 @@ class OkLogInterceptorTest {
 
     @Test
     fun testHeaderDefault() {
+        val (client, urlCaptor) = createClientArgCaptor()
+
         val url = server.url("/shows")
 
         val mockResponse = MockResponse()
@@ -144,7 +133,7 @@ class OkLogInterceptorTest {
                 ":7,\"name\":\"Homeland\",\"runtime\":60,\"network\":{\"id\":9,\"name\":\"Showtime\"}}]")
             .setStatus("HTTP/1.1 %d %s".format(404, "Not Found"))
 
-        newCall(request(url).head().build(), mockResponse)
+        newCall(client, request(url).head().build(), mockResponse)
 
         assertEquals(
             "http://responseecho-simonpercic.rhcloud.com/v1/r/0?d=H4sIAAAAAAAAAONi8XB1dBGSzigpKbDS18_JT07MycgvLrEyNT" +
@@ -156,13 +145,33 @@ class OkLogInterceptorTest {
         return Request.Builder().url(url)
     }
 
-    private fun newCall(request: Request, mockResponse: MockResponse) {
+    private fun newCall(client: OkHttpClient, request: Request, mockResponse: MockResponse) {
         server.enqueue(mockResponse)
         val response = client.newCall(request).execute()
         response.body()!!.close()
     }
 
     private fun createRequestBody(body: String) = RequestBody.create(MediaType.parse(PLAIN_STRING), body)
+
+    private fun createClientArgCaptor(): ClientArgCaptor {
+        val urlCaptor = ArgumentCaptor.forClass(String::class.java)
+
+        val logInterceptor = mock(LogInterceptor::class.java)
+        `when`(logInterceptor.onLog(urlCaptor.capture())).thenReturn(true)
+
+        val interceptor = OkLogInterceptor.builder()
+            .setLogInterceptor(logInterceptor)
+            .withResponseDuration(false)
+            .build()
+
+        val client = OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .build()
+
+        return ClientArgCaptor(client, urlCaptor)
+    }
+
+    data class ClientArgCaptor(val client: OkHttpClient, val urlCaptor: ArgumentCaptor<String>)
 
     class MockWebServerPort(private val mockWebServer: MockWebServer) : ExternalResource() {
 

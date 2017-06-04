@@ -115,6 +115,22 @@ class OkLogInterceptorTest {
             urlCaptor.value)
     }
 
+    @Test
+    fun testDeleteDefault() {
+        val url = server.url("/show/5")
+
+        val mockResponse = MockResponse()
+            .setBody("{\"id\":5,\"name\":\"True Detective\",\"runtime\":60,\"network\":{\"id\":8,\"name\":\"HBO\"}}")
+
+        newCall(request(url).delete(null).build(), mockResponse)
+
+        assertEquals(
+            "http://responseecho-simonpercic.rhcloud.com/v1/r/H4sIAAAAAAAAAKtWykxRsjLVUcpLzE1VslIKKSpNVXBJLUlNLsksS1" +
+                "XSUSoqzSvJBEmZGQAVpZaU5xdlK1lVg7VZwLV5OPkr1dYCAB5WJYFNAAAA?d=H4sIAAAAAAAAAONic3H1cQ1xFZLJKCkpsNLXz8" +
+                "lPTszJyC8usTI1MDDQL87IL9c31WCwYHJg8DjBGMTk753gW8BY4QsAuiJp6DkAAAA=",
+            urlCaptor.value)
+    }
+
     private fun request(url: HttpUrl): Request.Builder {
         return Request.Builder().url(url)
     }

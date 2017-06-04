@@ -15,7 +15,8 @@ import org.junit.Test
 import org.junit.rules.ExternalResource
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
-import org.mockito.Mockito
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
 import java.io.IOException
 
 /**
@@ -24,31 +25,28 @@ import java.io.IOException
 @RunWith(AndroidJUnit4::class)
 class OkLogInterceptorTest {
 
-    protected val PLAIN_STRING = "text/plain; charset=utf-8"
+    private val PLAIN_STRING = "text/plain; charset=utf-8"
 
     private val server = MockWebServer()
     @Rule @JvmField val serverPort = MockWebServerPort(server)
-
-    private var client: OkHttpClient? = null
-    private var url: HttpUrl? = null
 
     @Test
     fun testGetDefault() {
         val urlCaptor = ArgumentCaptor.forClass(String::class.java)
 
-        val logInterceptor = Mockito.mock(LogInterceptor::class.java)
-        Mockito.`when`(logInterceptor.onLog(urlCaptor.capture())).thenReturn(true)
+        val logInterceptor = mock(LogInterceptor::class.java)
+        `when`(logInterceptor.onLog(urlCaptor.capture())).thenReturn(true)
 
         val interceptor = OkLogInterceptor.builder()
             .setLogInterceptor(logInterceptor)
             .withResponseDuration(false)
             .build()
 
-        client = OkHttpClient.Builder()
+        val client = OkHttpClient.Builder()
             .addInterceptor(interceptor)
             .build()
 
-        url = server.url("/shows")
+        val url = server.url("/shows")
 
         val mockResponse = MockResponse()
             .setBody("[{\"id\":1,\"name\":\"Under the Dome\",\"runtime\":60,\"network\":{\"id\":2,\"name\":\"CBS\"" +
@@ -58,7 +56,7 @@ class OkLogInterceptorTest {
                 ":6,\"name\":\"The 100\",\"runtime\":60,\"network\":{\"id\":5,\"name\":\"The CW\"}},{\"id\"" +
                 ":7,\"name\":\"Homeland\",\"runtime\":60,\"network\":{\"id\":9,\"name\":\"Showtime\"}}]")
 
-        newCall(request().build(), mockResponse)
+        newCall(client, request(url).build(), mockResponse)
 
         val loggedUrl = urlCaptor.value
         Assert.assertEquals(
@@ -73,25 +71,25 @@ class OkLogInterceptorTest {
     fun testPostDefault() {
         val urlCaptor = ArgumentCaptor.forClass(String::class.java)
 
-        val logInterceptor = Mockito.mock(LogInterceptor::class.java)
-        Mockito.`when`(logInterceptor.onLog(urlCaptor.capture())).thenReturn(true)
+        val logInterceptor = mock(LogInterceptor::class.java)
+        `when`(logInterceptor.onLog(urlCaptor.capture())).thenReturn(true)
 
         val interceptor = OkLogInterceptor.builder()
             .setLogInterceptor(logInterceptor)
             .withResponseDuration(false)
             .build()
 
-        client = OkHttpClient.Builder()
+        val client = OkHttpClient.Builder()
             .addInterceptor(interceptor)
             .build()
 
-        url = server.url("/watched")
+        val url = server.url("/watched")
 
         val mockResponse = MockResponse()
             .setBody("{\"show\":{\"id\":5,\"name\":\"True Detective\",\"runtime\":60,\"network\":{\"id\":8,\"name\"" +
                 ":\"HBO\"}},\"watched_count\":107}")
 
-        newCall(request().post(RequestBody.create(MediaType.parse(PLAIN_STRING), "{\"show\":5}")).build(), mockResponse)
+        newCall(client, request(url).post(RequestBody.create(MediaType.parse(PLAIN_STRING), "{\"show\":5}")).build(), mockResponse)
 
         val loggedUrl = urlCaptor.value
         Assert.assertEquals(
@@ -102,20 +100,18 @@ class OkLogInterceptorTest {
             loggedUrl)
     }
 
-    private fun request(): Request.Builder {
-        return Request.Builder().url(url!!)
+    private fun request(url: HttpUrl): Request.Builder {
+        return Request.Builder().url(url)
     }
 
-    @Throws(IOException::class)
-    private fun newCall(request: Request, mockResponse: MockResponse) {
+    private fun newCall(client: OkHttpClient, request: Request, mockResponse: MockResponse) {
         server.enqueue(mockResponse)
-        val response = client!!.newCall(request).execute()
+        val response = client.newCall(request).execute()
         response.body()!!.close()
     }
 
     class MockWebServerPort(private val mockWebServer: MockWebServer) : ExternalResource() {
 
-        @Throws(Throwable::class)
         override fun before() {
             super.before()
             mockWebServer.start(5000)

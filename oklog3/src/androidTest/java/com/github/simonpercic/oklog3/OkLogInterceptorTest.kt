@@ -2,7 +2,7 @@ package com.github.simonpercic.oklog3
 
 import android.support.test.runner.AndroidJUnit4
 import com.github.simonpercic.oklog.core.LogInterceptor
-import junit.framework.Assert
+import junit.framework.Assert.assertEquals
 import okhttp3.HttpUrl
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
@@ -59,7 +59,7 @@ class OkLogInterceptorTest {
         newCall(client, request(url).build(), mockResponse)
 
         val loggedUrl = urlCaptor.value
-        Assert.assertEquals(
+        assertEquals(
             "http://responseecho-simonpercic.rhcloud.com/v1/r/H4sIAAAAAAAAAIuuVspMUbIy1FHKS8xNVbJSCs1LSS1SKMlIVXDJBw" +
                 "roKBWV5pVkgqTMDICKUkvK84uylawg2ozg2pydgpVqa3XQhQNSi4rz8xTy0xQ880pSi1KLS8gz0QQu7FhUlF9OwBBTuOoQoD-cw" +
                 "xHmIMkUlQK9mFqSmlySWUbInxZwbR5O_gjTzFDsMTQwINtd5ggLgKGek5iXQsAoS7iG4Iz8crCy2tpYALkEI-7OAQAA?d=H4sIA" +
@@ -92,7 +92,7 @@ class OkLogInterceptorTest {
         newCall(client, request(url).post(RequestBody.create(MediaType.parse(PLAIN_STRING), "{\"show\":5}")).build(), mockResponse)
 
         val loggedUrl = urlCaptor.value
-        Assert.assertEquals(
+        assertEquals(
             "http://responseecho-simonpercic.rhcloud.com/v1/r/H4sIAAAAAAAAAKtWKs7IL1eyqlbKTFGyMtVRykvMTVWyUgopKk1VcE" +
                 "ktSU0uySxLVdJRKirNK8kESZkZABWllpTnF2XDtFnAtXk4-SvV1uoolSeWJGekpsQn5wO1KVkZGpjXAgANYYQRagAAAA==?qb=H" +
                 "4sIAAAAAAAAAKtWKs7IL1eyMq0FAFlhsMYKAAAA&d=H4sIAAAAAAAAAONiCfAPDhGSzSgpKbDS18_JT07MycgvLrEyNTAw0C9PL" +

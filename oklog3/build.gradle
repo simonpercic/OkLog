@@ -47,7 +47,7 @@ android {
 
     dexOptions {
         if (System.getenv()["CIRCLECI"] as boolean) {
-            javaMaxHeapSize "2048M"
+            javaMaxHeapSize "4096M"
             preDexLibraries false
         }
     }

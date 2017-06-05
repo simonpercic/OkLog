@@ -32,7 +32,14 @@ android {
     // This enables long timeouts required on slow environments, e.g. Travis
     adbOptions {
         timeOutInMs 10 * 60 * 1000  // 10 minutes
-        installOptions "-d","-t"
+        installOptions "-d", "-t"
+    }
+
+    dexOptions {
+        if (System.getenv()["CIRCLECI"] as boolean) {
+            javaMaxHeapSize "2048M"
+            preDexLibraries false
+        }
     }
 }
 

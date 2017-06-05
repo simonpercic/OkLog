@@ -69,6 +69,13 @@ android {
         oklog.java.srcDirs += 'src/oklog/kotlin'
         oklog3.java.srcDirs += 'src/oklog3/kotlin'
     }
+
+    dexOptions {
+        if (System.getenv()["CIRCLECI"] as boolean) {
+            javaMaxHeapSize "2048M"
+            preDexLibraries false
+        }
+    }
 }
 
 kapt {

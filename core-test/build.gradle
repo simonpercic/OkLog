@@ -17,6 +17,13 @@ android {
         textReport true
         lintConfig file('../config/check/lint/lint.xml')
     }
+
+    dexOptions {
+        if (System.getenv()["CIRCLECI"] as boolean) {
+            javaMaxHeapSize "2048M"
+            preDexLibraries false
+        }
+    }
 }
 
 dependencies {

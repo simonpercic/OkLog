@@ -23,4 +23,4 @@ dependencies:
 test:
   override:
     - config/circleci/run-tests.sh:
-        parallel: false
+        parallel: true

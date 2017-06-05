@@ -27,6 +27,12 @@ class OkLogInterceptorTest {
 
     companion object {
         private val PLAIN_STRING = "text/plain; charset=utf-8"
+        private val REQUEST_HEADER_NAME = "ReqHeaderName"
+        private val REQUEST_HEADER_VALUE = "ReqExampleValue"
+        private val RESPONSE_HEADER_NAME = "ResHeaderName"
+        private val RESPONSE_HEADER_VALUE = "ResExampleValue"
+        private val CONTENT_TYPE = "Content-Type"
+        private val APPLICATION_JSON = "application/json"
     }
 
     private val server = MockWebServer()
@@ -53,6 +59,38 @@ class OkLogInterceptorTest {
                 "roKBWV5pVkgqTMDICKUkvK84uylawg2ozg2pydgpVqa3XQhQNSi4rz8xTy0xQ880pSi1KLS8gz0QQu7FhUlF9OwBBTuOoQoD-cw" +
                 "xHmIMkUlQK9mFqSmlySWUbInxZwbR5O_gjTzFDsMTQwINtd5ggLgKGek5iXQsAoS7iG4Iz8crCy2tpYALkEI-7OAQAA?d=H4sIA" +
                 "AAAAAAAAONidncNEZLOKCkpsNLXz8lPTszJyC8usTI1MDDQL87ILy_WYLBgcmDwOMEYxOTvnXCOuYCx4hwzAHrELHA3AAAA",
+            urlCaptor.value)
+    }
+
+    @Test
+    fun testGetAll() {
+        val (client, urlCaptor) = createClientArgCaptor { it.withAllLogData() }
+
+        val url = server.url("/shows")
+
+        val request = request(url)
+            .addHeader(REQUEST_HEADER_NAME, REQUEST_HEADER_VALUE)
+            .build()
+
+        val mockResponse = MockResponse()
+            .setBody("[{\"id\":1,\"name\":\"Under the Dome\",\"runtime\":60,\"network\":{\"id\":2,\"name\":\"CBS\"" +
+                "}},{\"id\":2,\"name\":\"Person of Interest\",\"runtime\":60,\"network\":{\"id\":2,\"name\":\"CBS\"" +
+                "}},{\"id\":4,\"name\":\"Arrow\",\"runtime\":60,\"network\":{\"id\":5,\"name\":\"The CW\"}},{\"id\"" +
+                ":5,\"name\":\"True Detective\",\"runtime\":60,\"network\":{\"id\":8,\"name\":\"HBO\"}},{\"id\"" +
+                ":6,\"name\":\"The 100\",\"runtime\":60,\"network\":{\"id\":5,\"name\":\"The CW\"}},{\"id\"" +
+                ":7,\"name\":\"Homeland\",\"runtime\":60,\"network\":{\"id\":9,\"name\":\"Showtime\"}}]")
+            .addHeader(CONTENT_TYPE, APPLICATION_JSON)
+            .addHeader(RESPONSE_HEADER_NAME, RESPONSE_HEADER_VALUE)
+
+        newCall(client, request, mockResponse)
+
+        assertEquals(
+            "http://responseecho-simonpercic.rhcloud.com/v1/r/H4sIAAAAAAAAAIuuVspMUbIy1FHKS8xNVbJSCs1LSS1SKMlIVXDJBw" +
+                "roKBWV5pVkgqTMDICKUkvK84uylawg2ozg2pydgpVqa3XQhQNSi4rz8xTy0xQ880pSi1KLS8gz0QQu7FhUlF9OwBBTuOoQoD-cw" +
+                "xHmIMkUlQK9mFqSmlySWUbInxZwbR5O_gjTzFDsMTQwINtd5ggLgKGek5iXQsAoS7iG4Iz8crCy2tpYALkEI-7OAQAA?d=H4sIA" +
+                "AAAAAAAAONidncNEZLOKCkpsNLXz8lPTszJyC8usTI1MDDQL87ILy-W4gBJ6hvqGWowGClw8QalFnqkJqakFvkl5qYK8QO5rhWJ" +
+                "uQU5qWGJOaWpFkwODB4nGIOY_L0TzjFnKXDxOOfnlaTmleiGVBakCgkkFhTkZCYnlmTm5-lnFefnZYFNLEY1sRjZxALGinPMTYz" +
+                "4nAgACeqmZsUAAAA=",
             urlCaptor.value)
     }
 
@@ -153,16 +191,20 @@ class OkLogInterceptorTest {
 
     private fun createRequestBody(body: String) = RequestBody.create(MediaType.parse(PLAIN_STRING), body)
 
-    private fun createClientArgCaptor(): ClientArgCaptor {
+    private fun createClientArgCaptor(okLogBuilderAction: (OkLogInterceptor.Builder) -> Unit = {}): ClientArgCaptor {
         val urlCaptor = ArgumentCaptor.forClass(String::class.java)
 
         val logInterceptor = mock(LogInterceptor::class.java)
         `when`(logInterceptor.onLog(urlCaptor.capture())).thenReturn(true)
 
-        val interceptor = OkLogInterceptor.builder()
+        val interceptorBuilder = OkLogInterceptor.builder()
             .setLogInterceptor(logInterceptor)
-            .withResponseDuration(false)
-            .build()
+
+        okLogBuilderAction(interceptorBuilder)
+
+        interceptorBuilder.withResponseDuration(false)
+
+        val interceptor = interceptorBuilder.build()
 
         val client = OkHttpClient.Builder()
             .addInterceptor(interceptor)

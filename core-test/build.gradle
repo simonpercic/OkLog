@@ -32,4 +32,12 @@ dependencies {
 
     compile "junit:junit:$junitVersion"
     compile "org.mockito:mockito-core:$mockitoVersion"
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    compile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+    compile "com.crittercism.dexmaker:dexmaker:$dexmakerVersion"
+    compile "com.crittercism.dexmaker:dexmaker-dx:$dexmakerVersion"
+    compile "com.crittercism.dexmaker:dexmaker-mockito:$dexmakerVersion"
+    compile "com.android.support.test:runner:$testSupportVersion"
+    compile "com.android.support.test:rules:$testSupportVersion"
 }

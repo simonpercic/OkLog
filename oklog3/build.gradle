@@ -68,16 +68,8 @@ dependencies {
     testCompile project(':oklog-core-test')
     testCompile "com.squareup.okhttp3:mockwebserver:$okhttpVersion"
 
-    androidTestCompile "junit:junit:$junitVersion"
-    androidTestCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-    androidTestCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+    androidTestCompile project(':oklog-core-test')
     androidTestCompile "com.squareup.okhttp3:mockwebserver:$okhttpVersion"
-    androidTestCompile "org.mockito:mockito-core:$mockitoVersion"
-    androidTestCompile "com.crittercism.dexmaker:dexmaker:$dexmakerVersion"
-    androidTestCompile "com.crittercism.dexmaker:dexmaker-dx:$dexmakerVersion"
-    androidTestCompile "com.crittercism.dexmaker:dexmaker-mockito:$dexmakerVersion"
-    androidTestCompile "com.android.support.test:runner:$testSupportVersion"
-    androidTestCompile "com.android.support.test:rules:$testSupportVersion"
 
     // Static code rules
     checkstyleRules files('../config/soter/checkstyle-0.3.xml')

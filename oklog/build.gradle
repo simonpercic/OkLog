@@ -5,11 +5,13 @@ buildscript {
     dependencies {
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$gradleBintrayVersion"
         classpath "com.github.dcendents:android-maven-gradle-plugin:$androidGradleMavenVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
 
 apply plugin: 'com.android.library'
 apply plugin: 'si.kamino.soter'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion project.ext.compileSdkVersion
@@ -20,6 +22,8 @@ android {
         targetSdkVersion project.ext.targetSdkVersion
         versionCode Integer.parseInt(VERSION_CODE)
         versionName VERSION_NAME
+
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
 
     lintOptions {
@@ -35,12 +39,20 @@ android {
         installOptions "-d", "-t"
     }
 
+    sourceSets {
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
+    }
+
     dexOptions {
         if (System.getenv()["CIRCLECI"] as boolean) {
             javaMaxHeapSize "4096M"
             preDexLibraries false
         }
     }
+}
+
+configurations {
+    ktlint
 }
 
 ext.okhttpVersion = '2.7.5'
@@ -54,10 +66,21 @@ dependencies {
     testCompile project(':oklog-core-test')
     testCompile "com.squareup.okhttp:mockwebserver:$okhttpVersion"
 
+    androidTestCompile "com.squareup.okhttp:mockwebserver:$okhttpVersion"
+    androidTestCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    androidTestCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+    androidTestCompile "com.crittercism.dexmaker:dexmaker:$dexmakerVersion"
+    androidTestCompile "com.crittercism.dexmaker:dexmaker-dx:$dexmakerVersion"
+    androidTestCompile "com.crittercism.dexmaker:dexmaker-mockito:$dexmakerVersion"
+    androidTestCompile "com.android.support.test:runner:$testSupportVersion"
+    androidTestCompile "com.android.support.test:rules:$testSupportVersion"
+
     // Static code rules
     checkstyleRules files('../config/soter/checkstyle-0.3.xml')
     findbugsRules files('../config/soter/findbugs-0.1.xml')
     pmdRules files('../config/soter/pmd-0.1.xml')
+
+    ktlint "com.github.shyiko:ktlint:$ktlintVersion"
 }
 
 soter {
@@ -73,6 +96,20 @@ soter {
     pmd {
         enabled true
     }
+}
+
+task ktlint(type: JavaExec) {
+    main = "com.github.shyiko.ktlint.Main"
+    classpath = configurations.ktlint
+    args "src/**/*.kt"
+}
+
+check.dependsOn ktlint
+
+task ktlintFormat(type: JavaExec) {
+    main = "com.github.shyiko.ktlint.Main"
+    classpath = configurations.ktlint
+    args "-F", "src/**/*.kt"
 }
 
 apply from: '../gradle-publish/android/jcenterupload.gradle'

@@ -26,6 +26,9 @@ import okio.BufferedSource;
  */
 class LogDataInterceptor extends BaseLogDataInterceptor<Chain, Request, Response, Headers, MediaType> {
 
+    private static final String OKHTTP_SENT_MILLIS = "OkHttp-Sent-Millis";
+    private static final String OKHTTP_RECEIVED_MILLIS = "OkHttp-Received-Millis";
+
     @Override protected Request request(Chain chain) {
         return chain.request();
     }
@@ -130,5 +133,11 @@ class LogDataInterceptor extends BaseLogDataInterceptor<Chain, Request, Response
 
     @Override protected BufferedSource responseBodySource(Response response) throws IOException {
         return response.body().source();
+    }
+
+    @Override protected boolean skipResponseHeader(String headerName) {
+        // skip OkHttp response header timestamps
+        return OKHTTP_SENT_MILLIS.equalsIgnoreCase(headerName)
+                || OKHTTP_RECEIVED_MILLIS.equalsIgnoreCase(headerName);
     }
 }

@@ -26,13 +26,13 @@ import java.io.IOException
 class OkLogInterceptorTest {
 
     companion object {
-        private val PLAIN_STRING = "text/plain; charset=utf-8"
-        private val REQUEST_HEADER_NAME = "ReqHeaderName"
-        private val REQUEST_HEADER_VALUE = "ReqExampleValue"
-        private val RESPONSE_HEADER_NAME = "ResHeaderName"
-        private val RESPONSE_HEADER_VALUE = "ResExampleValue"
-        private val CONTENT_TYPE = "Content-Type"
-        private val APPLICATION_JSON = "application/json"
+        private const val PLAIN_STRING = "text/plain; charset=utf-8"
+        private const val REQUEST_HEADER_NAME = "ReqHeaderName"
+        private const val REQUEST_HEADER_VALUE = "ReqExampleValue"
+        private const val RESPONSE_HEADER_NAME = "ResHeaderName"
+        private const val RESPONSE_HEADER_VALUE = "ResExampleValue"
+        private const val CONTENT_TYPE = "Content-Type"
+        private const val APPLICATION_JSON = "application/json"
     }
 
     private val server = MockWebServer()

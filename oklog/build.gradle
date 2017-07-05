@@ -66,6 +66,7 @@ dependencies {
     testCompile project(':oklog-core-test')
     testCompile "com.squareup.okhttp:mockwebserver:$okhttpVersion"
 
+    androidTestCompile project(':oklog-core-test')
     androidTestCompile "com.squareup.okhttp:mockwebserver:$okhttpVersion"
     androidTestCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     androidTestCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"

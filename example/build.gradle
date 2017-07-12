@@ -69,11 +69,6 @@ android {
         oklog.java.srcDirs += 'src/oklog/kotlin'
         oklog3.java.srcDirs += 'src/oklog3/kotlin'
     }
-
-    dexOptions {
-        javaMaxHeapSize "3072M"
-        preDexLibraries false
-    }
 }
 
 kapt {

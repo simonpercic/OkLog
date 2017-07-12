@@ -44,11 +44,6 @@ android {
     sourceSets {
         androidTest.java.srcDirs += 'src/androidTest/kotlin'
     }
-
-    dexOptions {
-        javaMaxHeapSize "3072M"
-        preDexLibraries false
-    }
 }
 
 configurations {

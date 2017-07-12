@@ -1,3 +1,8 @@
+general:
+  branches:
+    only:
+      - disabled-for-now
+
 machine:
   java:
     version: oraclejdk8

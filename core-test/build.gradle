@@ -1,4 +1,14 @@
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion project.ext.compileSdkVersion
@@ -10,6 +20,8 @@ android {
         targetSdkVersion project.ext.targetSdkVersion
         versionCode Integer.parseInt(VERSION_CODE)
         versionName VERSION_NAME
+
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
 
     lintOptions {
@@ -17,6 +29,14 @@ android {
         textReport true
         lintConfig file('../config/check/lint/lint.xml')
     }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+configurations {
+    ktlint
 }
 
 dependencies {
@@ -25,4 +45,25 @@ dependencies {
 
     compile "junit:junit:$junitVersion"
     compile "org.mockito:mockito-core:$mockitoVersion"
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    compile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+    compile "com.android.support.test:runner:$testSupportVersion"
+    compile "com.android.support.test:rules:$testSupportVersion"
+
+    ktlint "com.github.shyiko:ktlint:$ktlintVersion"
+}
+
+task ktlint(type: JavaExec) {
+    main = "com.github.shyiko.ktlint.Main"
+    classpath = configurations.ktlint
+    args "src/**/*.kt"
+}
+
+check.dependsOn ktlint
+
+task ktlintFormat(type: JavaExec) {
+    main = "com.github.shyiko.ktlint.Main"
+    classpath = configurations.ktlint
+    args "-F", "src/**/*.kt"
 }

@@ -150,7 +150,7 @@ public abstract class BaseLogDataInterceptor<Chain, Request, Response, Headers, 
         for (int i = 0, count = headersCount(responseHeaders); i < count; i++) {
             String name = headerName(responseHeaders, i);
             // skip content-length, since it's already logged above
-            if (!CONTENT_LENGTH.equalsIgnoreCase(name)) {
+            if (!CONTENT_LENGTH.equalsIgnoreCase(name) && !skipResponseHeader(name)) {
                 logDataBuilder.addResponseHeader(name, headerValue(responseHeaders, i));
             }
         }
@@ -189,6 +189,10 @@ public abstract class BaseLogDataInterceptor<Chain, Request, Response, Headers, 
         }
 
         return new ResponseLogData<>(response, logDataBuilder);
+    }
+
+    protected boolean skipResponseHeader(String headerName) {
+        return false;
     }
 
     /**

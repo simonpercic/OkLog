@@ -1,13 +1,20 @@
+general:
+  branches:
+    only:
+      - disabled-for-now
+
 machine:
   java:
     version: oraclejdk8
   environment:
-      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+      _JAVA_OPTIONS: "-Xms512m -Xmx4096m"
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"'
 
 dependencies:
   pre:
+    - echo "disablePreDex" >> gradle.properties
     - if ! $(grep -q "Revision=47.0.0" $ANDROID_HOME/extras/android/m2repository/source.properties); then echo y | android update sdk --no-ui --all --filter "extra-android-m2repository"; fi
-    - if ! $(grep -q "Revision=26.0.2" $ANDROID_HOME/tools/source.properties); then echo y | android update sdk --no-ui --all --filter "tools"; fi
+    - if ! $(grep -q "Revision=25.2.5" $ANDROID_HOME/tools/source.properties); then echo y | android update sdk --no-ui --all --filter "tools"; fi
     - if ! $(grep -q "Revision=25.0.6" $ANDROID_HOME/platform-tools/source.properties); then echo y | android update sdk --no-ui --all --filter "platform-tools"; fi
     - if [ ! -e $ANDROID_HOME/platforms/android-25 ]; then echo y | android update sdk --no-ui --all --filter "android-25"; fi
     - if [ ! -e $ANDROID_HOME/build-tools/25.0.2 ]; then echo y | android update sdk --no-ui --all --filter "build-tools-25.0.2"; fi
@@ -21,4 +28,4 @@ dependencies:
 test:
   override:
     - config/circleci/run-tests.sh:
-        parallel: true
+        parallel: false

@@ -9,7 +9,7 @@ import org.junit.Test;
  *
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
-public class CompressionUtilsTest {
+public class CompressionUtilsUnitTest {
 
     @Test
     public void testGzipBase64Empty() throws Exception {

@@ -20,8 +20,6 @@ android {
         targetSdkVersion project.ext.targetSdkVersion
         versionCode Integer.parseInt(VERSION_CODE)
         versionName VERSION_NAME
-
-        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
 
     lintOptions {
@@ -51,10 +49,6 @@ dependencies {
     testCompile "org.mockito:mockito-core:$mockitoVersion"
     testCompile "org.powermock:powermock-module-junit4:$powermockVersion"
     testCompile "org.powermock:powermock-api-mockito:$powermockVersion"
-
-    // Android test dependencies
-    androidTestCompile "com.android.support.test:runner:$testSupportVersion"
-    androidTestCompile "com.android.support.test:rules:$testSupportVersion"
 
     // Static code rules
     checkstyleRules files('../config/soter/checkstyle-0.3.xml')

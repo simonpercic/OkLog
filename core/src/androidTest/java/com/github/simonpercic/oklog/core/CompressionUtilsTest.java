@@ -13,10 +13,13 @@ public class CompressionUtilsTest {
 
     @Test
     public void testGzipBase64Empty() throws Exception {
-        String nullResult = CompressionUtils.gzipBase64(null);
-        Assert.assertEquals(null, nullResult);
+        String nullBytesResult = CompressionUtils.gzipBase64UrlSafe((byte[]) null);
+        Assert.assertEquals(null, nullBytesResult);
 
-        String emptyResult = CompressionUtils.gzipBase64("");
+        String nullStringResult = CompressionUtils.gzipBase64UrlSafe((String) null);
+        Assert.assertEquals(null, nullStringResult);
+
+        String emptyResult = CompressionUtils.gzipBase64UrlSafe("");
         Assert.assertEquals("", emptyResult);
     }
 
@@ -88,17 +91,15 @@ public class CompressionUtilsTest {
                 + "  }\n"
                 + "]";
 
-        String compressed = CompressionUtils.gzipBase64(json);
+        String compressed = CompressionUtils.gzipBase64UrlSafe(json);
 
-        String expected = "H4sIAAAAAAAAALXVzY7TMBAH8Ps-RZXzbmKPPZ5Jr7wBV4TQ-ItWtNvQpBfQvjuGVkJa7aoGxYfk\n"
-                + "ENvzT_yLxp8eNpuf5dpsumc5pm7bTXJOz8sT9Nir7vE69GM_eTkcvlzOhzJjtyzTvB0Gmfb91_2y\n"
-                + "u_g-nI7DOU2neZi_X0qB4fTt96zhtnB4q-gi5_8relv4ZtGy5rhfuu31m8qDeSelejbOp2i1MMHo\n"
-                + "IoforPYYlFOQg2enciJlza1MWffPb3VNnofqqD9JL-X-8vg-gu3V08cPen2IV4XXw3hV-B0QDIGi\n"
-                + "FyNR40gZg5SbYSWWLUZlGLPYMrACSHVULUgTjCYQdxDKD8o-JUATM8no2WcTsrWGRRSRAKOCoPQK\n"
-                + "CNVRVQimBYJpgWDuIgQ7phRT-UHJJuV8YMgoKVJwhMplhzGCZVgBoTqqCgFaIEALBLiL4CSVnfAm\n"
-                + "lB0YS7_G0sM5GQFUOmeyKkbRqN0KCNVRVQi61fmgW50Puup8IO-ItPcwmjEKJIoWghgchUIOSlxi\n"
-                + "BwR-jdZUG1UL0gSjCcQdBHbRknYeWaJxCAkTOfYBIbMi1qWRl9ahwwoI1VF_ER4-_wL2RqAwvQoA\n"
-                + "AA==\n";
+        String expected = "H4sIAAAAAAAAALXVzY7TMBAH8Ps-RZXzbmKPPZ5Jr7wBV4TQ-ItWtNvQpBfQvjuGVkJa7aoGxYfkENvzT_yLxp8eNpuf"
+                + "5dpsumc5pm7bTXJOz8sT9Nir7vE69GM_eTkcvlzOhzJjtyzTvB0Gmfb91_2yu_g-nI7DOU2neZi_X0qB4fTt96zhtnB4q-gi5_8r"
+                + "elv4ZtGy5rhfuu31m8qDeSelejbOp2i1MMHoIoforPYYlFOQg2enciJlza1MWffPb3VNnofqqD9JL-X-8vg-gu3V08cPen2IV4XX"
+                + "w3hV-B0QDIGiFyNR40gZg5SbYSWWLUZlGLPYMrACSHVULUgTjCYQdxDKD8o-JUATM8no2WcTsrWGRRSRAKOCoPQKCNVRVQimBYJp"
+                + "gWDuIgQ7phRT-UHJJuV8YMgoKVJwhMplhzGCZVgBoTqqCgFaIEALBLiL4CSVnfAmlB0YS7_G0sM5GQFUOmeyKkbRqN0KCNVRVQi6"
+                + "1fmgW50Puup8IO-ItPcwmjEKJIoWghgchUIOSlxiBwR-jdZUG1UL0gSjCcQdBHbRknYeWaJxCAkTOfYBIbMi1qWRl9ahwwoI1VF_"
+                + "ER4-_wL2RqAwvQoAAA==";
 
         Assert.assertEquals(expected, compressed);
     }

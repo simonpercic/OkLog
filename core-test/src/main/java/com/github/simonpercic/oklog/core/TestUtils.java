@@ -40,7 +40,7 @@ public final class TestUtils {
     }
 
     public static void assertData(String requestMethod, String requestUrl, String requestUrlPath,
-            int requestBodyState, boolean failed, LogDataBuilder value) {
+            LogDataBuilder.BodyState requestBodyState, boolean failed, LogDataBuilder value) {
 
         LogDataBuilder expectedValue = new LogDataBuilder()
                 .requestMethod(requestMethod)

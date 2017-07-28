@@ -1,7 +1,7 @@
 package com.github.simonpercic.oklog.core;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -76,7 +76,7 @@ public abstract class BaseLogDataInterceptor<Chain, Request, Response, Headers, 
 
     // endregion Abstract methods
 
-    @NonNull
+    @NotNull
     public RequestLogData<Request> processRequest(Chain chain) throws IOException {
         LogDataBuilder logDataBuilder = new LogDataBuilder();
 
@@ -112,9 +112,9 @@ public abstract class BaseLogDataInterceptor<Chain, Request, Response, Headers, 
         }
 
         if (!hasRequestBody) {
-            logDataBuilder.requestBodyState(LogDataBuilder.NO_BODY);
+            logDataBuilder.requestBodyState(LogDataBuilder.BodyState.NO_BODY);
         } else if (bodyEncoded(headers)) {
-            logDataBuilder.requestBodyState(LogDataBuilder.ENCODED_BODY);
+            logDataBuilder.requestBodyState(LogDataBuilder.BodyState.ENCODED_BODY);
         } else {
             Buffer buffer = new Buffer();
             writeRequestBody(request, buffer);
@@ -128,14 +128,14 @@ public abstract class BaseLogDataInterceptor<Chain, Request, Response, Headers, 
             if (isPlaintext(buffer)) {
                 logDataBuilder.requestBody(buffer.readString(charset));
             } else {
-                logDataBuilder.requestBodyState(LogDataBuilder.BINARY_BODY);
+                logDataBuilder.requestBodyState(LogDataBuilder.BodyState.BINARY_BODY);
             }
         }
 
         return new RequestLogData<>(request, logDataBuilder);
     }
 
-    @NonNull
+    @NotNull
     public ResponseLogData<Response> processResponse(LogDataBuilder logDataBuilder,
             Response response) throws IOException {
 
@@ -156,9 +156,9 @@ public abstract class BaseLogDataInterceptor<Chain, Request, Response, Headers, 
         }
 
         if (!hasResponseBody(response)) {
-            logDataBuilder.responseBodyState(LogDataBuilder.NO_BODY);
+            logDataBuilder.responseBodyState(LogDataBuilder.BodyState.NO_BODY);
         } else if (bodyEncoded(responseHeaders)) {
-            logDataBuilder.responseBodyState(LogDataBuilder.ENCODED_BODY);
+            logDataBuilder.responseBodyState(LogDataBuilder.BodyState.ENCODED_BODY);
         } else {
             BufferedSource source = responseBodySource(response);
             source.request(Long.MAX_VALUE); // Buffer the entire body.
@@ -170,13 +170,13 @@ public abstract class BaseLogDataInterceptor<Chain, Request, Response, Headers, 
                 charset = responseContentTypeCharset(contentType, Constants.CHARSET_UTF8);
 
                 if (charset == null) {
-                    logDataBuilder.responseBodyState(LogDataBuilder.CHARSET_MALFORMED);
+                    logDataBuilder.responseBodyState(LogDataBuilder.BodyState.CHARSET_MALFORMED);
                     return new ResponseLogData<>(response, logDataBuilder);
                 }
             }
 
             if (!isPlaintext(buffer)) {
-                logDataBuilder.responseBodyState(LogDataBuilder.BINARY_BODY);
+                logDataBuilder.responseBodyState(LogDataBuilder.BodyState.BINARY_BODY);
                 logDataBuilder.responseBodySize(buffer.size());
                 return new ResponseLogData<>(response, logDataBuilder);
             }

@@ -1,7 +1,7 @@
 package com.github.simonpercic.oklog3;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
 
@@ -22,7 +22,7 @@ final class ReflectionUtils {
      * @param className class name
      * @return true if class exists, false otherwise
      */
-    static boolean hasClass(@NonNull String className) {
+    static boolean hasClass(@NotNull String className) {
         return getClass(className) != null;
     }
 
@@ -34,7 +34,7 @@ final class ReflectionUtils {
      * @param paramType param type
      * @return method on class
      */
-    @Nullable static Method getMethod(@NonNull String className, @NonNull String methodName, Class<?> paramType) {
+    @Nullable static Method getMethod(@NotNull String className, @NotNull String methodName, Class<?> paramType) {
         Class<?> clazz = getClass(className);
 
         if (clazz == null) {
@@ -54,7 +54,7 @@ final class ReflectionUtils {
      * @param className class name
      * @return class from class name
      */
-    @Nullable private static Class<?> getClass(@NonNull String className) {
+    @Nullable private static Class<?> getClass(@NotNull String className) {
         try {
             return Class.forName(className);
         } catch (ClassNotFoundException e) {

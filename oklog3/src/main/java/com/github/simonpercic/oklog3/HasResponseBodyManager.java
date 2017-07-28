@@ -1,6 +1,6 @@
 package com.github.simonpercic.oklog3;
 
-import android.support.annotation.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -28,7 +28,7 @@ final class HasResponseBodyManager {
      *
      * @return HasResponseBodyManager instance
      */
-    @NonNull static HasResponseBodyManager create() {
+    @NotNull static HasResponseBodyManager create() {
         if (ReflectionUtils.hasClass("okhttp3.internal.http.HttpHeaders")) {
             return new HasResponseBodyManager(true, null);
         } else {

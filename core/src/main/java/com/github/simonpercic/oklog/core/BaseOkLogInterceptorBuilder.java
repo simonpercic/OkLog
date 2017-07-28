@@ -1,6 +1,6 @@
 package com.github.simonpercic.oklog.core;
 
-import android.support.annotation.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
@@ -153,7 +153,7 @@ public class BaseOkLogInterceptorBuilder {
         this.responseHeaders = value;
     }
 
-    @NonNull protected LogDataConfig buildLogDataConfig() {
+    @NotNull protected LogDataConfig buildLogDataConfig() {
         return new LogDataConfig(
                 requestMethod,
                 requestUrl,

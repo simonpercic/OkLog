@@ -1,12 +1,12 @@
 package com.github.simonpercic.oklog.core;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import com.github.simonpercic.collectionhelper.CollectionHelper;
 import com.github.simonpercic.oklog.shared.data.BodyState;
 import com.github.simonpercic.oklog.shared.data.HeaderData;
 import com.github.simonpercic.oklog.shared.data.LogData;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ final class LogDataConverter {
         // no instance
     }
 
-    @Nullable static LogData convert(@Nullable LogDataBuilder builder, @NonNull LogDataConfig config) {
+    @Nullable static LogData convert(@Nullable LogDataBuilder builder, @NotNull LogDataConfig config) {
         if (builder == null) {
             return null;
         }
@@ -57,7 +57,7 @@ final class LogDataConverter {
         }
 
         if (config.requestBodyState) {
-            logDataBuilder.request_body_state(BodyState.fromValue(builder.getRequestBodyState()));
+            logDataBuilder.request_body_state(BodyState.fromValue(builder.getRequestBodyState().getIntValue()));
         }
 
         if (config.requestFailedState) {
@@ -81,7 +81,7 @@ final class LogDataConverter {
         }
 
         if (config.responseBodyState) {
-            logDataBuilder.response_body_state(BodyState.fromValue(builder.getResponseBodyState()));
+            logDataBuilder.response_body_state(BodyState.fromValue(builder.getResponseBodyState().getIntValue()));
         }
 
         if (config.responseSize) {

@@ -41,7 +41,7 @@ dependencies {
     provided "com.squareup.okio:okio:$okioVersion"
 
     compile project(':oklog-shared')
-    compile "com.android.support:support-annotations:$supportVersion"
+    compile 'org.jetbrains:annotations:13.0'
     compile 'com.github.simonpercic:collectionhelper:1.2.1'
 
     // Unit test dependencies

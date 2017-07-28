@@ -1,8 +1,5 @@
 package com.github.simonpercic.oklog;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
-
 import com.github.simonpercic.oklog.core.BaseLogDataInterceptor.RequestLogData;
 import com.github.simonpercic.oklog.core.BaseLogDataInterceptor.ResponseLogData;
 import com.github.simonpercic.oklog.core.BaseOkLogInterceptorBuilder;
@@ -13,6 +10,8 @@ import com.github.simonpercic.oklog.core.LogManager;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -29,11 +28,11 @@ public final class OkLogInterceptor implements Interceptor {
     private final LogDataInterceptor logDataInterceptor;
 
     private OkLogInterceptor(String logUrlBase, LogInterceptor logInterceptor, boolean useAndroidLog,
-            boolean withRequestBody, boolean shortenInfoUrl, @NonNull LogDataConfig logDataConfig) {
+            boolean withRequestBody, boolean shortenInfoUrl, @NotNull LogDataConfig logDataConfig) {
         this(new LogManager(logUrlBase, logInterceptor, useAndroidLog, withRequestBody, shortenInfoUrl, logDataConfig));
     }
 
-    @VisibleForTesting OkLogInterceptor(LogManager logManager) {
+    OkLogInterceptor(LogManager logManager) {
         this.logManager = logManager;
         this.logDataInterceptor = new LogDataInterceptor();
     }

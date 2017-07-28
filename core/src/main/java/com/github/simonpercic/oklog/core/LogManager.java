@@ -1,13 +1,13 @@
 package com.github.simonpercic.oklog.core;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.github.simonpercic.oklog.shared.LogDataSerializer;
 import com.github.simonpercic.oklog.shared.SharedConstants;
 import com.github.simonpercic.oklog.shared.data.LogData;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 
@@ -28,7 +28,7 @@ public class LogManager {
     final boolean useAndroidLog;
     private final boolean withRequestBody;
     private final boolean shortenInfoUrl;
-    @NonNull private final LogDataConfig logDataConfig;
+    @NotNull private final LogDataConfig logDataConfig;
 
     /**
      * Constructor.
@@ -41,7 +41,7 @@ public class LogManager {
      * @param logDataConfig log data config
      */
     public LogManager(String urlBase, LogInterceptor logInterceptor, boolean useAndroidLog, boolean withRequestBody,
-            boolean shortenInfoUrl, @NonNull LogDataConfig logDataConfig) {
+            boolean shortenInfoUrl, @NotNull LogDataConfig logDataConfig) {
         this.logUrlBase = urlBase;
         this.logInterceptor = logInterceptor;
         this.useAndroidLog = useAndroidLog || !TimberUtils.hasTimber();
@@ -64,7 +64,6 @@ public class LogManager {
         }
     }
 
-    @VisibleForTesting
     String getLogUrl(@Nullable String responseBody, @Nullable String requestBody, @Nullable LogData logData) {
         String responseBodyString = compressBody(responseBody);
 
@@ -118,14 +117,14 @@ public class LogManager {
         return bodyString;
     }
 
-    @NonNull
-    private StringBuilder getRequestBodyQuery(@NonNull StringBuilder queryParams, @Nullable String requestBody) {
+    @NotNull
+    private StringBuilder getRequestBodyQuery(@NotNull StringBuilder queryParams, @Nullable String requestBody) {
         String requestBodyString = compressBody(requestBody);
 
         return appendQuerySymbol(queryParams, SharedConstants.QUERY_PARAM_REQUEST_BODY, requestBodyString);
     }
 
-    @NonNull private StringBuilder getLogDataQuery(@NonNull StringBuilder queryParams, @Nullable LogData logData) {
+    @NotNull private StringBuilder getLogDataQuery(@NotNull StringBuilder queryParams, @Nullable LogData logData) {
         byte[] logDataBytes = LogDataSerializer.serialize(logData);
 
         String logDataString = null;
@@ -142,7 +141,7 @@ public class LogManager {
         return appendQuerySymbol(queryParams, SharedConstants.QUERY_PARAM_DATA, logDataString);
     }
 
-    @VisibleForTesting void logDebug(String logUrl, String requestMethod, String requestUrlPath) {
+    void logDebug(String logUrl, String requestMethod, String requestUrlPath) {
         String format = "%s - %s %s - %s";
 
         if (useAndroidLog) {
@@ -152,7 +151,7 @@ public class LogManager {
         }
     }
 
-    @NonNull private static StringBuilder appendQuerySymbol(@NonNull StringBuilder queryParams, String querySymbol,
+    @NotNull private static StringBuilder appendQuerySymbol(@NotNull StringBuilder queryParams, String querySymbol,
             String string) {
 
         if (!StringUtils.isEmpty(string)) {

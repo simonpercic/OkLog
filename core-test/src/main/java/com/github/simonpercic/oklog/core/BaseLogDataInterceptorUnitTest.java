@@ -77,7 +77,7 @@ public abstract class BaseLogDataInterceptorUnitTest<MockResponse, Request> {
 
         LogDataBuilder expectedValue = expectedLogData()
                 .requestMethod(GET)
-                .requestBodyState(LogDataBuilder.NO_BODY)
+                .requestBodyState(LogDataBuilder.BodyState.NO_BODY)
                 .responseCode(RESPONSE_CODE_OK)
                 .responseMessage(MESSAGE_OK);
 
@@ -107,7 +107,7 @@ public abstract class BaseLogDataInterceptorUnitTest<MockResponse, Request> {
 
         LogDataBuilder expectedValue = expectedLogData()
                 .requestMethod(GET)
-                .requestBodyState(LogDataBuilder.NO_BODY)
+                .requestBodyState(LogDataBuilder.BodyState.NO_BODY)
                 .responseCode(code)
                 .responseMessage("No Content");
 
@@ -150,7 +150,7 @@ public abstract class BaseLogDataInterceptorUnitTest<MockResponse, Request> {
 
         LogDataBuilder expectedValue = expectedLogData()
                 .requestMethod(GET)
-                .requestBodyState(LogDataBuilder.NO_BODY)
+                .requestBodyState(LogDataBuilder.BodyState.NO_BODY)
                 .responseCode(RESPONSE_CODE_OK)
                 .responseMessage(MESSAGE_OK)
                 .responseBodySize(6)
@@ -177,7 +177,7 @@ public abstract class BaseLogDataInterceptorUnitTest<MockResponse, Request> {
 
         LogDataBuilder expectedValue = expectedLogData()
                 .requestMethod(GET)
-                .requestBodyState(LogDataBuilder.NO_BODY)
+                .requestBodyState(LogDataBuilder.BodyState.NO_BODY)
                 .responseCode(RESPONSE_CODE_OK)
                 .responseMessage(MESSAGE_OK)
                 .responseBodySize(6)
@@ -208,7 +208,7 @@ public abstract class BaseLogDataInterceptorUnitTest<MockResponse, Request> {
 
         LogDataBuilder expectedValue = expectedLogData()
                 .requestMethod(GET)
-                .requestBodyState(LogDataBuilder.NO_BODY)
+                .requestBodyState(LogDataBuilder.BodyState.NO_BODY)
                 .responseCode(RESPONSE_CODE_OK)
                 .responseMessage(MESSAGE_OK)
                 .responseBodySize(19)
@@ -223,7 +223,7 @@ public abstract class BaseLogDataInterceptorUnitTest<MockResponse, Request> {
         expectedValue
                 .responseBodySize(0)
                 .responseContentLength(29)
-                .responseBodyState(LogDataBuilder.ENCODED_BODY)
+                .responseBodyState(LogDataBuilder.BodyState.ENCODED_BODY)
                 .responseBody(null);
 
         LogDataBuilder networkValue = TestUtils.getLogData(networkLogManager);
@@ -254,12 +254,12 @@ public abstract class BaseLogDataInterceptorUnitTest<MockResponse, Request> {
 
         LogDataBuilder expectedValue = expectedLogData()
                 .requestMethod(GET)
-                .requestBodyState(LogDataBuilder.NO_BODY)
+                .requestBodyState(LogDataBuilder.BodyState.NO_BODY)
                 .responseCode(RESPONSE_CODE_OK)
                 .responseMessage(MESSAGE_OK)
                 .responseBodySize(9)
                 .responseContentLength(9)
-                .responseBodyState(LogDataBuilder.BINARY_BODY);
+                .responseBodyState(LogDataBuilder.BodyState.BINARY_BODY);
 
         LogDataBuilder appValue = TestUtils.getLogData(applicationLogManager);
         TestUtils.assertData(expectedValue, appValue);
@@ -282,7 +282,9 @@ public abstract class BaseLogDataInterceptorUnitTest<MockResponse, Request> {
         assertFalse(BaseLogDataInterceptor.isPlaintext(new Buffer().writeByte(0xc0)));
     }
 
-    protected void bodyGetMalformedCharset(boolean isResponsePlainBody, boolean isResponseBodySizeZero, boolean isResponseBodyNull) throws IOException {
+    protected void bodyGetMalformedCharset(boolean isResponsePlainBody, boolean isResponseBodySizeZero,
+            boolean isResponseBodyNull) throws IOException {
+
         String contentType = "text/html; charset=0";
 
         MockResponse mockResponse = createMockResponse();
@@ -295,13 +297,15 @@ public abstract class BaseLogDataInterceptorUnitTest<MockResponse, Request> {
 
         LogDataBuilder expectedValue = expectedLogData()
                 .requestMethod(GET)
-                .requestBodyState(LogDataBuilder.NO_BODY)
+                .requestBodyState(LogDataBuilder.BodyState.NO_BODY)
                 .responseCode(RESPONSE_CODE_OK)
                 .responseMessage(MESSAGE_OK)
                 .responseBody(isResponseBodyNull ? null : body)
                 .responseBodySize(isResponseBodySizeZero ? 0 : body.length())
                 .responseContentLength(body.length())
-                .responseBodyState(isResponsePlainBody ? LogDataBuilder.PLAIN_BODY : LogDataBuilder.CHARSET_MALFORMED);
+                .responseBodyState(isResponsePlainBody
+                        ? LogDataBuilder.BodyState.PLAIN_BODY
+                        : LogDataBuilder.BodyState.CHARSET_MALFORMED);
 
         LogDataBuilder appValue = TestUtils.getLogData(applicationLogManager);
         TestUtils.assertData(expectedValue, appValue);

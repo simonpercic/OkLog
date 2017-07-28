@@ -47,7 +47,7 @@ public class LogManagerUnitTest {
 
     @Test
     public void testGetLogUrlIOException() throws Exception {
-        when(CompressionUtils.gzipBase64(anyString())).thenThrow(new IOException());
+        when(CompressionUtils.gzipBase64UrlSafe(anyString())).thenThrow(new IOException());
 
         String baseUrl = "http://example.com";
         LogManager logManager = new LogManager(baseUrl, null, false, false, false, LOG_DATA_CONFIG_NONE);
@@ -60,7 +60,7 @@ public class LogManagerUnitTest {
 
     @Test
     public void testGetLogUrlEmpty() throws Exception {
-        when(CompressionUtils.gzipBase64(anyString())).thenReturn("");
+        when(CompressionUtils.gzipBase64UrlSafe(anyString())).thenReturn("");
 
         String baseUrl = "http://example.com";
         LogManager logManager = new LogManager(baseUrl, null, false, false, false, LOG_DATA_CONFIG_ALL);

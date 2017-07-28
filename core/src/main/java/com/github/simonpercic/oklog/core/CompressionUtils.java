@@ -1,10 +1,12 @@
 package com.github.simonpercic.oklog.core;
 
-import android.util.Base64;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.zip.GZIPOutputStream;
+
+import okio.BufferedSink;
+import okio.ByteString;
+import okio.GzipSink;
+import okio.Okio;
 
 /**
  * Compression utilities.
@@ -24,7 +26,7 @@ final class CompressionUtils {
      * @return gzipped and Base64 encoded input string
      * @throws IOException IO Exception
      */
-    static String gzipBase64(String string) throws IOException {
+    private static String gzipBase64(String string) throws IOException {
         if (StringUtils.isEmpty(string)) {
             return string;
         }
@@ -44,17 +46,19 @@ final class CompressionUtils {
             return null;
         }
 
-        ByteArrayOutputStream byteOut = new ByteArrayOutputStream(bytes.length);
+        ByteArrayOutputStream out = new ByteArrayOutputStream(bytes.length);
+        BufferedSink gzipSink = Okio.buffer(new GzipSink(Okio.sink(out)));
+        gzipSink.write(bytes);
 
-        GZIPOutputStream gzip = new GZIPOutputStream(byteOut);
-        gzip.write(bytes);
-        gzip.close();
+        gzipSink.close();
 
-        byte[] result = byteOut.toByteArray();
+        byte[] result = out.toByteArray();
 
-        byteOut.close();
+        out.close();
 
-        return Base64.encodeToString(result, Base64.URL_SAFE);
+        ByteString byteString = ByteString.of(result);
+
+        return byteString.base64Url();
     }
 
     /**

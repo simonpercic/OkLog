@@ -9,7 +9,8 @@ public class BaseOkLogInterceptorBuilder {
 
     protected String logUrlBase;
     protected LogInterceptor logInterceptor;
-    protected boolean useAndroidLog;
+    protected Logger logger;
+    protected boolean ignoreTimber;
     protected boolean requestBody;
     protected boolean shortenInfoUrl;
 
@@ -50,12 +51,16 @@ public class BaseOkLogInterceptorBuilder {
         }
     }
 
-    protected void baseUseAndroidLog(boolean useAndroidLog) {
-        this.useAndroidLog = useAndroidLog;
+    protected void baseIgnoreTimber(boolean ignoreTimber) {
+        this.ignoreTimber = ignoreTimber;
     }
 
     protected void baseSetLogInterceptor(LogInterceptor logInterceptor) {
         this.logInterceptor = logInterceptor;
+    }
+
+    protected void baseLogger(Logger logger) {
+        this.logger = logger;
     }
 
     protected void baseWithRequestBody(boolean requestBody) {

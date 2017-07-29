@@ -1,5 +1,7 @@
 package com.github.simonpercic.oklog3;
 
+import com.github.simonpercic.oklog.core.ReflectionUtils;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;

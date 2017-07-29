@@ -7,6 +7,7 @@ import com.github.simonpercic.oklog.core.LogDataBuilder;
 import com.github.simonpercic.oklog.core.LogDataConfig;
 import com.github.simonpercic.oklog.core.LogInterceptor;
 import com.github.simonpercic.oklog.core.LogManager;
+import com.github.simonpercic.oklog.core.Logger;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -27,9 +28,10 @@ public final class OkLogInterceptor implements Interceptor {
     private final LogManager logManager;
     private final LogDataInterceptor logDataInterceptor;
 
-    private OkLogInterceptor(String logUrlBase, LogInterceptor logInterceptor, boolean useAndroidLog,
+    private OkLogInterceptor(String logUrlBase, LogInterceptor logInterceptor, Logger logger, boolean ignoreTimber,
             boolean withRequestBody, boolean shortenInfoUrl, @NotNull LogDataConfig logDataConfig) {
-        this(new LogManager(logUrlBase, logInterceptor, useAndroidLog, withRequestBody, shortenInfoUrl, logDataConfig));
+        this(new LogManager(logUrlBase, logInterceptor, logger, ignoreTimber, withRequestBody, shortenInfoUrl,
+                logDataConfig));
     }
 
     OkLogInterceptor(LogManager logManager) {
@@ -86,14 +88,29 @@ public final class OkLogInterceptor implements Interceptor {
         }
 
         /**
+         * Set whether to ignore Timber for logging, even if it is present.
+         * Defaults to false.
+         *
+         * @param ignoreTimber true to ignore Timber for logging, even if it is present.
+         * @return Builder instance, to chain calls
+         */
+        public Builder ignoreTimber(boolean ignoreTimber) {
+            baseIgnoreTimber(ignoreTimber);
+            return this;
+        }
+
+        /**
          * Set whether to use Android's Log methods to log, instead of Timber.
          * Defaults to false.
+         * <p>
          *
          * @param useAndroidLog true to use Android's Log methods, false to use Timber.
          * @return Builder instance, to chain calls
+         * @deprecated Use {@link #ignoreTimber(boolean)} method instead.
          */
+        @Deprecated
         public Builder useAndroidLog(boolean useAndroidLog) {
-            baseUseAndroidLog(useAndroidLog);
+            ignoreTimber(!useAndroidLog);
             return this;
         }
 
@@ -105,6 +122,17 @@ public final class OkLogInterceptor implements Interceptor {
          */
         public Builder setLogInterceptor(LogInterceptor logInterceptor) {
             baseSetLogInterceptor(logInterceptor);
+            return this;
+        }
+
+        /**
+         * Set a custom Logger.
+         *
+         * @param logger a instance of a Logger
+         * @return Builder instance, to chain calls
+         */
+        public Builder setLogger(Logger logger) {
+            baseLogger(logger);
             return this;
         }
 
@@ -321,7 +349,7 @@ public final class OkLogInterceptor implements Interceptor {
          * @return instance of OkLogInterceptor
          */
         public OkLogInterceptor build() {
-            return new OkLogInterceptor(logUrlBase, logInterceptor, useAndroidLog, requestBody, shortenInfoUrl,
+            return new OkLogInterceptor(logUrlBase, logInterceptor, logger, ignoreTimber, requestBody, shortenInfoUrl,
                     buildLogDataConfig());
         }
     }

@@ -1,7 +1,5 @@
 package com.github.simonpercic.oklog.core;
 
-import android.util.Log;
-
 import com.github.simonpercic.oklog.shared.LogDataSerializer;
 import com.github.simonpercic.oklog.shared.SharedConstants;
 import com.github.simonpercic.oklog.shared.data.LogData;
@@ -10,8 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
-
-import timber.log.Timber;
 
 /**
  * Log manager.
@@ -25,7 +21,7 @@ public class LogManager {
 
     private final String logUrlBase;
     private final LogInterceptor logInterceptor;
-    final boolean useAndroidLog;
+    private final Logger logger;
     private final boolean withRequestBody;
     private final boolean shortenInfoUrl;
     @NotNull private final LogDataConfig logDataConfig;
@@ -35,16 +31,17 @@ public class LogManager {
      *
      * @param urlBase url base to use
      * @param logInterceptor optional log interceptor
-     * @param useAndroidLog true to use Android's Log methods, false to use Timber
+     * @param logger optional logger to use
+     * @param ignoreTimber true to ignore Timber for logging, even if it is present
      * @param withRequestBody true to include request body
      * @param shortenInfoUrl true to shorten info url on the server-side
      * @param logDataConfig log data config
      */
-    public LogManager(String urlBase, LogInterceptor logInterceptor, boolean useAndroidLog, boolean withRequestBody,
-            boolean shortenInfoUrl, @NotNull LogDataConfig logDataConfig) {
+    public LogManager(String urlBase, LogInterceptor logInterceptor, Logger logger, boolean ignoreTimber,
+            boolean withRequestBody, boolean shortenInfoUrl, @NotNull LogDataConfig logDataConfig) {
         this.logUrlBase = urlBase;
         this.logInterceptor = logInterceptor;
-        this.useAndroidLog = useAndroidLog || !TimberUtils.hasTimber();
+        this.logger = resolveLogger(logger, ignoreTimber);
         this.withRequestBody = withRequestBody;
         this.shortenInfoUrl = shortenInfoUrl;
         this.logDataConfig = logDataConfig;
@@ -69,12 +66,7 @@ public class LogManager {
 
         if (StringUtils.isEmpty(responseBodyString)) {
             String message = "LogManager: responseBodyString string is empty";
-            if (useAndroidLog) {
-                Log.w(Constants.LOG_TAG, message);
-            } else {
-                Timber.w(message);
-            }
-
+            logger.w(Constants.LOG_TAG, message);
             responseBodyString = SharedConstants.EMPTY_RESPONSE_BODY;
         }
 
@@ -99,18 +91,14 @@ public class LogManager {
         return url.concat(queryParams.toString());
     }
 
-    @Nullable private String compressBody(@Nullable String body) {
+    @Nullable
+    private String compressBody(@Nullable String body) {
         String bodyString;
 
         try {
             bodyString = CompressionUtils.gzipBase64UrlSafe(body);
         } catch (IOException e) {
-            if (useAndroidLog) {
-                Log.e(Constants.LOG_TAG, String.format(LOG_FORMAT, e.getMessage()));
-            } else {
-                Timber.e(e, LOG_FORMAT, e.getMessage());
-            }
-
+            logger.e(Constants.LOG_TAG, String.format(LOG_FORMAT, e.getMessage()), e);
             return null;
         }
 
@@ -124,18 +112,15 @@ public class LogManager {
         return appendQuerySymbol(queryParams, SharedConstants.QUERY_PARAM_REQUEST_BODY, requestBodyString);
     }
 
-    @NotNull private StringBuilder getLogDataQuery(@NotNull StringBuilder queryParams, @Nullable LogData logData) {
+    @NotNull
+    private StringBuilder getLogDataQuery(@NotNull StringBuilder queryParams, @Nullable LogData logData) {
         byte[] logDataBytes = LogDataSerializer.serialize(logData);
 
         String logDataString = null;
         try {
             logDataString = CompressionUtils.gzipBase64UrlSafe(logDataBytes);
         } catch (IOException e) {
-            if (useAndroidLog) {
-                Log.e(Constants.LOG_TAG, String.format(LOG_FORMAT, e.getMessage()));
-            } else {
-                Timber.e(e, LOG_FORMAT, e.getMessage());
-            }
+            logger.e(Constants.LOG_TAG, String.format(LOG_FORMAT, e.getMessage()), e);
         }
 
         return appendQuerySymbol(queryParams, SharedConstants.QUERY_PARAM_DATA, logDataString);
@@ -144,14 +129,11 @@ public class LogManager {
     void logDebug(String logUrl, String requestMethod, String requestUrlPath) {
         String format = "%s - %s %s - %s";
 
-        if (useAndroidLog) {
-            Log.d(Constants.LOG_TAG, String.format(format, Constants.LOG_TAG, requestMethod, requestUrlPath, logUrl));
-        } else {
-            Timber.d(format, Constants.LOG_TAG, requestMethod, requestUrlPath, logUrl);
-        }
+        logger.d(Constants.LOG_TAG, String.format(format, Constants.LOG_TAG, requestMethod, requestUrlPath, logUrl));
     }
 
-    @NotNull private static StringBuilder appendQuerySymbol(@NotNull StringBuilder queryParams, String querySymbol,
+    @NotNull
+    private static StringBuilder appendQuerySymbol(@NotNull StringBuilder queryParams, String querySymbol,
             String string) {
 
         if (!StringUtils.isEmpty(string)) {
@@ -163,5 +145,20 @@ public class LogManager {
         }
 
         return queryParams;
+    }
+
+    @NotNull
+    private static Logger resolveLogger(@Nullable Logger logger, boolean ignoreTimber) {
+        if (logger != null) {
+            return logger;
+        }
+
+        // TODO: 29/07/2017 add timber.log.Timber support
+
+        if (ReflectionUtils.hasClass("android.util.Log")) {
+            return new AndroidLogger();
+        } else {
+            return new JavaLogger();
+        }
     }
 }

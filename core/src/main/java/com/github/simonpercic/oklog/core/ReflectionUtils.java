@@ -1,4 +1,4 @@
-package com.github.simonpercic.oklog3;
+package com.github.simonpercic.oklog.core;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
  *
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
-final class ReflectionUtils {
+public final class ReflectionUtils {
 
     private ReflectionUtils() {
         // no instance
@@ -22,7 +22,7 @@ final class ReflectionUtils {
      * @param className class name
      * @return true if class exists, false otherwise
      */
-    static boolean hasClass(@NotNull String className) {
+    public static boolean hasClass(@NotNull String className) {
         return getClass(className) != null;
     }
 
@@ -34,7 +34,8 @@ final class ReflectionUtils {
      * @param paramType param type
      * @return method on class
      */
-    @Nullable static Method getMethod(@NotNull String className, @NotNull String methodName, Class<?> paramType) {
+    @Nullable
+    public static Method getMethod(@NotNull String className, @NotNull String methodName, Class<?> paramType) {
         Class<?> clazz = getClass(className);
 
         if (clazz == null) {

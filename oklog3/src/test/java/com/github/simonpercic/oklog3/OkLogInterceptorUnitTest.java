@@ -62,12 +62,12 @@ public class OkLogInterceptorUnitTest {
             client.newCall(request().build()).execute();
             fail();
         } catch (UnknownHostException expected) {
-            LogDataBuilder appValue = TestUtils.getLogData(applicationLogManager);
+            LogDataBuilder appValue = TestUtils.INSTANCE.getLogData(applicationLogManager);
 
-            TestUtils.assertData(GET, url.toString(), url.encodedPath(), LogDataBuilder.BodyState.NO_BODY, true,
+            TestUtils.INSTANCE.assertData(GET, url.toString(), url.encodedPath(), LogDataBuilder.BodyState.NO_BODY, true,
                     appValue);
 
-            TestUtils.assertNoRequestHeaders(appValue);
+            TestUtils.INSTANCE.assertNoRequestHeaders(appValue);
         }
     }
 

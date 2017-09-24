@@ -1,5 +1,7 @@
 package com.github.simonpercic.oklogexample.logger
 
+import timber.log.Timber
+
 /**
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */

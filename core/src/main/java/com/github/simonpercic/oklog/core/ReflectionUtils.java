@@ -31,11 +31,11 @@ public final class ReflectionUtils {
      *
      * @param className class name
      * @param methodName method name
-     * @param paramType param type
+     * @param paramTypes param types
      * @return method on class
      */
     @Nullable
-    public static Method getMethod(@NotNull String className, @NotNull String methodName, Class<?> paramType) {
+    public static Method getMethod(@NotNull String className, @NotNull String methodName, Class<?>... paramTypes) {
         Class<?> clazz = getClass(className);
 
         if (clazz == null) {
@@ -43,7 +43,7 @@ public final class ReflectionUtils {
         }
 
         try {
-            return clazz.getMethod(methodName, paramType);
+            return clazz.getMethod(methodName, paramTypes);
         } catch (NoSuchMethodException | SecurityException e) {
             return null;
         }

@@ -153,7 +153,13 @@ public class LogManager {
             return logger;
         }
 
-        // TODO: 29/07/2017 add timber.log.Timber support
+        if (!ignoreTimber && ReflectionUtils.hasClass(Constants.TIMBER_CLASS)) {
+            ReflectionTimberLogger timberLogger = new ReflectionTimberLogger();
+
+            if (timberLogger.isValid()) {
+                return timberLogger;
+            }
+        }
 
         if (ReflectionUtils.hasClass("android.util.Log")) {
             return new AndroidLogger();

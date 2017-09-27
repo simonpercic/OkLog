@@ -10,7 +10,7 @@ import java.nio.charset.Charset;
 final class Constants {
 
     static final String LOG_TAG = "OKLOG";
-    static final String LOG_URL_BASE_REMOTE = "http://responseecho-simonpercic.rhcloud.com";
+    static final String LOG_URL_BASE_REMOTE = "http://oklog.responseecho.com";
     static final String LOG_URL_BASE_PATH = "/v1/";
     static final String LOG_URL_ECHO_PATH = "re/";
     static final String LOG_URL_INFO_PATH = "r/";

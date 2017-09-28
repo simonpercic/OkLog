@@ -36,7 +36,7 @@ That url points to a hosted instance of the [ResponseEcho](https://github.com/si
 
 Add using Gradle:
 ```groovy
-compile 'com.github.simonpercic:oklog:2.1.0'
+compile 'com.github.simonpercic:oklog:2.2.0'
 ```
 
 ```java
@@ -66,7 +66,7 @@ new RestAdapter.Builder()
 
 Add using Gradle:
 ```groovy
-compile 'com.github.simonpercic:oklog3:2.1.0'
+compile 'com.github.simonpercic:oklog3:2.2.0'
 ```
 
 ```java

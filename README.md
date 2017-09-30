@@ -9,6 +9,19 @@ Logs an URL link with encoded network call data for every OkHttp call.
 [ ![Download](https://api.bintray.com/packages/simonpercic/maven/oklog3/images/download.svg) ](https://bintray.com/simonpercic/maven/oklog3/_latestVersion)
 
 
+## Update notice
+ResponseEcho (the server-side component of OkLog) used to be hosted at `responseecho-simonpercic.rhcloud.com`, which will no longer be available. 
+Now it is hosted at `oklog.responseecho.com`.
+
+To prevent URLs from breaking, **Update your version of OkLog to 2.2.0.** or call **`setBaseUrl`** with the new URL:
+```java
+setBaseUrl("http://oklog.responseecho.com")
+```
+
+This inconvenience is due to [RedHat sunsetting OpenShift v2](https://blog.openshift.com/migrate-to-v3-v2-eol/), where ResponseEcho used to be hosted at. Now it's hosted on Heroku.
+The new custom domain will prevent these inconveniences to happen in the future.
+
+
 ## Motivation
 
 Debugging Android responses should be easier. Even with Retrofit logging enabled, copying multi-line responses from logcat is cumbersome and annoying.

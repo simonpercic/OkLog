@@ -83,7 +83,7 @@ abstract class BaseOkLogInterceptorTest<MockWebServer, HttpUrl, MockResponse, Re
         newCall(client, request(url).build(), mockResponse)
 
         Assert.assertEquals(
-            "http://responseecho-simonpercic.rhcloud.com/v1/r/H4sIAAAAAAAAAIuuVspMUbIy1FHKS8xNVbJSCs1LSS1SKMlIVXDJBw" +
+            "http://oklog.responseecho.com/v1/r/H4sIAAAAAAAAAIuuVspMUbIy1FHKS8xNVbJSCs1LSS1SKMlIVXDJBw" +
                 "roKBWV5pVkgqTMDICKUkvK84uylawg2ozg2pydgpVqa3XQhQNSi4rz8xTy0xQ880pSi1KLS8gz0QQu7FhUlF9OwBBTuOoQoD-cw" +
                 "xHmIMkUlQK9mFqSmlySWUbInxZwbR5O_gjTzFDsMTQwINtd5ggLgKGek5iXQsAoS7iG4Iz8crCy2tpYALkEI-7OAQAA?d=H4sIA" +
                 "AAAAAAAAONidncNEZLOKCkpsNLXz8lPTszJyC8usTI1MDDQL87ILy_WYLBgcmDwOMEYxOTvnXCOuYCx4hwzAHrELHA3AAAA",
@@ -113,7 +113,7 @@ abstract class BaseOkLogInterceptorTest<MockWebServer, HttpUrl, MockResponse, Re
         newCall(client, request, mockResponse)
 
         Assert.assertEquals(
-            "http://responseecho-simonpercic.rhcloud.com/v1/r/H4sIAAAAAAAAAIuuVspMUbIy1FHKS8xNVbJSCs1LSS1SKMlIVXDJBw" +
+            "http://oklog.responseecho.com/v1/r/H4sIAAAAAAAAAIuuVspMUbIy1FHKS8xNVbJSCs1LSS1SKMlIVXDJBw" +
                 "roKBWV5pVkgqTMDICKUkvK84uylawg2ozg2pydgpVqa3XQhQNSi4rz8xTy0xQ880pSi1KLS8gz0QQu7FhUlF9OwBBTuOoQoD-cw" +
                 "xHmIMkUlQK9mFqSmlySWUbInxZwbR5O_gjTzFDsMTQwINtd5ggLgKGek5iXQsAoS7iG4Iz8crCy2tpYALkEI-7OAQAA?d=H4sIA" +
                 "AAAAAAAAONidncNEZLOKCkpsNLXz8lPTszJyC8usTI1MDDQL87ILy-W4gBJ6hvqGWowGClw8QalFnqkJqakFvkl5qYK8QO5rhWJ" +
@@ -137,7 +137,7 @@ abstract class BaseOkLogInterceptorTest<MockWebServer, HttpUrl, MockResponse, Re
         newCall(client, request(url).post(requestBody).build(), mockResponse)
 
         Assert.assertEquals(
-            "http://responseecho-simonpercic.rhcloud.com/v1/r/H4sIAAAAAAAAAKtWKs7IL1eyqlbKTFGyMtVRykvMTVWyUgopKk1VcE" +
+            "http://oklog.responseecho.com/v1/r/H4sIAAAAAAAAAKtWKs7IL1eyqlbKTFGyMtVRykvMTVWyUgopKk1VcE" +
                 "ktSU0uySxLVdJRKirNK8kESZkZABWllpTnF2XDtFnAtXk4-SvV1uoolSeWJGekpsQn5wO1KVkZGpjXAgANYYQRagAAAA==?qb=H" +
                 "4sIAAAAAAAAAKtWKs7IL1eyMq0FAFlhsMYKAAAA&d=H4sIAAAAAAAAAONiCfAPDhGSzSgpKbDS18_JT07MycgvLrEyNTAw0C9PL" +
                 "EnOSE3R4LJgdGDwOMEYxOTvnZBVwFiRBQDstqnDOAAAAA==",
@@ -166,7 +166,7 @@ abstract class BaseOkLogInterceptorTest<MockWebServer, HttpUrl, MockResponse, Re
         newCall(client, request, mockResponse)
 
         Assert.assertEquals(
-            "http://responseecho-simonpercic.rhcloud.com/v1/r/H4sIAAAAAAAAAKtWKs7IL1eyqlbKTFGyMtVRykvMTVWyUgopKk1VcE" +
+            "http://oklog.responseecho.com/v1/r/H4sIAAAAAAAAAKtWKs7IL1eyqlbKTFGyMtVRykvMTVWyUgopKk1VcE" +
                 "ktSU0uySxLVdJRKirNK8kESZkZABWllpTnF2XDtFnAtXk4-SvV1uoolSeWJGekpsQn5wO1KVkZGpjXAgANYYQRagAAAA==?qb=H" +
                 "4sIAAAAAAAAAKtWKs7IL1eyMq0FAFlhsMYKAAAA&d=H4sIAAAAAAAAAONiCfAPDhGSzSgpKbDS18_JT07MycgvLrEyNTAw0C9PL" +
                 "EnOSE2R4gBJ6xvqGSpJlqRWlOgX5CRm5lkrJGckFhWnltiWlqTpWmhwGSlw8QalFnqkJqakFvkl5qYK8QO5rhWJuQU5qWGJOaWp" +
@@ -189,7 +189,7 @@ abstract class BaseOkLogInterceptorTest<MockWebServer, HttpUrl, MockResponse, Re
         newCall(client, request(url).put(requestBody).build(), mockResponse)
 
         Assert.assertEquals(
-            "http://responseecho-simonpercic.rhcloud.com/v1/r/H4sIAAAAAAAAAKtWykxRsjLVUcpLzE1VslIKKSpNVXBJLUlNLsksS1" +
+            "http://oklog.responseecho.com/v1/r/H4sIAAAAAAAAAKtWykxRsjLVUcpLzE1VslIKKSpNVXBJLUlNLsksS1" +
                 "XSUSoqzSvJBEmZGQAVpZaU5xdlK1lVg7VZwLV5OPkr1dYCAB5WJYFNAAAA?qb=H4sIAAAAAAAAAKtWykvMTVWyUgopKk1VcEktS" +
                 "U0uySxLVdJRykstKc8vylayqlbKTFGysqjVUSoqzSvJBKk2M6gFAPS5LSY5AAAA&d=H4sIAAAAAAAAAONiDggNEZLKKCkpsNLXz" +
                 "8lPTszJyC8usTI1MDDQL87IL9ewtGB0YPA4yRjE7lyUmliSmpLgW8BY4QsAVHkRTzkAAAA=",
@@ -218,7 +218,7 @@ abstract class BaseOkLogInterceptorTest<MockWebServer, HttpUrl, MockResponse, Re
         newCall(client, request, mockResponse)
 
         Assert.assertEquals(
-            "http://responseecho-simonpercic.rhcloud.com/v1/r/H4sIAAAAAAAAAKtWykxRsjLVUcpLzE1VslIKKSpNVXBJLUlNLsksS1" +
+            "http://oklog.responseecho.com/v1/r/H4sIAAAAAAAAAKtWykxRsjLVUcpLzE1VslIKKSpNVXBJLUlNLsksS1" +
                 "XSUSoqzSvJBEmZGQAVpZaU5xdlK1lVg7VZwLV5OPkr1dYCAB5WJYFNAAAA?qb=H4sIAAAAAAAAAKtWykvMTVWyUgopKk1VcEktS" +
                 "U0uySxLVdJRykstKc8vylayqlbKTFGysqjVUSoqzSvJBKk2M6gFAPS5LSY5AAAA&d=H4sIAAAAAAAAAONiDggNEZLKKCkpsNLXz" +
                 "8lPTszJyC8usTI1MDDQL87IL5fiAMnpG-oZKkmWpFaU6BfkJGbmWSskZyQWFaeW2JaWpOlaaFgaKXDxBqUWeqQmpqQW-SXmpgrx" +
@@ -239,7 +239,7 @@ abstract class BaseOkLogInterceptorTest<MockWebServer, HttpUrl, MockResponse, Re
         newCall(client, request(url).delete(null).build(), mockResponse)
 
         Assert.assertEquals(
-            "http://responseecho-simonpercic.rhcloud.com/v1/r/H4sIAAAAAAAAAKtWykxRsjLVUcpLzE1VslIKKSpNVXBJLUlNLsksS1" +
+            "http://oklog.responseecho.com/v1/r/H4sIAAAAAAAAAKtWykxRsjLVUcpLzE1VslIKKSpNVXBJLUlNLsksS1" +
                 "XSUSoqzSvJBEmZGQAVpZaU5xdlK1lVg7VZwLV5OPkr1dYCAB5WJYFNAAAA?d=H4sIAAAAAAAAAONic3H1cQ1xFZLJKCkpsNLXz8" +
                 "lPTszJyC8usTI1MDDQL87IL9c31WCwYHJg8DjBGMTk753gW8BY4QsAuiJp6DkAAAA=",
             urlCaptor.value)
@@ -264,7 +264,7 @@ abstract class BaseOkLogInterceptorTest<MockWebServer, HttpUrl, MockResponse, Re
         newCall(client, request, mockResponse)
 
         Assert.assertEquals(
-            "http://responseecho-simonpercic.rhcloud.com/v1/r/H4sIAAAAAAAAAKtWykxRsjLVUcpLzE1VslIKKSpNVXBJLUlNLsksS1" +
+            "http://oklog.responseecho.com/v1/r/H4sIAAAAAAAAAKtWykxRsjLVUcpLzE1VslIKKSpNVXBJLUlNLsksS1" +
                 "XSUSoqzSvJBEmZGQAVpZaU5xdlK1lVg7VZwLV5OPkr1dYCAB5WJYFNAAAA?d=H4sIAAAAAAAAAONic3H1cQ1xFZLJKCkpsNLXz8" +
                 "lPTszJyC8usTI1MDDQL87IL9c3leIAyeob6hlqMBgpcPEGpRZ6pCampBb5JeamCvEDua4VibkFOalhiTmlqRZMDgweJxiDmPy9E" +
                 "3yzFLh4nPPzSlLzSnRDKgtShQQSCwpyMpMTSzLz8_SzivPzssAGFqMaWIxsYAFjhW8TI14XAgBwEMrmyAAAAA==",
@@ -289,7 +289,7 @@ abstract class BaseOkLogInterceptorTest<MockWebServer, HttpUrl, MockResponse, Re
         newCall(client, request(url).head().build(), mockResponse)
 
         Assert.assertEquals(
-            "http://responseecho-simonpercic.rhcloud.com/v1/r/0?d=H4sIAAAAAAAAAONi8XB1dBGSzigpKbDS18_JT07MycgvLrEyNT" +
+            "http://oklog.responseecho.com/v1/r/0?d=H4sIAAAAAAAAAONi8XB1dBGSzigpKbDS18_JT07MycgvLrEyNT" +
                 "Aw0C_OyC8v1mCwYHJg8JjCHMTpl1-i4JZfmpeScI65gKmCAQAvsqwcPgAAAA==",
             urlCaptor.value)
     }
@@ -319,7 +319,7 @@ abstract class BaseOkLogInterceptorTest<MockWebServer, HttpUrl, MockResponse, Re
         newCall(client, request, mockResponse)
 
         Assert.assertEquals(
-            "http://responseecho-simonpercic.rhcloud.com/v1/r/0?d=H4sIAAAAAAAAAONi8XB1dBGSzigpKbDS18_JT07MycgvLrEyNT" +
+            "http://oklog.responseecho.com/v1/r/0?d=H4sIAAAAAAAAAONi8XB1dBGSzigpKbDS18_JT07MycgvLrEyNT" +
                 "Aw0C_OyC8vluIASeob6hlqMBgpcPEGpRZ6pCampBb5JeamCvEDua4VibkFOalhiTmlqRZMDgweU5iDOP3ySxTc8kvzUhLOMWcpc" +
                 "PE45-eVpOaV6IZUFqQKCSQWFORkJieWZObn6WcV5-dlgQ0uRjW4GNngAqYKhiZGfA4FAIN8dQDMAAAA",
             urlCaptor.value)

@@ -23,6 +23,8 @@ android {
         versionCode Integer.parseInt(VERSION_CODE)
         versionName VERSION_NAME
 
+        consumerProguardFiles 'proguard-rules.pro'
+
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
 

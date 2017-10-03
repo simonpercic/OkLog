@@ -1,16 +1,13 @@
 package com.github.simonpercic.oklog.core
 
-import android.support.test.runner.AndroidJUnit4
 import junit.framework.Assert
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito
 
 /**
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
-@RunWith(AndroidJUnit4::class)
 abstract class BaseOkLogInterceptorTest<MockWebServer, HttpUrl, MockResponse, RequestBuilder, Request, RequestBody, OkHttpClient, OkLogInterceptorBuilder, OkLogInterceptor> {
 
     companion object {

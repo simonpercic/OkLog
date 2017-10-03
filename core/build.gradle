@@ -27,6 +27,8 @@ dependencies {
     testCompile "org.mockito:mockito-core:$mockitoVersion"
     testCompile "org.powermock:powermock-module-junit4:$powermockVersion"
     testCompile "org.powermock:powermock-api-mockito:$powermockVersion"
+    testCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
 }
 
 apply from: '../gradle-publish/java/jcenterupload.gradle'

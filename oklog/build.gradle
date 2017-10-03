@@ -60,6 +60,10 @@ dependencies {
     // Unit test dependencies
     testCompile project(':oklog-core-test')
     testCompile "com.squareup.okhttp:mockwebserver:$okhttpVersion"
+    testCompile "junit:junit:$junitVersion"
+    testCompile "org.mockito:mockito-core:$mockitoVersion"
+    testCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
 
     androidTestCompile project(':oklog-core-test')
     androidTestCompile "com.squareup.okhttp:mockwebserver:$okhttpVersion"

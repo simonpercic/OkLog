@@ -7,12 +7,14 @@ buildscript {
     }
 }
 
-apply plugin: 'java'
 apply plugin: 'kotlin'
 
 configurations {
     ktlint
 }
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
 
 dependencies {
     compile project(':oklog-core')

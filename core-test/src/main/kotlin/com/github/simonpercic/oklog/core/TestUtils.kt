@@ -10,13 +10,14 @@ import org.mockito.Mockito.verify
  */
 object TestUtils {
 
+    @JvmStatic
     fun getLogData(logManager: LogManager): LogDataBuilder {
         val dataCaptor = ArgumentCaptor.forClass(LogDataBuilder::class.java)
         verify(logManager).log(dataCaptor.capture())
         return dataCaptor.value
     }
 
-    internal fun assertData(expected: LogDataBuilder, value: LogDataBuilder) {
+    fun assertData(expected: LogDataBuilder, value: LogDataBuilder) {
         assertEquals(expected.requestMethod, value.requestMethod)
         assertEquals(expected.requestUrl, value.requestUrl)
         assertEquals(expected.requestUrlPath, value.requestUrlPath)
@@ -34,6 +35,7 @@ object TestUtils {
         assertEquals(expected.responseBody, value.responseBody)
     }
 
+    @JvmStatic
     fun assertData(requestMethod: String, requestUrl: String, requestUrlPath: String,
         requestBodyState: LogDataBuilder.BodyState, failed: Boolean, value: LogDataBuilder) {
 
@@ -50,6 +52,7 @@ object TestUtils {
         assertData(expectedValue, value)
     }
 
+    @JvmStatic
     fun assertNoRequestHeaders(value: LogDataBuilder) {
         assertNull(value.requestHeaders)
     }

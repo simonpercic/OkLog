@@ -25,7 +25,7 @@ public class LogManager {
     private final boolean withRequestBody;
     private final boolean shortenInfoUrl;
     @NotNull private final LogDataConfig logDataConfig;
-    @NotNull private final CompressionUtils compressionUtils;
+    @NotNull private final CompressionUtil compressionUtil;
 
     /**
      * Constructor.
@@ -37,18 +37,18 @@ public class LogManager {
      * @param withRequestBody true to include request body
      * @param shortenInfoUrl true to shorten info url on the server-side
      * @param logDataConfig log data config
-     * @param compressionUtils compression utils
+     * @param compressionUtil compression util
      */
     public LogManager(String urlBase, LogInterceptor logInterceptor, Logger logger, boolean ignoreTimber,
             boolean withRequestBody, boolean shortenInfoUrl, @NotNull LogDataConfig logDataConfig,
-            @NotNull CompressionUtils compressionUtils) {
+            @NotNull CompressionUtil compressionUtil) {
         this.logUrlBase = urlBase;
         this.logInterceptor = logInterceptor;
         this.logger = resolveLogger(logger, ignoreTimber);
         this.withRequestBody = withRequestBody;
         this.shortenInfoUrl = shortenInfoUrl;
         this.logDataConfig = logDataConfig;
-        this.compressionUtils = compressionUtils;
+        this.compressionUtil = compressionUtil;
     }
 
     /**
@@ -100,7 +100,7 @@ public class LogManager {
         String bodyString;
 
         try {
-            bodyString = compressionUtils.gzipBase64UrlSafe(body);
+            bodyString = compressionUtil.gzipBase64UrlSafe(body);
         } catch (IOException e) {
             logger.e(Constants.LOG_TAG, String.format(LOG_FORMAT, e.getMessage()), e);
             return null;
@@ -122,7 +122,7 @@ public class LogManager {
 
         String logDataString = null;
         try {
-            logDataString = compressionUtils.gzipBase64UrlSafe(logDataBytes);
+            logDataString = compressionUtil.gzipBase64UrlSafe(logDataBytes);
         } catch (IOException e) {
             logger.e(Constants.LOG_TAG, String.format(LOG_FORMAT, e.getMessage()), e);
         }

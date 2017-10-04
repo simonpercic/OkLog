@@ -9,11 +9,11 @@ import okio.GzipSink;
 import okio.Okio;
 
 /**
- * Compression utilities.
+ * Compression util.
  *
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
-public class CompressionUtils {
+public class CompressionUtil {
 
     /**
      * Compresses the given string with gzip, returns it Base64 encoded.

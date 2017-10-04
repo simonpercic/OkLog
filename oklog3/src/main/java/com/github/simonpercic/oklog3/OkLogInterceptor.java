@@ -3,7 +3,7 @@ package com.github.simonpercic.oklog3;
 import com.github.simonpercic.oklog.core.BaseLogDataInterceptor.RequestLogData;
 import com.github.simonpercic.oklog.core.BaseLogDataInterceptor.ResponseLogData;
 import com.github.simonpercic.oklog.core.BaseOkLogInterceptorBuilder;
-import com.github.simonpercic.oklog.core.CompressionUtils;
+import com.github.simonpercic.oklog.core.CompressionUtil;
 import com.github.simonpercic.oklog.core.LogDataBuilder;
 import com.github.simonpercic.oklog.core.LogDataConfig;
 import com.github.simonpercic.oklog.core.LogInterceptor;
@@ -33,7 +33,7 @@ public final class OkLogInterceptor implements Interceptor {
     private OkLogInterceptor(String logUrlBase, LogInterceptor logInterceptor, Logger logger, boolean ignoreTimber,
             boolean withRequestBody, boolean shortenInfoUrl, @NotNull LogDataConfig logDataConfig) {
         this(new LogManager(logUrlBase, logInterceptor, logger, ignoreTimber, withRequestBody, shortenInfoUrl,
-                logDataConfig, new CompressionUtils()));
+                logDataConfig, new CompressionUtil()));
     }
 
     OkLogInterceptor(LogManager logManager) {

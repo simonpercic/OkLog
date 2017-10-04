@@ -2,8 +2,9 @@ package com.github.simonpercic.oklogexample
 
 import android.app.Application
 import android.content.Context
+import com.github.simonpercic.oklogexample.logger.LoggerInitializer
 
-import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * @author Simon Percic [https://github.com/simonpercic](https://github.com/simonpercic)
@@ -17,6 +18,8 @@ class App : Application() {
         }
     }
 
+    @Inject lateinit var loggerInitializer: LoggerInitializer
+
     lateinit var component: AppComponent
         private set
 
@@ -25,14 +28,13 @@ class App : Application() {
 
         buildComponentAndInject()
 
-        // remember to never log in production in your apps!
-        Timber.plant(Timber.DebugTree())
+        loggerInitializer.init()
     }
 
     private fun buildComponentAndInject() {
         component = DaggerAppComponent.builder()
-                .appModule(AppModule(this))
-                .build()
+            .appModule(AppModule(this))
+            .build()
 
         component.inject(this)
     }

@@ -7,37 +7,14 @@ buildscript {
     }
 }
 
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-
-android {
-    compileSdkVersion project.ext.compileSdkVersion
-    buildToolsVersion project.ext.buildToolsVersion
-    enforceUniquePackageName = false
-
-    defaultConfig {
-        minSdkVersion project.ext.minSdkVersion
-        targetSdkVersion project.ext.targetSdkVersion
-        versionCode Integer.parseInt(VERSION_CODE)
-        versionName VERSION_NAME
-
-        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-    }
-
-    lintOptions {
-        checkReleaseBuilds false
-        textReport true
-        lintConfig file('../config/check/lint/lint.xml')
-    }
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-    }
-}
+apply plugin: 'kotlin'
 
 configurations {
     ktlint
 }
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
 
 dependencies {
     compile project(':oklog-core')
@@ -48,8 +25,6 @@ dependencies {
 
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     compile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
-    compile "com.android.support.test:runner:$testSupportVersion"
-    compile "com.android.support.test:rules:$testSupportVersion"
 
     ktlint "com.github.shyiko:ktlint:$ktlintVersion"
 }

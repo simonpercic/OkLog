@@ -1,7 +1,7 @@
-package com.github.simonpercic.oklog3;
+package com.github.simonpercic.oklog.core;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
 
@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
  *
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
-final class ReflectionUtils {
+public final class ReflectionUtils {
 
     private ReflectionUtils() {
         // no instance
@@ -22,7 +22,7 @@ final class ReflectionUtils {
      * @param className class name
      * @return true if class exists, false otherwise
      */
-    static boolean hasClass(@NonNull String className) {
+    public static boolean hasClass(@NotNull String className) {
         return getClass(className) != null;
     }
 
@@ -31,10 +31,11 @@ final class ReflectionUtils {
      *
      * @param className class name
      * @param methodName method name
-     * @param paramType param type
+     * @param paramTypes param types
      * @return method on class
      */
-    @Nullable static Method getMethod(@NonNull String className, @NonNull String methodName, Class<?> paramType) {
+    @Nullable
+    public static Method getMethod(@NotNull String className, @NotNull String methodName, Class<?>... paramTypes) {
         Class<?> clazz = getClass(className);
 
         if (clazz == null) {
@@ -42,7 +43,7 @@ final class ReflectionUtils {
         }
 
         try {
-            return clazz.getMethod(methodName, paramType);
+            return clazz.getMethod(methodName, paramTypes);
         } catch (NoSuchMethodException | SecurityException e) {
             return null;
         }
@@ -54,7 +55,7 @@ final class ReflectionUtils {
      * @param className class name
      * @return class from class name
      */
-    @Nullable private static Class<?> getClass(@NonNull String className) {
+    @Nullable private static Class<?> getClass(@NotNull String className) {
         try {
             return Class.forName(className);
         } catch (ClassNotFoundException e) {

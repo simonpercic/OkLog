@@ -68,3 +68,8 @@
   <fields>;
 }
 ##--------------- End: Model ----------
+
+##--------------- Begin: OkHttp 3.8.0 ----------
+-dontwarn javax.annotation.Nullable
+-dontwarn javax.annotation.ParametersAreNonnullByDefault
+##--------------- End: OkHttp 3.8.0 ----------

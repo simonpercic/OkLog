@@ -117,8 +117,8 @@ new Retrofit.Builder()
 - `setLogInterceptor(LogInterceptor logInterceptor)` 
     Set a custom log interceptor to do your own logging. See [LogInterceptor](core/src/main/java/com/github/simonpercic/oklog/core/LogInterceptor.java) for details.
     
-- `useAndroidLog(boolean useAndroidLog)`
-    Pass 'true' to use Android's Log methods for logging, instead of Timber. 
+- `ignoreTimber(boolean ignoreTimber)`
+    Pass 'true' to ignore Timber for logging, even if it is present. 
     Since Timber is an optional dependency, OkLog will use it only if it's included it in your app's dependencies. If not, it will fallback to using Android's built-in Log methods.
 
 #### Additional log data options

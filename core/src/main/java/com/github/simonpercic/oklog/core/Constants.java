@@ -18,6 +18,8 @@ final class Constants {
     private static final String UTF8 = "UTF-8";
     static final Charset CHARSET_UTF8 = Charset.forName(UTF8);
 
+    static final String TIMBER_CLASS = "timber.log.Timber";
+
     private Constants() {
         // no instance
     }

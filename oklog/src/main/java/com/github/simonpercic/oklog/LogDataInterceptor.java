@@ -1,7 +1,5 @@
 package com.github.simonpercic.oklog;
 
-import android.support.annotation.Nullable;
-
 import com.github.simonpercic.oklog.core.BaseLogDataInterceptor;
 import com.squareup.okhttp.Connection;
 import com.squareup.okhttp.Headers;
@@ -11,6 +9,8 @@ import com.squareup.okhttp.Protocol;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.internal.http.HttpEngine;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

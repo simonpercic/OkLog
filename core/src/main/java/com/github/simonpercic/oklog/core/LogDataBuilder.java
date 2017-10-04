@@ -1,9 +1,5 @@
 package com.github.simonpercic.oklog.core;
 
-import android.support.annotation.IntDef;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,19 +10,28 @@ import java.util.List;
  */
 public class LogDataBuilder {
 
-    // region BodyState IntDef
+    // region BodyState
 
-    @IntDef({PLAIN_BODY, NO_BODY, ENCODED_BODY, BINARY_BODY, CHARSET_MALFORMED})
-    @Retention(RetentionPolicy.SOURCE) @interface BodyState {
+    public enum BodyState {
+
+        PLAIN_BODY(1),
+        NO_BODY(2),
+        ENCODED_BODY(3),
+        BINARY_BODY(4),
+        CHARSET_MALFORMED(5);
+
+        private final int intValue;
+
+        BodyState(int intValue) {
+            this.intValue = intValue;
+        }
+
+        int getIntValue() {
+            return intValue;
+        }
     }
 
-    static final int PLAIN_BODY = 1;
-    static final int NO_BODY = 2;
-    static final int ENCODED_BODY = 3;
-    static final int BINARY_BODY = 4;
-    static final int CHARSET_MALFORMED = 5;
-
-    // endregion BodyState IntDef
+    // endregion BodyState
 
     private String requestMethod;
     private String requestUrl;
@@ -36,7 +41,7 @@ public class LogDataBuilder {
     private long requestContentLength;
     private List<HeaderDataBuilder> requestHeaders;
     private String requestBody;
-    @BodyState private int requestBodyState;
+    private BodyState requestBodyState;
     private boolean requestFailed;
 
     private int responseCode;
@@ -45,13 +50,13 @@ public class LogDataBuilder {
     private long responseDurationMs;
     private long responseContentLength;
     private List<HeaderDataBuilder> responseHeaders;
-    @BodyState private int responseBodyState;
+    private BodyState responseBodyState;
     private long responseBodySize;
     private String responseBody;
 
     LogDataBuilder() {
-        this.requestBodyState = PLAIN_BODY;
-        this.responseBodyState = PLAIN_BODY;
+        this.requestBodyState = BodyState.PLAIN_BODY;
+        this.responseBodyState = BodyState.PLAIN_BODY;
     }
 
     LogDataBuilder requestMethod(String requestMethod) {
@@ -98,7 +103,7 @@ public class LogDataBuilder {
         return this;
     }
 
-    LogDataBuilder requestBodyState(@BodyState int requestBodyState) {
+    LogDataBuilder requestBodyState(BodyState requestBodyState) {
         this.requestBodyState = requestBodyState;
         return this;
     }
@@ -142,7 +147,7 @@ public class LogDataBuilder {
         return this;
     }
 
-    LogDataBuilder responseBodyState(@BodyState int responseBodyState) {
+    LogDataBuilder responseBodyState(BodyState responseBodyState) {
         this.responseBodyState = responseBodyState;
         return this;
     }
@@ -191,7 +196,7 @@ public class LogDataBuilder {
         return requestBody;
     }
 
-    @BodyState int getRequestBodyState() {
+    BodyState getRequestBodyState() {
         return requestBodyState;
     }
 
@@ -223,7 +228,7 @@ public class LogDataBuilder {
         return responseHeaders;
     }
 
-    @BodyState int getResponseBodyState() {
+    BodyState getResponseBodyState() {
         return responseBodyState;
     }
 

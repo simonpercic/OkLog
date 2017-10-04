@@ -1,47 +1,25 @@
 buildscript {
     repositories {
-        maven { url 'https://plugins.gradle.org/m2/' }
+        jcenter()
     }
     dependencies {
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$gradleBintrayVersion"
-        classpath "com.github.dcendents:android-maven-gradle-plugin:$androidGradleMavenVersion"
     }
 }
 
-apply plugin: 'com.android.library'
-apply plugin: 'si.kamino.soter'
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
 
-android {
-    compileSdkVersion project.ext.compileSdkVersion
-    buildToolsVersion project.ext.buildToolsVersion
-
-    defaultConfig {
-        minSdkVersion project.ext.minSdkVersion
-        targetSdkVersion project.ext.targetSdkVersion
-        versionCode Integer.parseInt(VERSION_CODE)
-        versionName VERSION_NAME
-    }
-
-    lintOptions {
-        checkReleaseBuilds true
-        textReport true
-        warningsAsErrors true
-        lintConfig file('../config/check/lint/lint.xml')
-    }
-
-    // This enables long timeouts required on slow environments, e.g. Travis
-    adbOptions {
-        timeOutInMs 10 * 60 * 1000  // 10 minutes
-        installOptions "-d", "-t"
-    }
-}
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
 
 dependencies {
-    provided 'com.jakewharton.timber:timber:4.5.1'
-    provided "com.squareup.okio:okio:$okioVersion"
+    compileOnly 'com.google.android:android:4.1.1.4'
+    compileOnly "com.squareup.okio:okio:$okioVersion"
 
     compile project(':oklog-shared')
-    compile "com.android.support:support-annotations:$supportVersion"
+    compile 'org.jetbrains:annotations:13.0'
     compile 'com.github.simonpercic:collectionhelper:1.2.1'
 
     // Unit test dependencies
@@ -49,26 +27,8 @@ dependencies {
     testCompile "org.mockito:mockito-core:$mockitoVersion"
     testCompile "org.powermock:powermock-module-junit4:$powermockVersion"
     testCompile "org.powermock:powermock-api-mockito:$powermockVersion"
-
-    // Static code rules
-    checkstyleRules files('../config/soter/checkstyle-0.3.xml')
-    findbugsRules files('../config/soter/findbugs-0.1.xml')
-    pmdRules files('../config/soter/pmd-0.1.xml')
+    testCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
 }
 
-soter {
-    checkstyle {
-        enabled true
-    }
-
-    findbugs {
-        enabled true
-        reportLevel 'high'
-    }
-
-    pmd {
-        enabled true
-    }
-}
-
-apply from: '../gradle-publish/android/jcenterupload.gradle'
+apply from: '../gradle-publish/java/jcenterupload.gradle'

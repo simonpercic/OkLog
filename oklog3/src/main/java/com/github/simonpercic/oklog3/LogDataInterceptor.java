@@ -1,9 +1,9 @@
 package com.github.simonpercic.oklog3;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import com.github.simonpercic.oklog.core.BaseLogDataInterceptor;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -25,7 +25,7 @@ import okio.BufferedSource;
  */
 class LogDataInterceptor extends BaseLogDataInterceptor<Chain, Request, Response, Headers, MediaType> {
 
-    @NonNull private final HasResponseBodyManager hasResponseBodyManager;
+    @NotNull private final HasResponseBodyManager hasResponseBodyManager;
 
     LogDataInterceptor() {
         hasResponseBodyManager = HasResponseBodyManager.create();

@@ -25,6 +25,7 @@ public class LogManager {
     private final boolean withRequestBody;
     private final boolean shortenInfoUrl;
     @NotNull private final LogDataConfig logDataConfig;
+    @NotNull private final CompressionUtils compressionUtils;
 
     /**
      * Constructor.
@@ -36,15 +37,18 @@ public class LogManager {
      * @param withRequestBody true to include request body
      * @param shortenInfoUrl true to shorten info url on the server-side
      * @param logDataConfig log data config
+     * @param compressionUtils compression utils
      */
     public LogManager(String urlBase, LogInterceptor logInterceptor, Logger logger, boolean ignoreTimber,
-            boolean withRequestBody, boolean shortenInfoUrl, @NotNull LogDataConfig logDataConfig) {
+            boolean withRequestBody, boolean shortenInfoUrl, @NotNull LogDataConfig logDataConfig,
+            @NotNull CompressionUtils compressionUtils) {
         this.logUrlBase = urlBase;
         this.logInterceptor = logInterceptor;
         this.logger = resolveLogger(logger, ignoreTimber);
         this.withRequestBody = withRequestBody;
         this.shortenInfoUrl = shortenInfoUrl;
         this.logDataConfig = logDataConfig;
+        this.compressionUtils = compressionUtils;
     }
 
     /**
@@ -96,7 +100,7 @@ public class LogManager {
         String bodyString;
 
         try {
-            bodyString = CompressionUtils.gzipBase64UrlSafe(body);
+            bodyString = compressionUtils.gzipBase64UrlSafe(body);
         } catch (IOException e) {
             logger.e(Constants.LOG_TAG, String.format(LOG_FORMAT, e.getMessage()), e);
             return null;
@@ -118,7 +122,7 @@ public class LogManager {
 
         String logDataString = null;
         try {
-            logDataString = CompressionUtils.gzipBase64UrlSafe(logDataBytes);
+            logDataString = compressionUtils.gzipBase64UrlSafe(logDataBytes);
         } catch (IOException e) {
             logger.e(Constants.LOG_TAG, String.format(LOG_FORMAT, e.getMessage()), e);
         }

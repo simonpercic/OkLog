@@ -11,15 +11,17 @@ import org.junit.Test;
  */
 public class CompressionUtilsUnitTest {
 
+    private CompressionUtils compressionUtils = new CompressionUtils();
+
     @Test
     public void testGzipBase64Empty() throws Exception {
-        String nullBytesResult = CompressionUtils.gzipBase64UrlSafe((byte[]) null);
+        String nullBytesResult = compressionUtils.gzipBase64UrlSafe((byte[]) null);
         Assert.assertEquals(null, nullBytesResult);
 
-        String nullStringResult = CompressionUtils.gzipBase64UrlSafe((String) null);
+        String nullStringResult = compressionUtils.gzipBase64UrlSafe((String) null);
         Assert.assertEquals(null, nullStringResult);
 
-        String emptyResult = CompressionUtils.gzipBase64UrlSafe("");
+        String emptyResult = compressionUtils.gzipBase64UrlSafe("");
         Assert.assertEquals("", emptyResult);
     }
 
@@ -91,7 +93,7 @@ public class CompressionUtilsUnitTest {
                 + "  }\n"
                 + "]";
 
-        String compressed = CompressionUtils.gzipBase64UrlSafe(json);
+        String compressed = compressionUtils.gzipBase64UrlSafe(json);
 
         String expected = "H4sIAAAAAAAAALXVzY7TMBAH8Ps-RZXzbmKPPZ5Jr7wBV4TQ-ItWtNvQpBfQvjuGVkJa7aoGxYfkENvzT_yLxp8eNpuf"
                 + "5dpsumc5pm7bTXJOz8sT9Nir7vE69GM_eTkcvlzOhzJjtyzTvB0Gmfb91_2yu_g-nI7DOU2neZi_X0qB4fTt96zhtnB4q-gi5_8r"

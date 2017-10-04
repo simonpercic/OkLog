@@ -4,11 +4,10 @@ import com.github.simonpercic.oklog.shared.data.BodyState;
 import com.github.simonpercic.oklog.shared.data.HeaderData;
 import com.github.simonpercic.oklog.shared.data.LogData;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -23,15 +22,13 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 /**
  * LogManager unit test.
  *
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(CompressionUtils.class)
+@RunWith(MockitoJUnitRunner.class)
 public class LogManagerUnitTest {
 
     private static final LogDataConfig LOG_DATA_CONFIG_NONE = new LogDataConfig(false, false, false, false, false,
@@ -40,17 +37,15 @@ public class LogManagerUnitTest {
     private static final LogDataConfig LOG_DATA_CONFIG_ALL = new LogDataConfig(true, true, true, true, true, true, true,
             true, true, true, true, true, true, true, true);
 
-    @Before
-    public void setUp() throws Exception {
-        mockStatic(CompressionUtils.class);
-    }
+    @Mock CompressionUtils compressionUtils;
 
     @Test
     public void testGetLogUrlIOException() throws Exception {
-        when(CompressionUtils.gzipBase64UrlSafe(anyString())).thenThrow(new IOException());
+        when(compressionUtils.gzipBase64UrlSafe(anyString())).thenThrow(new IOException());
 
         String baseUrl = "http://example.com";
-        LogManager logManager = new LogManager(baseUrl, null, null, false, false, false, LOG_DATA_CONFIG_NONE);
+        LogManager logManager = new LogManager(baseUrl, null, null, false, false, false, LOG_DATA_CONFIG_NONE,
+                compressionUtils);
 
         String logUrl = logManager.getLogUrl("", "", null);
         String expected = String.format("%s%s0", baseUrl, "/v1/re/");
@@ -60,10 +55,11 @@ public class LogManagerUnitTest {
 
     @Test
     public void testGetLogUrlEmpty() throws Exception {
-        when(CompressionUtils.gzipBase64UrlSafe(anyString())).thenReturn("");
+        when(compressionUtils.gzipBase64UrlSafe(anyString())).thenReturn("");
 
         String baseUrl = "http://example.com";
-        LogManager logManager = new LogManager(baseUrl, null, null, false, false, false, LOG_DATA_CONFIG_ALL);
+        LogManager logManager = new LogManager(baseUrl, null, null, false, false, false, LOG_DATA_CONFIG_ALL,
+                compressionUtils);
 
         String logUrl = logManager.getLogUrl("", "", null);
         String expected = String.format("%s%s0", baseUrl, "/v1/r/");
@@ -83,11 +79,12 @@ public class LogManagerUnitTest {
                 + "BwR-jdZUG1UL0gSjCcQdBHbRknYeWaJxCAkTOfYBIbMi1qWRl9ahwwoI1VF_ER4-_wL2RqAwvQoA\n"
                 + "AA==\n";
 
-        when(CompressionUtils.gzipBase64UrlSafe(eq("response_body"))).thenReturn(gzipped.replaceAll("\n", ""));
-        when(CompressionUtils.gzipBase64UrlSafe(eq("request_body"))).thenReturn("compressed_request_body");
+        when(compressionUtils.gzipBase64UrlSafe(eq("response_body"))).thenReturn(gzipped.replaceAll("\n", ""));
+        when(compressionUtils.gzipBase64UrlSafe(eq("request_body"))).thenReturn("compressed_request_body");
 
         String baseUrl = "http://example.com";
-        LogManager logManager = new LogManager(baseUrl, null, null, false, true, false, LOG_DATA_CONFIG_ALL);
+        LogManager logManager = new LogManager(baseUrl, null, null, false, true, false, LOG_DATA_CONFIG_ALL,
+                compressionUtils);
 
         String logUrl = logManager.getLogUrl("response_body", "request_body", null);
 
@@ -109,11 +106,12 @@ public class LogManagerUnitTest {
                 + "BwR-jdZUG1UL0gSjCcQdBHbRknYeWaJxCAkTOfYBIbMi1qWRl9ahwwoI1VF_ER4-_wL2RqAwvQoA\n"
                 + "AA==\n";
 
-        when(CompressionUtils.gzipBase64UrlSafe(eq("response_body"))).thenReturn(gzipped.replaceAll("\n", ""));
-        when(CompressionUtils.gzipBase64UrlSafe(eq("request_body"))).thenReturn("compressed_request_body");
+        when(compressionUtils.gzipBase64UrlSafe(eq("response_body"))).thenReturn(gzipped.replaceAll("\n", ""));
+        when(compressionUtils.gzipBase64UrlSafe(eq("request_body"))).thenReturn("compressed_request_body");
 
         String baseUrl = "http://example.com";
-        LogManager logManager = new LogManager(baseUrl, null, null, false, true, false, LOG_DATA_CONFIG_ALL);
+        LogManager logManager = new LogManager(baseUrl, null, null, false, true, false, LOG_DATA_CONFIG_ALL,
+                compressionUtils);
 
         List<HeaderData> requestHeaders = Arrays.asList(new HeaderData("q_n_1", "q_v_1"),
                 new HeaderData("q_n_2", "q_v_2"));
@@ -142,7 +140,7 @@ public class LogManagerUnitTest {
                 + "Za9ZZYGwTDr0nOcYrzsZn2Wyffg6dhaAE_J-s5zcd9NmHG7OOi7eDA6w6Pe0L2YEOu_801QeGz_49Z8dVcWjfu986Pxf8_"
                 + "-DXy6JbEpAgAA";
 
-        when(CompressionUtils.gzipBase64UrlSafe(eq(bytes))).thenReturn(compressedLogData);
+        when(compressionUtils.gzipBase64UrlSafe(eq(bytes))).thenReturn(compressedLogData);
 
         String logUrl = logManager.getLogUrl("response_body", "request_body", logData);
 
@@ -154,11 +152,12 @@ public class LogManagerUnitTest {
 
     @Test
     public void testGetLogUrlShorten() throws Exception {
-        when(CompressionUtils.gzipBase64UrlSafe(eq("response_body"))).thenReturn("compressed_response_body");
-        when(CompressionUtils.gzipBase64UrlSafe(eq("request_body"))).thenReturn("compressed_request_body");
+        when(compressionUtils.gzipBase64UrlSafe(eq("response_body"))).thenReturn("compressed_response_body");
+        when(compressionUtils.gzipBase64UrlSafe(eq("request_body"))).thenReturn("compressed_request_body");
 
         String baseUrl = "http://example.com";
-        LogManager logManager = new LogManager(baseUrl, null, null, false, true, true, LOG_DATA_CONFIG_ALL);
+        LogManager logManager = new LogManager(baseUrl, null, null, false, true, true, LOG_DATA_CONFIG_ALL,
+                compressionUtils);
 
         String logUrl = logManager.getLogUrl("response_body", "request_body", null);
 
@@ -169,11 +168,12 @@ public class LogManagerUnitTest {
 
     @Test
     public void testLogDebugCalled() throws Exception {
-        when(CompressionUtils.gzipBase64UrlSafe(eq("response_body"))).thenReturn("compressed_string");
-        when(CompressionUtils.gzipBase64UrlSafe((byte[]) anyObject())).thenReturn("compressed_data_string");
+        when(compressionUtils.gzipBase64UrlSafe(eq("response_body"))).thenReturn("compressed_string");
+        when(compressionUtils.gzipBase64UrlSafe((byte[]) anyObject())).thenReturn("compressed_data_string");
 
         String baseUrl = "http://example.com";
-        LogManager logManager = spy(new LogManager(baseUrl, null, null, false, true, false, LOG_DATA_CONFIG_ALL));
+        LogManager logManager = spy(
+                new LogManager(baseUrl, null, null, false, true, false, LOG_DATA_CONFIG_ALL, compressionUtils));
 
         String requestMethod = "request_method";
         String requestUrlPath = "request_url_path";
@@ -191,13 +191,14 @@ public class LogManagerUnitTest {
 
     @Test
     public void testLogInterceptorCalled() throws Exception {
-        when(CompressionUtils.gzipBase64UrlSafe(eq("response_body"))).thenReturn("compressed_string");
-        when(CompressionUtils.gzipBase64UrlSafe((byte[]) anyObject())).thenReturn("compressed_data_string");
+        when(compressionUtils.gzipBase64UrlSafe(eq("response_body"))).thenReturn("compressed_string");
+        when(compressionUtils.gzipBase64UrlSafe((byte[]) anyObject())).thenReturn("compressed_data_string");
 
         LogInterceptor logInterceptor = mock(LogInterceptor.class);
 
         String baseUrl = "http://example.com";
-        LogManager logManager = new LogManager(baseUrl, logInterceptor, null, false, true, false, LOG_DATA_CONFIG_ALL);
+        LogManager logManager = new LogManager(baseUrl, logInterceptor, null, false, true, false, LOG_DATA_CONFIG_ALL,
+                compressionUtils);
 
         logManager.log(new LogDataBuilder().responseBody("response_body"));
 
@@ -210,13 +211,13 @@ public class LogManagerUnitTest {
     @Test
     public void testLogInterceptorHandled() throws Exception {
         String compressedString = "compressedString";
-        when(CompressionUtils.gzipBase64UrlSafe(anyString())).thenReturn(compressedString);
+        when(compressionUtils.gzipBase64UrlSafe(anyString())).thenReturn(compressedString);
 
         LogInterceptor logInterceptor = mock(LogInterceptor.class);
         when(logInterceptor.onLog(anyString())).thenReturn(true);
 
         LogManager logManager = spy(new LogManager(null, logInterceptor, null, false, true, false,
-                LOG_DATA_CONFIG_ALL));
+                LOG_DATA_CONFIG_ALL, compressionUtils));
 
         logManager.log(new LogDataBuilder()
                 .responseBody("response_body")
@@ -228,15 +229,15 @@ public class LogManagerUnitTest {
 
     @Test
     public void testLogInterceptorNotHandled() throws Exception {
-        when(CompressionUtils.gzipBase64UrlSafe(eq("response_body"))).thenReturn("compressed_string");
-        when(CompressionUtils.gzipBase64UrlSafe((byte[]) anyObject())).thenReturn("compressed_data_string");
+        when(compressionUtils.gzipBase64UrlSafe(eq("response_body"))).thenReturn("compressed_string");
+        when(compressionUtils.gzipBase64UrlSafe((byte[]) anyObject())).thenReturn("compressed_data_string");
 
         LogInterceptor logInterceptor = mock(LogInterceptor.class);
         when(logInterceptor.onLog(anyString())).thenReturn(false);
 
         String baseUrl = "http://example.com";
         LogManager logManager = spy(new LogManager(baseUrl, logInterceptor, null, false, true, false,
-                LOG_DATA_CONFIG_ALL));
+                LOG_DATA_CONFIG_ALL, compressionUtils));
 
         String requestMethod = "request_method";
         String requestUrlPath = "request_url_path";

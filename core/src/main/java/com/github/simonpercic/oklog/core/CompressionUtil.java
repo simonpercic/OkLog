@@ -9,15 +9,11 @@ import okio.GzipSink;
 import okio.Okio;
 
 /**
- * Compression utilities.
+ * Compression util.
  *
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
-final class CompressionUtils {
-
-    private CompressionUtils() {
-        // no instance
-    }
+public class CompressionUtil {
 
     /**
      * Compresses the given string with gzip, returns it Base64 encoded.
@@ -68,7 +64,7 @@ final class CompressionUtils {
      * @return gzipped and Base64 encoded input string without new lines
      * @throws IOException IO Exception
      */
-    static String gzipBase64UrlSafe(String string) throws IOException {
+    String gzipBase64UrlSafe(String string) throws IOException {
         String result = gzipBase64(string);
 
         if (!StringUtils.isEmpty(result)) {
@@ -85,7 +81,7 @@ final class CompressionUtils {
      * @return gzipped and Base64 encoded input string without new lines
      * @throws IOException IO Exception
      */
-    static String gzipBase64UrlSafe(byte[] bytes) throws IOException {
+    String gzipBase64UrlSafe(byte[] bytes) throws IOException {
         String result = gzipBase64(bytes);
 
         if (!StringUtils.isEmpty(result)) {

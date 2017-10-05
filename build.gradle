@@ -37,7 +37,6 @@ subprojects {
         kotlinVersion = '1.1.4-3'
         ktlintVersion = '0.6.2'
         okioVersion = '1.13.0'
-        powermockVersion = '1.6.6'
         testSupportVersion = '0.5'
         dexmakerVersion = '1.4'
         junitVersion = '4.12'

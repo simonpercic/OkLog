@@ -1,4 +1,4 @@
-include ':oklog', ':core', ':core-android', ':oklog3', ':example', ':core-test', ':shared'
+include ':oklog', ':core', ':core-android', ':oklog3', ':oklog3-android', ':example', ':core-test', ':shared'
 findProject(':core')?.name = 'oklog-core'
 findProject(':core-android')?.name = 'oklog-core-android'
 findProject(':core-test')?.name = 'oklog-core-test'

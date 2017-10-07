@@ -105,12 +105,11 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
     timberCompile "com.jakewharton.timber:timber:$timberVersion"
-    timberCompile project(':oklog-core-android')
 
     compile "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 
-    oklog3Compile project(':oklog3')
+    oklog3Compile project(':oklog3-android')
     oklog3Compile "com.squareup.retrofit2:retrofit:$retrofit2Version"
     oklog3Compile "com.squareup.retrofit2:converter-gson:$retrofit2Version"
     oklog3Compile "com.squareup.retrofit2:adapter-rxjava:$retrofit2Version"

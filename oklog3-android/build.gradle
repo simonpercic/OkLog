@@ -1,0 +1,38 @@
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+    dependencies {
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$gradleBintrayVersion"
+        classpath "com.github.dcendents:android-maven-gradle-plugin:$androidGradleMavenVersion"
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion project.ext.compileSdkVersion
+    buildToolsVersion project.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion project.ext.minSdkVersion
+        targetSdkVersion project.ext.targetSdkVersion
+        versionCode Integer.parseInt(VERSION_CODE)
+        versionName VERSION_NAME
+
+        consumerProguardFiles 'proguard-rules.pro'
+    }
+
+    // This enables long timeouts required on slow environments, e.g. Travis
+    adbOptions {
+        timeOutInMs 10 * 60 * 1000  // 10 minutes
+        installOptions "-d", "-t"
+    }
+}
+
+dependencies {
+    compile project(':oklog3')
+    compile project(':oklog-core-android')
+}
+
+apply from: '../gradle-publish/android/jcenterupload.gradle'

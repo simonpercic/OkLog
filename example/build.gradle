@@ -116,7 +116,7 @@ dependencies {
     oklog3Compile "com.squareup.okhttp3:okhttp:$okHttp3Version"
     oklog3Compile "com.squareup.okhttp3:logging-interceptor:$okHttp3Version"
 
-    oklogCompile project(':oklog')
+    oklogCompile project(':oklog-android')
     oklogCompile 'com.squareup.retrofit:retrofit:1.9.0'
     oklogCompile 'com.squareup.okhttp:okhttp:2.7.5'
 

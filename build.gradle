@@ -43,5 +43,6 @@ subprojects {
         mockitoVersion = '1.10.19'
         gradleBintrayVersion = '1.7.1'
         androidGradleMavenVersion = '1.5'
+        timberVersion = '4.5.1'
     }
 }

@@ -104,19 +104,19 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
-    timberCompile 'com.jakewharton.timber:timber:4.5.1'
+    timberCompile "com.jakewharton.timber:timber:$timberVersion"
 
     compile "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 
-    oklog3Compile project(':oklog3')
+    oklog3Compile project(':oklog3-android')
     oklog3Compile "com.squareup.retrofit2:retrofit:$retrofit2Version"
     oklog3Compile "com.squareup.retrofit2:converter-gson:$retrofit2Version"
     oklog3Compile "com.squareup.retrofit2:adapter-rxjava:$retrofit2Version"
     oklog3Compile "com.squareup.okhttp3:okhttp:$okHttp3Version"
     oklog3Compile "com.squareup.okhttp3:logging-interceptor:$okHttp3Version"
 
-    oklogCompile project(':oklog')
+    oklogCompile project(':oklog-android')
     oklogCompile 'com.squareup.retrofit:retrofit:1.9.0'
     oklogCompile 'com.squareup.okhttp:okhttp:2.7.5'
 

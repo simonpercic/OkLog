@@ -8,6 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * Log manager.
@@ -157,11 +159,17 @@ public class LogManager {
             return logger;
         }
 
-        if (!ignoreTimber && ReflectionUtils.hasClass(Constants.TIMBER_CLASS)) {
-            ReflectionTimberLogger timberLogger = new ReflectionTimberLogger();
+        if (!ignoreTimber) {
+            Logger timberLogger = resolveTimberLogger();
 
-            if (timberLogger.isValid()) {
+            if (timberLogger != null) {
                 return timberLogger;
+            } else if (ReflectionUtils.hasClass(Constants.TIMBER_CLASS)) {
+                ReflectionTimberLogger reflectionTimberLogger = new ReflectionTimberLogger();
+
+                if (reflectionTimberLogger.isValid()) {
+                    return reflectionTimberLogger;
+                }
             }
         }
 
@@ -170,5 +178,28 @@ public class LogManager {
         } else {
             return new JavaLogger();
         }
+    }
+
+    @Nullable
+    @SuppressWarnings("TryWithIdenticalCatches")
+    private static Logger resolveTimberLogger() {
+
+        Method provideLoggerMethod = ReflectionUtils.getMethod(
+                "com.github.simonpercic.oklog.core.android.TimberLoggerProvider",
+                "provideLogger");
+
+        if (provideLoggerMethod != null) {
+            try {
+                return (Logger) provideLoggerMethod.invoke(null);
+            } catch (IllegalAccessException e) {
+                // ignore
+            } catch (IllegalArgumentException e) {
+                // ignore
+            } catch (InvocationTargetException e) {
+                // ignore
+            }
+        }
+
+        return null;
     }
 }

@@ -3,6 +3,7 @@
     public static void w(...);
     public static void e(...);
 }
+-dontwarn timber.log.Timber
 
 -keep class com.github.simonpercic.oklog.core.android.TimberLoggerProvider {
     *;

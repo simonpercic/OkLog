@@ -1,7 +1,7 @@
 package com.github.simonpercic.oklog.core.android;
 
 import com.github.simonpercic.oklog.core.Logger;
-import com.github.simonpercic.oklog.core.ReflectionUtils;
+import com.github.simonpercic.oklog.core.TimberUtils;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -15,7 +15,7 @@ public final class TimberLoggerProvider {
     }
 
     @Nullable public static Logger provideLogger() {
-        if (ReflectionUtils.hasClass("timber.log.Timber")) {
+        if (TimberUtils.hasTimber()) {
             return new TimberLogger();
         } else {
             return null;

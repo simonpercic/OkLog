@@ -1,24 +1,22 @@
-package com.github.simonpercic.oklog
+package com.github.simonpercic.oklog3
 
-import android.support.test.runner.AndroidJUnit4
 import com.github.simonpercic.oklog.core.BaseOkLogInterceptorTest
 import com.github.simonpercic.oklog.core.LogInterceptor
-import com.squareup.okhttp.HttpUrl
-import com.squareup.okhttp.MediaType
-import com.squareup.okhttp.OkHttpClient
-import com.squareup.okhttp.Request
-import com.squareup.okhttp.RequestBody
-import com.squareup.okhttp.mockwebserver.MockResponse
-import com.squareup.okhttp.mockwebserver.MockWebServer
+import com.github.simonpercic.oklog.core.Logger
+import okhttp3.HttpUrl
+import okhttp3.MediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
+import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
 import org.junit.Rule
 import org.junit.rules.ExternalResource
-import org.junit.runner.RunWith
 import java.io.IOException
 
 /**
  * @author Simon Percic [https://github.com/simonpercic](https://github.com/simonpercic)
  */
-@RunWith(AndroidJUnit4::class)
 class OkLogInterceptorTest : BaseOkLogInterceptorTest<MockWebServer, HttpUrl, MockResponse, Request.Builder, Request, RequestBody, OkHttpClient, OkLogInterceptor.Builder, OkLogInterceptor>() {
 
     private val mockWebServer = MockWebServer()
@@ -26,7 +24,9 @@ class OkLogInterceptorTest : BaseOkLogInterceptorTest<MockWebServer, HttpUrl, Mo
     override val server: MockWebServer
         get() = mockWebServer
 
-    @Rule @JvmField val serverPort = MockWebServerPort(server)
+    @Rule
+    @JvmField
+    val serverPort = MockWebServerPort(server)
 
     override fun mockWebServerUrl(server: MockWebServer, path: String): HttpUrl = server.url(path)
 
@@ -60,9 +60,9 @@ class OkLogInterceptorTest : BaseOkLogInterceptorTest<MockWebServer, HttpUrl, Mo
     }
 
     override fun okHttpClientWithInterceptor(interceptor: OkLogInterceptor): OkHttpClient {
-        val client = OkHttpClient()
-        client.interceptors().add(interceptor)
-        return client
+        return OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .build()
     }
 
     override fun createRequestBody(body: String): RequestBody = RequestBody.create(MediaType.parse(PLAIN_STRING), body)
@@ -70,6 +70,8 @@ class OkLogInterceptorTest : BaseOkLogInterceptorTest<MockWebServer, HttpUrl, Mo
     override fun okLogInterceptorBuilder(): OkLogInterceptor.Builder = OkLogInterceptor.builder()
 
     override fun okLogInterceptorBuilderSetLogInterceptor(okLogInterceptorBuilder: OkLogInterceptor.Builder, logInterceptor: LogInterceptor): OkLogInterceptor.Builder = okLogInterceptorBuilder.setLogInterceptor(logInterceptor)
+
+    override fun okLogInterceptorBuilderSetLogger(okLogInterceptorBuilder: OkLogInterceptor.Builder, logger: Logger): OkLogInterceptor.Builder = okLogInterceptorBuilder.setLogger(logger)
 
     override fun okLogInterceptorBuilderWithResponseDuration(okLogInterceptorBuilder: OkLogInterceptor.Builder, responseDuration: Boolean): OkLogInterceptor.Builder = okLogInterceptorBuilder.withResponseDuration(responseDuration)
 

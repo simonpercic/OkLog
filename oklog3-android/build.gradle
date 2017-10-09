@@ -9,6 +9,7 @@ buildscript {
 }
 
 apply plugin: 'com.android.library'
+apply plugin: 'si.kamino.soter'
 
 android {
     compileSdkVersion project.ext.compileSdkVersion
@@ -23,6 +24,13 @@ android {
         consumerProguardFiles 'proguard-rules.pro'
     }
 
+    lintOptions {
+        checkReleaseBuilds true
+        textReport true
+        warningsAsErrors true
+        lintConfig file('../config/check/lint/lint.xml')
+    }
+
     // This enables long timeouts required on slow environments, e.g. Travis
     adbOptions {
         timeOutInMs 10 * 60 * 1000  // 10 minutes
@@ -33,6 +41,26 @@ android {
 dependencies {
     compile project(':oklog3')
     compile project(':oklog-core-android')
+
+    // Static code rules
+    checkstyleRules files('../config/soter/checkstyle-0.3.xml')
+    findbugsRules files('../config/soter/findbugs-0.1.xml')
+    pmdRules files('../config/soter/pmd-0.1.xml')
+}
+
+soter {
+    checkstyle {
+        enabled true
+    }
+
+    findbugs {
+        enabled true
+        reportLevel 'high'
+    }
+
+    pmd {
+        enabled true
+    }
 }
 
 apply from: '../gradle-publish/android/jcenterupload.gradle'

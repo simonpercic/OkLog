@@ -41,7 +41,6 @@ android {
 
     sourceSets {
         test.java.srcDirs += 'src/test/kotlin'
-        androidTest.java.srcDirs += 'src/androidTest/kotlin'
     }
 }
 
@@ -63,16 +62,6 @@ dependencies {
     testCompile "org.mockito:mockito-core:$mockitoVersion"
     testCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
-
-    androidTestCompile project(':oklog-core-test')
-    androidTestCompile "com.squareup.okhttp:mockwebserver:$okhttpVersion"
-    androidTestCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-    androidTestCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
-    androidTestCompile "com.crittercism.dexmaker:dexmaker:$dexmakerVersion"
-    androidTestCompile "com.crittercism.dexmaker:dexmaker-dx:$dexmakerVersion"
-    androidTestCompile "com.crittercism.dexmaker:dexmaker-mockito:$dexmakerVersion"
-    androidTestCompile "com.android.support.test:runner:$testSupportVersion"
-    androidTestCompile "com.android.support.test:rules:$testSupportVersion"
 
     // Static code rules
     checkstyleRules files('../config/soter/checkstyle-0.3.xml')

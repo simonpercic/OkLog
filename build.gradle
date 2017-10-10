@@ -37,8 +37,6 @@ subprojects {
         kotlinVersion = '1.1.4-3'
         ktlintVersion = '0.6.2'
         okioVersion = '1.13.0'
-        testSupportVersion = '0.5'
-        dexmakerVersion = '1.4'
         junitVersion = '4.12'
         mockitoVersion = '1.10.19'
         gradleBintrayVersion = '1.7.1'

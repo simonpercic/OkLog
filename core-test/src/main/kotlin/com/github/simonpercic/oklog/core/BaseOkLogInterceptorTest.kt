@@ -54,11 +54,13 @@ abstract class BaseOkLogInterceptorTest<MockWebServer, HttpUrl, MockResponse, Re
     abstract fun createRequestBody(body: String): RequestBody
     abstract fun okLogInterceptorBuilder(): OkLogInterceptorBuilder
     abstract fun okLogInterceptorBuilderSetLogInterceptor(okLogInterceptorBuilder: OkLogInterceptorBuilder, logInterceptor: LogInterceptor): OkLogInterceptorBuilder
+    abstract fun okLogInterceptorBuilderSetLogger(okLogInterceptorBuilder: OkLogInterceptorBuilder, logger: Logger): OkLogInterceptorBuilder
     abstract fun okLogInterceptorBuilderWithResponseDuration(okLogInterceptorBuilder: OkLogInterceptorBuilder, responseDuration: Boolean): OkLogInterceptorBuilder
     abstract fun okLogInterceptorBuilderWithAllLogData(okLogInterceptorBuilder: OkLogInterceptorBuilder): OkLogInterceptorBuilder
     abstract fun okLogInterceptorBuild(okLogInterceptorBuilder: OkLogInterceptorBuilder): OkLogInterceptor
 
     fun OkLogInterceptorBuilder.setLogInterceptor(logInterceptor: LogInterceptor): OkLogInterceptorBuilder = okLogInterceptorBuilderSetLogInterceptor(this, logInterceptor)
+    fun OkLogInterceptorBuilder.setLogger(logger: Logger): OkLogInterceptorBuilder = okLogInterceptorBuilderSetLogger(this, logger)
     fun OkLogInterceptorBuilder.withResponseDuration(responseDuration: Boolean): OkLogInterceptorBuilder = okLogInterceptorBuilderWithResponseDuration(this, responseDuration)
     fun OkLogInterceptorBuilder.withAllLogData(): OkLogInterceptorBuilder = okLogInterceptorBuilderWithAllLogData(this)
     fun OkLogInterceptorBuilder.buildInterceptor(): OkLogInterceptor = okLogInterceptorBuild(this)
@@ -333,8 +335,11 @@ abstract class BaseOkLogInterceptorTest<MockWebServer, HttpUrl, MockResponse, Re
         val logInterceptor = Mockito.mock(LogInterceptor::class.java)
         Mockito.`when`(logInterceptor.onLog(urlCaptor.capture())).thenReturn(true)
 
+        val logger = Mockito.mock(Logger::class.java)
+
         val interceptorBuilder = okLogInterceptorBuilder()
             .setLogInterceptor(logInterceptor)
+            .setLogger(logger)
 
         okLogBuilderAction(interceptorBuilder)
 

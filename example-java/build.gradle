@@ -25,14 +25,14 @@ dependencies {
     apt "com.google.dagger:dagger-compiler:$daggerVersion"
 
     // OkLog3
-    compile project(':oklog3')
+    compile project(':oklog3-java')
     compile "com.squareup.retrofit2:retrofit:$retrofit2Version"
     compile "com.squareup.retrofit2:converter-gson:$retrofit2Version"
     compile "com.squareup.okhttp3:okhttp:$okHttp3Version"
     compile "com.squareup.okhttp3:logging-interceptor:$okHttp3Version"
 
     // OkLog
-    compile project(':oklog')
+    compile project(':oklog-java')
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.okhttp:okhttp:2.7.5'
 }

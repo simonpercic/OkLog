@@ -39,7 +39,7 @@ android {
 }
 
 dependencies {
-    compile project(':oklog3')
+    compile project(':oklog3-java')
     compile project(':oklog-core-android')
 
     // Static code rules

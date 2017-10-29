@@ -176,7 +176,7 @@ There are two variants of OkLog:
 
 ### The full variants matrix:
 
-                            | Android         | pure Java/Kotlin (no-Android)
+ *                          | Android         | pure Java/Kotlin (no-Android)
 ----------------------------|-----------------|------------------------------
 OkHttp (Retrofit 1.x)       |oklog            |oklog-java
 OkHttp3 (Retrofit 2.x)      |oklog3           |oklog3-java

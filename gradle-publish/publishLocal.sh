@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+./gradlew clean
+./gradlew :oklog-shared:publishBintrayPublicationToMavenLocal
+./gradlew :oklog-core:publishBintrayPublicationToMavenLocal
+./gradlew :oklog-java:publishBintrayPublicationToMavenLocal
+./gradlew :oklog3-java:publishBintrayPublicationToMavenLocal
+./gradlew :oklog-core-android:install
+./gradlew :oklog-android:install
+./gradlew :oklog3-android:install

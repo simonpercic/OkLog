@@ -2,13 +2,8 @@ package com.github.simonpercic.oklogexamplekotlin
 
 import com.github.simonpercic.oklogexamplekotlin.data.api.okhttp3.DataModule3
 import com.github.simonpercic.oklogexamplekotlin.data.api.okhttp3.RestApi3
-import com.github.simonpercic.oklogexamplekotlin.data.api.model.response.show.ShowResponse
-
 import java.io.IOException
-
 import javax.inject.Inject
-
-import retrofit2.Response
 
 /**
  * @author Simon Percic [https://github.com/simonpercic](https://github.com/simonpercic)

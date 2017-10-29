@@ -1,0 +1,44 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+    dependencies {
+        classpath 'net.ltgt.gradle:gradle-apt-plugin:0.12'
+    }
+}
+
+apply plugin: 'application'
+apply plugin: 'java'
+apply plugin: 'net.ltgt.apt'
+mainClassName = 'com.github.simonpercic.oklogexamplejava.Main'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+ext.daggerVersion = '2.10'
+ext.retrofit2Version = '2.3.0'
+ext.okHttp3Version = '3.8.0'
+
+dependencies {
+    compile "com.google.dagger:dagger:$daggerVersion"
+    apt "com.google.dagger:dagger-compiler:$daggerVersion"
+
+    // OkLog3
+    compile project(':oklog3')
+    compile "com.squareup.retrofit2:retrofit:$retrofit2Version"
+    compile "com.squareup.retrofit2:converter-gson:$retrofit2Version"
+    compile "com.squareup.okhttp3:okhttp:$okHttp3Version"
+    compile "com.squareup.okhttp3:logging-interceptor:$okHttp3Version"
+
+    // OkLog
+    compile project(':oklog')
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    compile 'com.squareup.okhttp:okhttp:2.7.5'
+}
+
+run {
+    if (project.hasProperty("appArgs")) {
+        args Eval.me(appArgs)
+    }
+}

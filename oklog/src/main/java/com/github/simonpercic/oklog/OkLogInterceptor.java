@@ -349,7 +349,7 @@ public final class OkLogInterceptor implements Interceptor {
          *
          * @return instance of OkLogInterceptor
          */
-        public OkLogInterceptor build() {
+        @NotNull public OkLogInterceptor build() {
             return new OkLogInterceptor(logUrlBase, logInterceptor, logger, ignoreTimber, requestBody, shortenInfoUrl,
                     buildLogDataConfig());
         }

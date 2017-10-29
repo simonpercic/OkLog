@@ -65,6 +65,7 @@ OR (for a pure-Java/Kotlin project, without dependencies on Android)
 compile 'com.github.simonpercic:oklog-java:2.3.0'
 ```
 
+usage:
 
 ```java
 // create an instance of OkLogInterceptor using a builder()
@@ -102,6 +103,8 @@ OR (for a pure-Java/Kotlin project, without dependencies on Android)
 compile 'com.github.simonpercic:oklog3-java:2.3.0'
 ```
 
+usage:
+
 ```java
 // create an instance of OkLogInterceptor using a builder()
 OkLogInterceptor okLogInterceptor = OkLogInterceptor.builder().build();
@@ -133,6 +136,9 @@ new Retrofit.Builder()
    
 - `setLogInterceptor(LogInterceptor logInterceptor)` 
     Set a custom log interceptor to do your own logging. See [LogInterceptor](core/src/main/java/com/github/simonpercic/oklog/core/LogInterceptor.java) for details.
+    
+- `setLogger(Logger logger)` 
+    Set a custom Logger to do your own logging. See [Logger](core/src/main/java/com/github/simonpercic/oklog/core/Logger.java) for details.
     
 - `ignoreTimber(boolean ignoreTimber)`
     Pass 'true' to ignore Timber for logging, even if it is present. 
@@ -176,7 +182,7 @@ There are two variants of OkLog:
 
 ### The full variants matrix:
 
- *                          | Android         | pure Java/Kotlin (no-Android)
+ x                          | Android         | pure Java/Kotlin (no-Android)
 ----------------------------|-----------------|------------------------------
 OkHttp (Retrofit 1.x)       |oklog            |oklog-java
 OkHttp3 (Retrofit 2.x)      |oklog3           |oklog3-java

@@ -5,5 +5,5 @@
 ./gradlew :oklog-java:publishBintrayPublicationToMavenLocal
 ./gradlew :oklog3-java:publishBintrayPublicationToMavenLocal
 ./gradlew :oklog-core-android:install
-./gradlew :oklog-android:install
-./gradlew :oklog3-android:install
+./gradlew :oklog:install
+./gradlew :oklog3:install

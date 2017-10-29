@@ -4,12 +4,9 @@ import com.github.simonpercic.oklogexamplejava.data.api.model.response.show.Show
 import com.github.simonpercic.oklogexamplejava.data.api.okhttp.DataModule;
 import com.github.simonpercic.oklogexamplejava.data.api.okhttp.RestApi;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
-
-import retrofit2.Response;
 
 /**
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>

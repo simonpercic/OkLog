@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 2.3.0 *(2017-10-31)*
+----------------------------
+
+ * New: additional libraries OkLog-Java and OkLog3-Java that support pure Java/Kotlin projects (without dependencies on Android).
+ 
+
 Version 2.2.0 *(2017-09-28)*
 ----------------------------
 
